@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "894148646316",
+    "project_id": "cosmeticsurvey-3f433",
+    "storage_bucket": "cosmeticsurvey-3f433.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894148646316:android:136c49fe244599de395609",
+        "android_client_info": {
+          "package_name": "com.example.cosmetic_survey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894148646316-t02l8k18a063gs134js98ctgdkr9qdg4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUPcJBZpJPwv4lKU2KZvb2Yg7xo15Qa-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894148646316-t02l8k18a063gs134js98ctgdkr9qdg4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "894148646316-3lit74ajep9cvnbukjkv4be3pgb3c3et.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cosmeticSurvey"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
