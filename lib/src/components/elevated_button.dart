@@ -4,28 +4,32 @@ import '../constants/colors.dart';
 import '../constants/sizes.dart';
 
 class CosmeticElevatedButton extends StatelessWidget {
-  final void Function() functionCallback;
+  final VoidCallback? onPressed;
   String buttonName;
 
   CosmeticElevatedButton(
-      {Key? key, required this.buttonName, required this.functionCallback})
+      {Key? key, required this.buttonName, required this.onPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        functionCallback;
-      },
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         elevation: 0,
         shape: const RoundedRectangleBorder(),
         foregroundColor: cosmeticWhiteColor,
         backgroundColor: cosmeticSecondaryColor,
-        side: const BorderSide(color: cosmeticSecondaryColor),
-        padding: const EdgeInsets.symmetric(vertical: cosmeticButtonHeight),
+        side: const BorderSide(
+          color: cosmeticSecondaryColor,
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: cosmeticButtonHeight,
+        ),
       ),
-      child: Text(buttonName),
+      child: Text(
+        buttonName,
+      ),
     );
   }
 }

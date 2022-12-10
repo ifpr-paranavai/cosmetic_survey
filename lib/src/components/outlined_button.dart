@@ -4,26 +4,30 @@ import '../constants/colors.dart';
 import '../constants/sizes.dart';
 
 class CosmeticOutlinedButton extends StatelessWidget {
-  final void Function() functionCallback;
+  final VoidCallback? onPressed;
   String buttonName;
 
   CosmeticOutlinedButton(
-      {Key? key, required this.buttonName, required this.functionCallback})
+      {Key? key, required this.buttonName, required this.onPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: () {
-        functionCallback;
-      },
+      onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         shape: const RoundedRectangleBorder(),
         foregroundColor: cosmeticSecondaryColor,
-        side: const BorderSide(color: cosmeticSecondaryColor),
-        padding: const EdgeInsets.symmetric(vertical: cosmeticButtonHeight),
+        side: const BorderSide(
+          color: cosmeticSecondaryColor,
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: cosmeticButtonHeight,
+        ),
       ),
-      child: Text(buttonName),
+      child: Text(
+        buttonName,
+      ),
     );
   }
 }
