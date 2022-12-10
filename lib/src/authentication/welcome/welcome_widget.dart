@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../components/elevated_button.dart';
 import '../../components/outlined_button.dart';
+import '../signup/signup_widget.dart';
 
 class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class WelcomeWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Image(
-                image: const AssetImage(tWelcomeScreenImage),
+                image: const AssetImage(cosmeticWelcomeScreenImage),
                 height: deviceHeight * 0.6,
               ),
               Column(
@@ -43,8 +44,8 @@ class WelcomeWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CosmeticOutlinedButton(
-                      buttonName: 'LOGIN',
-                      functionCallback: () {},
+                      buttonName: 'ENTRE',
+                      onPressed: () {},
                     ),
                   ),
                   const SizedBox(
@@ -52,8 +53,15 @@ class WelcomeWidget extends StatelessWidget {
                   ),
                   Expanded(
                     child: CosmeticElevatedButton(
-                      buttonName: 'ENTRAR',
-                      functionCallback: () {},
+                      buttonName: 'CADASTRE-SE',
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpWidget(),
+                          ),
+                        )
+                      },
                     ),
                   ),
                 ],

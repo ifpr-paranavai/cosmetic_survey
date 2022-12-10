@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const cosmeticPrimaryColor = Color(0xFFFFE400);
+const cosmeticPrimaryColor = Color(0xFF11C76F);
 const cosmeticSecondaryColor = Color(0xFF272727);
 const cosmeticAccentColor = Color(0xFF001BFF);
 const cosmeticWhiteColor = Colors.white;
