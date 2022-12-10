@@ -17,7 +17,6 @@ class CosmeticElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        shape: const RoundedRectangleBorder(),
         foregroundColor: cosmeticWhiteColor,
         backgroundColor: cosmeticSecondaryColor,
         side: const BorderSide(

@@ -16,7 +16,6 @@ class CosmeticOutlinedButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        shape: const RoundedRectangleBorder(),
         foregroundColor: cosmeticSecondaryColor,
         side: const BorderSide(
           color: cosmeticSecondaryColor,
