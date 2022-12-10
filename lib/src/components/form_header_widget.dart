@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 
 class FormHeaderWidget extends StatelessWidget {
   String image, tittle, subtittle;
+  TextStyle? textStyleTittle, textStyleSubTittle;
 
   FormHeaderWidget(
       {Key? key,
       required this.image,
       required this.tittle,
-      required this.subtittle})
+      required this.subtittle,
+      this.textStyleTittle,
+      this.textStyleSubTittle})
       : super(key: key);
 
   @override
@@ -22,11 +25,11 @@ class FormHeaderWidget extends StatelessWidget {
         ),
         Text(
           tittle,
-          style: Theme.of(context).textTheme.headline4,
+          style: textStyleTittle ?? Theme.of(context).textTheme.headline4,
         ),
         Text(
           subtittle,
-          style: Theme.of(context).textTheme.bodyText1,
+          style: textStyleSubTittle ?? Theme.of(context).textTheme.bodyText1,
         ),
       ],
     );

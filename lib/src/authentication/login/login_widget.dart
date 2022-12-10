@@ -1,13 +1,13 @@
-import 'package:cosmetic_survey/src/components/form_header_widget.dart';
-import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../components/signup_form_widget.dart';
+import '../../components/form_header_widget.dart';
+import '../../components/login_form_widget.dart';
+import '../../constants/colors.dart';
 import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
 
-class SignUpWidget extends StatelessWidget {
-  const SignUpWidget({Key? key}) : super(key: key);
+class LoginWidget extends StatelessWidget {
+  const LoginWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +26,11 @@ class SignUpWidget extends StatelessWidget {
               children: [
                 FormHeaderWidget(
                   image: cosmeticLoginSignInScreenImage,
-                  tittle: 'Boas vindas!',
+                  tittle: 'Bem vindo(a) de volta!',
                   textStyleTittle: Theme.of(context).textTheme.headline5,
-                  subtittle: 'Crie seu perfil para começar sua jornada.',
+                  subtittle: 'Faça login para continuar de onde parou.',
                 ),
-                const CosmeticSignUpFormWidget(),
+                const CosmeticLoginFormWidget(),
                 Column(
                   children: [
                     const Text('OU'),
@@ -61,11 +61,11 @@ class SignUpWidget extends StatelessWidget {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Já possui uma conta? ',
+                              text: 'Não possui uma conta? ',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                             const TextSpan(
-                              text: 'LOGIN',
+                              text: 'CADASTRE-SE',
                             )
                           ],
                         ),

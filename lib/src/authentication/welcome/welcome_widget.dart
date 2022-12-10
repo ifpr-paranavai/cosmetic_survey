@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../components/elevated_button.dart';
 import '../../components/outlined_button.dart';
+import '../login/login_widget.dart';
 import '../signup/signup_widget.dart';
 
 class WelcomeWidget extends StatelessWidget {
@@ -45,7 +46,14 @@ class WelcomeWidget extends StatelessWidget {
                   Expanded(
                     child: CosmeticOutlinedButton(
                       buttonName: 'ENTRE',
-                      onPressed: () {},
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginWidget(),
+                          ),
+                        )
+                      },
                     ),
                   ),
                   const SizedBox(
