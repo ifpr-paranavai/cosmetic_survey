@@ -20,12 +20,14 @@ class LoginWidget extends StatelessWidget {
         backgroundColor: cosmeticPrimaryColor,
         body: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.all(cosmeticDefaultSize),
+            padding: const EdgeInsets.all(
+              cosmeticDefaultSize,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FormHeaderWidget(
-                  image: cosmeticLoginSignInScreenImage,
+                  image: cosmeticLoginImage,
                   tittle: 'Bem vindo(a) de volta!',
                   textStyleTittle: Theme.of(context).textTheme.headline5,
                   subtittle: 'Faça login para continuar de onde parou.',

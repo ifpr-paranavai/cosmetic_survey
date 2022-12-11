@@ -20,12 +20,14 @@ class SignUpWidget extends StatelessWidget {
         backgroundColor: cosmeticPrimaryColor,
         body: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.all(cosmeticDefaultSize),
+            padding: const EdgeInsets.all(
+              cosmeticDefaultSize,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FormHeaderWidget(
-                  image: cosmeticLoginSignInScreenImage,
+                  image: cosmeticFSignUpImage,
                   tittle: 'Boas vindas!',
                   textStyleTittle: Theme.of(context).textTheme.headline5,
                   subtittle: 'Crie seu perfil para começar sua jornada.',
