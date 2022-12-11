@@ -14,10 +14,13 @@ class SignUpWidget extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: cosmeticPrimaryColor,
+          backgroundColor: cosmeticWhiteColor,
           elevation: 0,
+          iconTheme: const IconThemeData(
+            color: cosmeticPrimaryColor,
+          ),
         ),
-        backgroundColor: cosmeticPrimaryColor,
+        backgroundColor: cosmeticWhiteColor,
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(

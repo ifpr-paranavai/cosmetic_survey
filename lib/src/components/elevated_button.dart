@@ -17,10 +17,10 @@ class CosmeticElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        foregroundColor: cosmeticWhiteColor,
-        backgroundColor: cosmeticSecondaryColor,
+        foregroundColor: cosmeticSecondaryColor,
+        backgroundColor: cosmeticPrimaryColor,
         side: const BorderSide(
-          color: cosmeticSecondaryColor,
+          color: cosmeticPrimaryColor,
         ),
         padding: const EdgeInsets.symmetric(
           vertical: cosmeticButtonHeight,

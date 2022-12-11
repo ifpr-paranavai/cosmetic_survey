@@ -17,7 +17,7 @@ class WelcomeWidget extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: cosmeticPrimaryColor,
+        backgroundColor: cosmeticWhiteColor,
         body: Container(
           padding: const EdgeInsets.all(cosmeticDefaultSize),
           child: Column(

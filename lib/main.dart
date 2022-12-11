@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: cosmeticSecondaryColor,
-          selectionHandleColor: cosmeticSecondaryColor,
+          cursorColor: cosmeticPrimaryColor,
+          selectionHandleColor: cosmeticPrimaryColor,
         ),
       ),
       home: const WelcomeWidget(),
