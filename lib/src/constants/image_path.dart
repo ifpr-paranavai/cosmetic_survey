@@ -8,3 +8,5 @@ const String cosmeticHomeImage = 'assets/images/buddha-hand-amico.png';
 
 const String cosmeticResetPasswordImage =
     'assets/images/reset-password-cuate.png';
+
+const String cosmeticUserProfileImage = 'assets/images/user-profile.png';
