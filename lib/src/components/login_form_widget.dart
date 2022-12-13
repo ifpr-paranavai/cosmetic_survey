@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/components/password_text_form_field.dart';
 import 'package:cosmetic_survey/src/components/text_form_field.dart';
+import 'package:cosmetic_survey/src/core/home/home-page-widget.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
@@ -54,7 +55,14 @@ class CosmeticLoginFormWidget extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: CosmeticElevatedButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePageWidget(),
+                    ),
+                  )
+                },
                 buttonName: 'ENTRAR',
               ),
             )
