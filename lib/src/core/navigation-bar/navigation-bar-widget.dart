@@ -1,4 +1,5 @@
 import 'package:cosmetic_survey/src/constants/colors.dart';
+import 'package:cosmetic_survey/src/core/profile/profile_widget.dart';
 import 'package:flutter/material.dart';
 
 class CosmeticBottomNavigationBar extends StatefulWidget {
@@ -14,26 +15,25 @@ class _CosmeticBottomNavigationBarState
   int index = 0;
 
   final screens = [
-    Center(
-        child: Text(
-      'Inicio',
-      style: TextStyle(fontSize: 30),
-    )),
-    Center(
-        child: Text(
-      'Pedidos',
-      style: TextStyle(fontSize: 30),
-    )),
-    Center(
-        child: Text(
-      'Clientes',
-      style: TextStyle(fontSize: 30),
-    )),
-    Center(
-        child: Text(
-      'Configurações',
-      style: TextStyle(fontSize: 30),
-    )),
+    const Center(
+      child: Text(
+        'Inicio',
+        style: TextStyle(fontSize: 30),
+      ),
+    ),
+    const Center(
+      child: Text(
+        'Pedidos',
+        style: TextStyle(fontSize: 30),
+      ),
+    ),
+    const Center(
+      child: Text(
+        'Clientes',
+        style: TextStyle(fontSize: 30),
+      ),
+    ),
+    const ProfileWidget(),
   ];
 
   @override
@@ -48,7 +48,6 @@ class _CosmeticBottomNavigationBarState
           backgroundColor: Colors.white,
           labelTextStyle: MaterialStateProperty.all(
             const TextStyle(
-
               color: Colors.black26,
               fontSize: 12.5,
               fontWeight: FontWeight.w500,
@@ -94,12 +93,12 @@ class _CosmeticBottomNavigationBarState
             ),
             NavigationDestination(
               icon: Icon(
-                Icons.settings,
+                Icons.person_outline_rounded,
                 color: Colors.black26,
               ),
-              label: 'Configurações',
+              label: 'Perfil',
               selectedIcon: Icon(
-                Icons.settings,
+                Icons.person,
                 color: cosmeticPrimaryColor,
               ),
             )
