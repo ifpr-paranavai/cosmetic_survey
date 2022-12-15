@@ -22,6 +22,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CosmeticTextFormField(
+              borderRadius: 10,
               keyboardType: TextInputType.name,
               inputText: 'Nome',
               icon: const Icon(
@@ -31,6 +32,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
             ),
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticTextFormField(
+              borderRadius: 10,
               keyboardType: TextInputType.emailAddress,
               inputText: 'E-Mail',
               icon: const Icon(
@@ -40,6 +42,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
             ),
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticPasswordTextFormField(
+              borderRadius: 10,
               icon: const Icon(
                 Icons.fingerprint_rounded,
                 color: cosmeticSecondaryColor,

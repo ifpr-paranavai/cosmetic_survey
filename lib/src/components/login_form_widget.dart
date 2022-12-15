@@ -22,6 +22,7 @@ class CosmeticLoginFormWidget extends StatelessWidget {
           children: [
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticTextFormField(
+              borderRadius: 10,
               keyboardType: TextInputType.emailAddress,
               inputText: 'E-Mail',
               icon: const Icon(
@@ -31,6 +32,7 @@ class CosmeticLoginFormWidget extends StatelessWidget {
             ),
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticPasswordTextFormField(
+              borderRadius: 10,
               icon: const Icon(
                 Icons.fingerprint_rounded,
                 color: cosmeticSecondaryColor,
