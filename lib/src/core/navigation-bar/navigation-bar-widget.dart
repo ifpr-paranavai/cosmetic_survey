@@ -93,12 +93,12 @@ class _CosmeticBottomNavigationBarState
             ),
             NavigationDestination(
               icon: Icon(
-                Icons.person_outline_rounded,
+                Icons.account_circle_outlined,
                 color: Colors.black26,
               ),
-              label: 'Perfil',
+              label: 'Conta',
               selectedIcon: Icon(
-                Icons.person,
+                Icons.account_circle_rounded,
                 color: cosmeticPrimaryColor,
               ),
             )
