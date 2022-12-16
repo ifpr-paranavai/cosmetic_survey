@@ -3,6 +3,7 @@ import 'package:cosmetic_survey/src/components/text_form_field.dart';
 import 'package:cosmetic_survey/src/core/home/home-page-widget.dart';
 import 'package:flutter/material.dart';
 
+import '../authentication/forget-password/forget-password-email/forget-password-widget.dart';
 import '../constants/colors.dart';
 import '../constants/sizes.dart';
 import 'elevated_button.dart';
@@ -41,7 +42,12 @@ class CosmeticLoginFormWidget extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ForgetPasswordWidget(),
+                  ),
+                );
               },
               child: const Text.rich(
                 TextSpan(
