@@ -35,7 +35,7 @@ class LoginWidget extends StatelessWidget {
                   textStyleTittle: Theme.of(context).textTheme.headline5,
                   subtittle: 'Faça login para continuar de onde parou.',
                 ),
-                const CosmeticLoginFormWidget(),
+                CosmeticLoginFormWidget(),
                 Column(
                   children: [
                     const Text('OU'),

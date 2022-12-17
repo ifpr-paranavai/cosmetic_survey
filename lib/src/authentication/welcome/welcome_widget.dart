@@ -37,7 +37,7 @@ class WelcomeWidget extends StatelessWidget {
                   ),
                   // TODO mudar slogan
                   Text(
-                    'Gerencie suas revendas em um só lugar!',
+                    'Gerencie suas revendas e clientes em um só lugar!',
                     style: Theme.of(context).textTheme.bodyText1,
                     textAlign: TextAlign.center,
                   ),

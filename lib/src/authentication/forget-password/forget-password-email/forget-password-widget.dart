@@ -2,13 +2,17 @@ import 'package:cosmetic_survey/src/components/elevated_button.dart';
 import 'package:cosmetic_survey/src/components/form_header_widget.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:cosmetic_survey/src/constants/image_path.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/text_form_field.dart';
 import '../../../constants/sizes.dart';
 
 class ForgetPasswordWidget extends StatelessWidget {
-  const ForgetPasswordWidget({Key? key}) : super(key: key);
+  ForgetPasswordWidget({Key? key}) : super(key: key);
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String email = '';
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +42,7 @@ class ForgetPasswordWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: cosmeticFormHeight),
                 Form(
+                  key: _formKey,
                   child: Column(
                     children: [
                       CosmeticTextFormField(
@@ -48,13 +53,26 @@ class ForgetPasswordWidget extends StatelessWidget {
                         inputText: 'E-Mail',
                         keyboardType: TextInputType.emailAddress,
                         borderRadius: 10.0,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informe o E-Mail!';
+                          }
+                          if (EmailValidator.validate(value)) {
+                            email = value;
+                          } else {
+                            return 'E-Mail inválido!';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20.0),
                       SizedBox(
                         width: double.infinity,
                         child: CosmeticElevatedButton(
-                          buttonName: 'Próximo',
-                          onPressed: () {},
+                          buttonName: 'Enviar E-Mail',
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {}
+                          },
                         ),
                       ),
                     ],

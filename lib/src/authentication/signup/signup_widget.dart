@@ -35,7 +35,7 @@ class SignUpWidget extends StatelessWidget {
                   textStyleTittle: Theme.of(context).textTheme.headline5,
                   subtittle: 'Crie seu perfil para começar sua jornada.',
                 ),
-                const CosmeticSignUpFormWidget(),
+                CosmeticSignUpFormWidget(),
                 Column(
                   children: [
                     const Text('OU'),

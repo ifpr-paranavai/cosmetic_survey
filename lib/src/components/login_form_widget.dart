@@ -1,6 +1,7 @@
 import 'package:cosmetic_survey/src/components/password_text_form_field.dart';
 import 'package:cosmetic_survey/src/components/text_form_field.dart';
 import 'package:cosmetic_survey/src/core/home/home-page-widget.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 import '../authentication/forget-password/forget-password-email/forget-password-widget.dart';
@@ -9,7 +10,11 @@ import '../constants/sizes.dart';
 import 'elevated_button.dart';
 
 class CosmeticLoginFormWidget extends StatelessWidget {
-  const CosmeticLoginFormWidget({Key? key}) : super(key: key);
+  CosmeticLoginFormWidget({Key? key}) : super(key: key);
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +23,7 @@ class CosmeticLoginFormWidget extends StatelessWidget {
         vertical: cosmeticFormHeight - 10,
       ),
       child: Form(
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,6 +36,17 @@ class CosmeticLoginFormWidget extends StatelessWidget {
                 Icons.email_outlined,
                 color: cosmeticSecondaryColor,
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Informe o E-Mail!';
+                }
+                if (EmailValidator.validate(value)) {
+                  email = value;
+                } else {
+                  return 'E-Mail inválido!';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticPasswordTextFormField(
@@ -39,13 +56,19 @@ class CosmeticLoginFormWidget extends StatelessWidget {
                 color: cosmeticSecondaryColor,
               ),
               inputText: 'Senha',
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Informe a Senha!';
+                }
+                return null;
+              },
             ),
             TextButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ForgetPasswordWidget(),
+                    builder: (context) => ForgetPasswordWidget(),
                   ),
                 );
               },
@@ -64,12 +87,14 @@ class CosmeticLoginFormWidget extends StatelessWidget {
               width: double.infinity,
               child: CosmeticElevatedButton(
                 onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePageWidget(),
-                    ),
-                  )
+                  if (_formKey.currentState!.validate()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePageWidget(),
+                        ),
+                      ),
+                    },
                 },
                 buttonName: 'ENTRAR',
               ),
