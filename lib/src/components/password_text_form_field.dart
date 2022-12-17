@@ -7,6 +7,7 @@ class CosmeticPasswordTextFormField extends StatefulWidget {
   Icon icon;
   String? initialValue;
   double borderRadius;
+  FormFieldValidator validator;
 
   CosmeticPasswordTextFormField({
     Key? key,
@@ -14,6 +15,7 @@ class CosmeticPasswordTextFormField extends StatefulWidget {
     required this.icon,
     this.initialValue,
     required this.borderRadius,
+    required this.validator,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class _CosmeticTextFormFieldState extends State<CosmeticPasswordTextFormField> {
     return TextFormField(
       initialValue: widget.initialValue,
       keyboardType: TextInputType.visiblePassword,
+      validator: widget.validator,
       decoration: InputDecoration(
         label: Text(
           widget.inputText,
