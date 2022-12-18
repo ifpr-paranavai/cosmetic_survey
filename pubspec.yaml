@@ -40,8 +40,8 @@ dependencies:
   line_awesome_flutter: ^2.0.0
   cpf_cnpj_validator: ^2.0.0
   email_validator: ^2.1.17
-#  cloud_firestore: 4.0.0
   firebase_auth: ^4.2.0
+  cloud_firestore: ^4.2.0
 
 dev_dependencies:
   flutter_test:

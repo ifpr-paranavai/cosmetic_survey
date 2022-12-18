@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/components/password_text_form_field.dart';
 import 'package:cosmetic_survey/src/components/text_form_field.dart';
+import 'package:cosmetic_survey/src/controller/firebase_controller.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,10 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
   }) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   String name = '';
   String email = '';
   String password = '';
@@ -29,6 +34,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CosmeticTextFormField(
+              controller: _nameController,
               borderRadius: 10,
               keyboardType: TextInputType.name,
               inputText: 'Nome',
@@ -47,6 +53,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
             ),
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticTextFormField(
+              controller: _emailController,
               borderRadius: 10,
               keyboardType: TextInputType.emailAddress,
               inputText: 'E-Mail',
@@ -68,6 +75,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
             ),
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticPasswordTextFormField(
+              controller: _passwordController,
               borderRadius: 10,
               icon: const Icon(
                 Icons.fingerprint_rounded,
@@ -88,7 +96,14 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
               width: double.infinity,
               child: CosmeticElevatedButton(
                 onPressed: () => {
-                  if (_formKey.currentState!.validate()) {},
+                  if (_formKey.currentState!.validate())
+                    {
+                      FirebaseController.signUp(
+                        name: _nameController.text,
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ),
+                    },
                 },
                 buttonName: 'CRIAR CONTA',
               ),
