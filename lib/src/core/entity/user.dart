@@ -2,14 +2,28 @@ class User {
   dynamic id;
   late String name;
   late String email;
-  late String password;
-  late String creationTime;
+  late String? password;
+  late String? creationTime;
 
   User({
     this.id,
     required this.name,
     required this.email,
-    required this.password,
-    required this.creationTime,
+    this.password,
+    this.creationTime,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+    };
+  }
+
+  static User fromJson(Map<String, dynamic> json) => User(
+        id: json['id'],
+        name: json['name'],
+        email: json['email'],
+      );
 }

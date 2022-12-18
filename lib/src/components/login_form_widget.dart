@@ -1,6 +1,5 @@
 import 'package:cosmetic_survey/src/components/password_text_form_field.dart';
 import 'package:cosmetic_survey/src/components/text_form_field.dart';
-import 'package:cosmetic_survey/src/controller/firebase_controller.dart';
 import 'package:cosmetic_survey/src/core/home/home_page_widget.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../authentication/forget_password/forget_password_email/forget_password_widget.dart';
 import '../constants/colors.dart';
 import '../constants/sizes.dart';
+import '../firebase/auth/firebase_auth.dart';
 import 'elevated_button.dart';
 
 class CosmeticLoginFormWidget extends StatelessWidget {
@@ -94,9 +94,8 @@ class CosmeticLoginFormWidget extends StatelessWidget {
               child: CosmeticElevatedButton(
                 buttonName: 'ENTRAR',
                 onPressed: () => {
-                  if (_formKey.currentState!.validate())
-                    {
-                      FirebaseController.signIn(
+                  if (_formKey.currentState!.validate()) {
+                      FirebaseAuthentication.signIn(
                               email: _emailController.text,
                               password: _passwordController.text)
                           .then(
@@ -109,6 +108,7 @@ class CosmeticLoginFormWidget extends StatelessWidget {
                           ),
                         },
                       ),
+                      Navigator.pop(context),
                     },
                 },
               ),
