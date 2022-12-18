@@ -1,11 +1,11 @@
 import 'package:cosmetic_survey/src/components/password_text_form_field.dart';
 import 'package:cosmetic_survey/src/components/text_form_field.dart';
 import 'package:cosmetic_survey/src/controller/firebase_controller.dart';
-import 'package:cosmetic_survey/src/core/home/home-page-widget.dart';
+import 'package:cosmetic_survey/src/core/home/home_page_widget.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-import '../authentication/forget-password/forget-password-email/forget-password-widget.dart';
+import '../authentication/forget_password/forget_password_email/forget_password_widget.dart';
 import '../constants/colors.dart';
 import '../constants/sizes.dart';
 import 'elevated_button.dart';

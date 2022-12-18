@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../navigation-bar/navigation-bar-widget.dart';
+import '../navigation_bar/navigation_bar_widget.dart';
 
 class HomePageWidget extends StatelessWidget {
   const HomePageWidget({Key? key}) : super(key: key);

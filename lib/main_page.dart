@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'authentication/welcome/welcome_widget.dart';
-import 'core/home/home-page-widget.dart';
+import 'src/authentication/welcome/welcome_widget.dart';
+import 'src/core/home/home_page_widget.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
