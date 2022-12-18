@@ -1,3 +1,4 @@
+import 'package:cosmetic_survey/src/components/circular_indicator.dart';
 import 'package:cosmetic_survey/src/components/password_text_form_field.dart';
 import 'package:cosmetic_survey/src/components/text_form_field.dart';
 import 'package:cosmetic_survey/src/core/home/home_page_widget.dart';
@@ -96,9 +97,9 @@ class CosmeticLoginFormWidget extends StatelessWidget {
                 onPressed: () => {
                   if (_formKey.currentState!.validate()) {
                       FirebaseAuthentication.signIn(
-                              email: _emailController.text,
-                              password: _passwordController.text)
-                          .then(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      ).then(
                         (value) => {
                           Navigator.push(
                             context,
@@ -108,7 +109,6 @@ class CosmeticLoginFormWidget extends StatelessWidget {
                           ),
                         },
                       ),
-                      Navigator.pop(context),
                     },
                 },
               ),

@@ -122,7 +122,9 @@ class ProfileWidget extends StatelessWidget {
                   textColor: Colors.red,
                   endIcon: false,
                   onPress: () {
+                    Navigator.pop(context);
                     FirebaseAuthentication.signOut();
+                    Navigator.pop(context);
                   },
                 ),
               ],
