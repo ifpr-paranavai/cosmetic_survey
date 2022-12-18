@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/components/password_text_form_field.dart';
 import 'package:cosmetic_survey/src/components/text_form_field.dart';
+import 'package:cosmetic_survey/src/controller/firebase_controller.dart';
 import 'package:cosmetic_survey/src/core/home/home-page-widget.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,9 @@ class CosmeticLoginFormWidget extends StatelessWidget {
   CosmeticLoginFormWidget({Key? key}) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   String email = '';
   String password = '';
 
@@ -29,6 +33,7 @@ class CosmeticLoginFormWidget extends StatelessWidget {
           children: [
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticTextFormField(
+              controller: _emailController,
               borderRadius: 10,
               keyboardType: TextInputType.emailAddress,
               inputText: 'E-Mail',
@@ -50,6 +55,7 @@ class CosmeticLoginFormWidget extends StatelessWidget {
             ),
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticPasswordTextFormField(
+              controller: _passwordController,
               borderRadius: 10,
               icon: const Icon(
                 Icons.fingerprint_rounded,
@@ -86,17 +92,25 @@ class CosmeticLoginFormWidget extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: CosmeticElevatedButton(
+                buttonName: 'ENTRAR',
                 onPressed: () => {
-                  if (_formKey.currentState!.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePageWidget(),
-                        ),
+                  if (_formKey.currentState!.validate())
+                    {
+                      FirebaseController.signIn(
+                              email: _emailController.text,
+                              password: _passwordController.text)
+                          .then(
+                        (value) => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePageWidget(),
+                            ),
+                          ),
+                        },
                       ),
                     },
                 },
-                buttonName: 'ENTRAR',
               ),
             )
           ],

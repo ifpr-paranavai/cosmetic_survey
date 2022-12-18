@@ -8,6 +8,7 @@ class CosmeticPasswordTextFormField extends StatefulWidget {
   String? initialValue;
   double borderRadius;
   FormFieldValidator validator;
+  TextEditingController? controller;
 
   CosmeticPasswordTextFormField({
     Key? key,
@@ -16,6 +17,7 @@ class CosmeticPasswordTextFormField extends StatefulWidget {
     this.initialValue,
     required this.borderRadius,
     required this.validator,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class _CosmeticTextFormFieldState extends State<CosmeticPasswordTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       initialValue: widget.initialValue,
       keyboardType: TextInputType.visiblePassword,
       validator: widget.validator,

@@ -35,9 +35,8 @@ class WelcomeWidget extends StatelessWidget {
                     'Cosmetic Survey',
                     style: Theme.of(context).textTheme.headline4,
                   ),
-                  // TODO mudar slogan
                   Text(
-                    'Gerencie suas revendas e clientes em um só lugar!',
+                    'Gerenciando sonhos.',
                     style: Theme.of(context).textTheme.bodyText1,
                     textAlign: TextAlign.center,
                   ),

@@ -1,6 +1,7 @@
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:cosmetic_survey/src/constants/image_path.dart';
 import 'package:cosmetic_survey/src/constants/sizes.dart';
+import 'package:cosmetic_survey/src/controller/firebase_controller.dart';
 import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -120,7 +121,9 @@ class ProfileWidget extends StatelessWidget {
                   icon: LineAwesomeIcons.alternate_sign_out,
                   textColor: Colors.red,
                   endIcon: false,
-                  onPress: () {},
+                  onPress: () {
+                    FirebaseController.signOut();
+                  },
                 ),
               ],
             ),

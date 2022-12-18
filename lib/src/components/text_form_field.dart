@@ -9,6 +9,7 @@ class CosmeticTextFormField extends StatelessWidget {
   String? initialValue;
   double borderRadius;
   FormFieldValidator validator;
+  TextEditingController? controller;
 
   CosmeticTextFormField({
     Key? key,
@@ -18,11 +19,13 @@ class CosmeticTextFormField extends StatelessWidget {
     required this.borderRadius,
     required this.validator,
     this.initialValue,
+    this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       initialValue: initialValue,
       keyboardType: keyboardType,
       validator: validator,
