@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-class ProfileMenuWidget extends StatelessWidget {
+class CosmeticProfileMenuWidget extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPress;
   final bool endIcon;
   final Color? textColor;
 
-  const ProfileMenuWidget({
+  const CosmeticProfileMenuWidget({
     Key? key,
     required this.title,
     required this.icon,

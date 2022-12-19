@@ -1,12 +1,12 @@
-import 'package:cosmetic_survey/src/components/password_text_form_field.dart';
-import 'package:cosmetic_survey/src/components/text_form_field.dart';
+import 'package:cosmetic_survey/src/components/cosmetic_password_text_form_field.dart';
+import 'package:cosmetic_survey/src/components/cosmetic_text_form_field.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/colors.dart';
-import '../constants/sizes.dart';
-import '../firebase/auth/firebase_auth.dart';
-import 'elevated_button.dart';
+import '../../components/cosmetic_elevated_button.dart';
+import '../../constants/colors.dart';
+import '../../constants/sizes.dart';
+import '../../firebase/auth/firebase_auth.dart';
 
 class CosmeticSignUpFormWidget extends StatelessWidget {
   CosmeticSignUpFormWidget({
@@ -96,12 +96,14 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
               width: double.infinity,
               child: CosmeticElevatedButton(
                 onPressed: () => {
-                  if (_formKey.currentState!.validate()) {
+                  if (_formKey.currentState!.validate())
+                    {
                       FirebaseAuthentication.signUp(
                         name: _nameController.text,
                         email: _emailController.text,
                         password: _passwordController.text,
                       ),
+                      Navigator.pop(context),
                     },
                 },
                 buttonName: 'CRIAR CONTA',

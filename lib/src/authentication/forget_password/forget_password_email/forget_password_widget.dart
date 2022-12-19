@@ -1,11 +1,11 @@
-import 'package:cosmetic_survey/src/components/elevated_button.dart';
-import 'package:cosmetic_survey/src/components/form_header_widget.dart';
+import 'package:cosmetic_survey/src/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/components/cosmetic_form_header_widget.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:cosmetic_survey/src/constants/image_path.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-import '../../../components/text_form_field.dart';
+import '../../../components/cosmetic_text_form_field.dart';
 import '../../../constants/sizes.dart';
 
 class ForgetPasswordWidget extends StatelessWidget {
@@ -32,7 +32,7 @@ class ForgetPasswordWidget extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: cosmeticDefaultSize),
-                FormHeaderWidget(
+                CosmeticFormHeaderWidget(
                   image: cosmeticForgetPasswordImage,
                   tittle: 'Esqueceu a senha?',
                   subtittle: 'Informe o email para recuperá-la!',

@@ -1,8 +1,8 @@
-import 'package:cosmetic_survey/src/components/form_header_widget.dart';
+import 'package:cosmetic_survey/src/components/cosmetic_form_header_widget.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../components/signup_form_widget.dart';
+import 'signup_form_widget.dart';
 import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
 
@@ -29,7 +29,7 @@ class SignUpWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FormHeaderWidget(
+                CosmeticFormHeaderWidget(
                   image: cosmeticFSignUpImage,
                   tittle: 'Boas vindas!',
                   textStyleTittle: Theme.of(context).textTheme.headline5,

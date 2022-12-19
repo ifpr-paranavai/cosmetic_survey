@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../components/form_header_widget.dart';
-import '../../components/login_form_widget.dart';
+import '../../components/cosmetic_form_header_widget.dart';
 import '../../constants/colors.dart';
 import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
+import 'login_form_widget.dart';
 
 class LoginWidget extends StatelessWidget {
   const LoginWidget({Key? key}) : super(key: key);
@@ -29,7 +29,7 @@ class LoginWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FormHeaderWidget(
+                CosmeticFormHeaderWidget(
                   image: cosmeticLoginImage,
                   tittle: 'Bem vindo(a) de volta!',
                   textStyleTittle: Theme.of(context).textTheme.headline5,

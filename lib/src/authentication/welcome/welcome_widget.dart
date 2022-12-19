@@ -3,8 +3,8 @@ import 'package:cosmetic_survey/src/constants/image_path.dart';
 import 'package:cosmetic_survey/src/constants/sizes.dart';
 import 'package:flutter/material.dart';
 
-import '../../components/elevated_button.dart';
-import '../../components/outlined_button.dart';
+import '../../components/cosmetic_elevated_button.dart';
+import '../../components/cosmetic_outlined_button.dart';
 import '../login/login_widget.dart';
 import '../signup/signup_widget.dart';
 

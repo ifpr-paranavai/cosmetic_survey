@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FormHeaderWidget extends StatelessWidget {
+class CosmeticFormHeaderWidget extends StatelessWidget {
   String image, tittle, subtittle;
   TextStyle? textStyleTittle, textStyleSubTittle;
   CrossAxisAlignment crossAxisAlignment;
   double? heightBetween;
   TextAlign? textAlign;
 
-  FormHeaderWidget({
+  CosmeticFormHeaderWidget({
     Key? key,
     required this.image,
     required this.tittle,

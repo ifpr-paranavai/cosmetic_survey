@@ -5,7 +5,7 @@ import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-import '../../components/profile_menu_widget.dart';
+import '../../components/cosmetic_profile_menu_widget.dart';
 import '../../firebase/auth/firebase_auth.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -104,19 +104,19 @@ class ProfileWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 const Divider(),
-                ProfileMenuWidget(
+                CosmeticProfileMenuWidget(
                   title: 'Configurações',
                   icon: LineAwesomeIcons.cog,
                   onPress: () {},
                 ),
                 const Divider(),
                 const SizedBox(height: 10),
-                ProfileMenuWidget(
+                CosmeticProfileMenuWidget(
                   title: 'Sobre o aplicativo',
                   icon: LineAwesomeIcons.info,
                   onPress: () {},
                 ),
-                ProfileMenuWidget(
+                CosmeticProfileMenuWidget(
                   title: 'Sair',
                   icon: LineAwesomeIcons.alternate_sign_out,
                   textColor: Colors.red,
