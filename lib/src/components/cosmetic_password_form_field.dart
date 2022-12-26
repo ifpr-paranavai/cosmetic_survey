@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
 
-class CosmeticPasswordTextFormField extends StatefulWidget {
+class CosmeticPasswordFormField extends StatefulWidget {
   String inputText;
   Icon icon;
   String? initialValue;
   double borderRadius;
   FormFieldValidator validator;
   TextEditingController? controller;
+  TextInputAction? textInputAction;
 
-  CosmeticPasswordTextFormField({
+  CosmeticPasswordFormField({
     Key? key,
     required this.inputText,
     required this.icon,
@@ -18,19 +19,21 @@ class CosmeticPasswordTextFormField extends StatefulWidget {
     required this.borderRadius,
     required this.validator,
     this.controller,
+    this.textInputAction,
   }) : super(key: key);
 
   @override
-  State<CosmeticPasswordTextFormField> createState() =>
-      _CosmeticTextFormFieldState();
+  State<CosmeticPasswordFormField> createState() =>
+      _CosmeticPasswordFormField();
 }
 
-class _CosmeticTextFormFieldState extends State<CosmeticPasswordTextFormField> {
+class _CosmeticPasswordFormField extends State<CosmeticPasswordFormField> {
   bool _hidePassword = true;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textInputAction: widget.textInputAction,
       controller: widget.controller,
       initialValue: widget.initialValue,
       keyboardType: TextInputType.visiblePassword,

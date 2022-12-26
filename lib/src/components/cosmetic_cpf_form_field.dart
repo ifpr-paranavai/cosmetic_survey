@@ -12,6 +12,7 @@ class CosmeticCpfFormField extends StatelessWidget {
   FormFieldValidator validator;
   TextEditingController? controller;
   MaskTextInputFormatter maskTextInputFormatter;
+  TextInputAction? textInputAction;
 
   CosmeticCpfFormField({
     Key? key,
@@ -23,11 +24,13 @@ class CosmeticCpfFormField extends StatelessWidget {
     required this.maskTextInputFormatter,
     this.initialValue,
     this.controller,
+    this.textInputAction,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textInputAction: textInputAction,
       controller: controller,
       initialValue: initialValue,
       keyboardType: keyboardType,
