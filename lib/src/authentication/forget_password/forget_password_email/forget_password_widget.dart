@@ -51,6 +51,7 @@ class ForgetPasswordWidget extends StatelessWidget {
                           color: cosmeticSecondaryColor,
                         ),
                         inputText: 'E-Mail',
+                        textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.emailAddress,
                         borderRadius: 10.0,
                         validator: (value) {

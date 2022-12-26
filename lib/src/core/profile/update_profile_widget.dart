@@ -2,7 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-import '../../components/cosmetic_password_text_form_field.dart';
+import '../../components/cosmetic_password_form_field.dart';
 import '../../components/cosmetic_text_form_field.dart';
 import '../../constants/colors.dart';
 import '../../constants/image_path.dart';
@@ -124,7 +124,7 @@ class UpdateProfileWidget extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: cosmeticFormHeight - 20),
-                      CosmeticPasswordTextFormField(
+                      CosmeticPasswordFormField(
                         borderRadius: 100,
                         icon: const Icon(
                           Icons.fingerprint_rounded,

@@ -1,10 +1,11 @@
+import 'package:cosmetic_survey/src/authentication/login/login_widget.dart';
 import 'package:cosmetic_survey/src/components/cosmetic_form_header_widget.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-import 'signup_form_widget.dart';
 import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
+import 'signup_form_widget.dart';
 
 class SignUpWidget extends StatelessWidget {
   const SignUpWidget({Key? key}) : super(key: key);
@@ -61,6 +62,12 @@ class SignUpWidget extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginWidget(),
+                          ),
+                        );
                       },
                       child: Text.rich(
                         TextSpan(

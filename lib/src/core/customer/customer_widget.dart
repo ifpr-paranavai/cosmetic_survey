@@ -1,10 +1,12 @@
 import 'package:cosmetic_survey/src/constants/masks.dart';
+import 'package:cosmetic_survey/src/firebase/firestore/customer_details.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/cosmetic_cpf_form_field.dart';
 import '../../components/cosmetic_elevated_button.dart';
 import '../../components/cosmetic_floating_button.dart';
+import '../../components/cosmetic_slidebar.dart';
 import '../../components/cosmetic_text_form_field.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
@@ -62,17 +64,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: Colors.grey,
-                          ),
-                          margin: const EdgeInsets.all(8.0),
-                          height: 5.0,
-                          width: 100.0,
-                        ),
-                      ),
+                      const CosmeticSlideBar(),
                       Text(
                         'Cadastro de Cliente',
                         style: Theme.of(context).textTheme.headline4,
@@ -84,6 +76,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                       const SizedBox(height: cosmeticFormHeight - 20),
                       CosmeticTextFormField(
                         controller: _nameController,
+                        textInputAction: TextInputAction.next,
                         borderRadius: 10,
                         keyboardType: TextInputType.name,
                         inputText: 'Nome',
@@ -103,6 +96,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                       const SizedBox(height: cosmeticFormHeight - 20),
                       CosmeticCpfFormField(
                         controller: _cpfController,
+                        textInputAction: TextInputAction.done,
                         borderRadius: 10,
                         keyboardType: TextInputType.number,
                         maskTextInputFormatter: CosmeticMasks.MASK_CPF,
@@ -128,7 +122,13 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                         width: double.infinity,
                         child: CosmeticElevatedButton(
                           onPressed: () => {
-                            if (_formKey.currentState!.validate()) {},
+                            if (_formKey.currentState!.validate())
+                              {
+                                FirebaseCustomerDetails.addCustomerDetails(
+                                  name: _nameController.text,
+                                  cpfCnpj: _cpfController.text,
+                                )
+                              },
                           },
                           buttonName: 'SALVAR',
                         ),

@@ -1,3 +1,4 @@
+import 'package:cosmetic_survey/src/authentication/signup/signup_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/cosmetic_form_header_widget.dart';
@@ -61,6 +62,12 @@ class LoginWidget extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpWidget(),
+                          ),
+                        );
                       },
                       child: Text.rich(
                         TextSpan(

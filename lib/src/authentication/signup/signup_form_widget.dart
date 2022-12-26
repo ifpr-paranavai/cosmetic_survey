@@ -1,4 +1,4 @@
-import 'package:cosmetic_survey/src/components/cosmetic_password_text_form_field.dart';
+import 'package:cosmetic_survey/src/components/cosmetic_password_form_field.dart';
 import 'package:cosmetic_survey/src/components/cosmetic_text_form_field.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +35,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
           children: [
             CosmeticTextFormField(
               controller: _nameController,
+              textInputAction: TextInputAction.next,
               borderRadius: 10,
               keyboardType: TextInputType.name,
               inputText: 'Nome',
@@ -54,6 +55,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticTextFormField(
               controller: _emailController,
+              textInputAction: TextInputAction.next,
               borderRadius: 10,
               keyboardType: TextInputType.emailAddress,
               inputText: 'E-Mail',
@@ -74,8 +76,9 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
               },
             ),
             const SizedBox(height: cosmeticFormHeight - 20),
-            CosmeticPasswordTextFormField(
+            CosmeticPasswordFormField(
               controller: _passwordController,
+              textInputAction: TextInputAction.done,
               borderRadius: 10,
               icon: const Icon(
                 Icons.fingerprint_rounded,
