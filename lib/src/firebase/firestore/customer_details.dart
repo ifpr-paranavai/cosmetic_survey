@@ -15,4 +15,12 @@ class FirebaseCustomerDetails {
 
     await docCustomer.set(customer);
   }
+
+  static Stream<List<Customer>> readCustomerDetails() => FirebaseFirestore
+      .instance.collection(FirebaseColletion.CUSTOMER).snapshots().map((snapshot) =>
+          snapshot.docs.map((doc) => Customer.fromJson(doc.data())).toList());
+
+  static void deleteCustomerDetails({required dynamic id}) {
+    FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc(id).delete();
+  }
 }
