@@ -1,8 +1,11 @@
+import 'package:cosmetic_survey/src/components/cosmetic_card.dart';
 import 'package:cosmetic_survey/src/constants/masks.dart';
+import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/firebase/firestore/customer_details.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/cosmetic_circular_indicator.dart';
 import '../../components/cosmetic_cpf_form_field.dart';
 import '../../components/cosmetic_elevated_button.dart';
 import '../../components/cosmetic_floating_button.dart';
@@ -44,6 +47,33 @@ class _CustomerWidgetState extends State<CustomerWidget> {
               fontSize: 25,
             ),
           ),
+        ),
+        body: StreamBuilder<List<Customer>>(
+          stream: FirebaseCustomerDetails.readCustomerDetails(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Ocorreu um erro ao listar registros...');
+            } else if (snapshot.hasData) {
+              final customers = snapshot.data!;
+
+              return ListView.builder(
+                itemCount: customers.length,
+                itemBuilder: (context, index) {
+                  var currentCustomer = customers[index];
+
+                  return CosmeticCard(
+                    customer: Customer(
+                      id: currentCustomer.id,
+                      name: currentCustomer.name,
+                      cpfCnpj: currentCustomer.cpfCnpj,
+                    ),
+                  );
+                },
+              );
+            } else {
+              return const CosmeticCircularIndicator();
+            }
+          },
         ),
         floatingActionButton: CosmeticFloatingActionButton(
           onPressed: () {
