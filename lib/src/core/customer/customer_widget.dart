@@ -78,6 +78,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
         floatingActionButton: CosmeticFloatingActionButton(
           onPressed: () {
             showModalBottomSheet(
+              isScrollControlled: true,
               context: context,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -91,79 +92,89 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                 ),
                 child: Form(
                   key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CosmeticSlideBar(),
-                      Text(
-                        'Cadastro de Cliente',
-                        style: Theme.of(context).textTheme.headline4,
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
-                      Text(
-                        'Para realizar o cadastro preencha os campos à baixo e clique em "Salvar".',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                      const SizedBox(height: cosmeticFormHeight - 20),
-                      CosmeticTextFormField(
-                        controller: _nameController,
-                        textInputAction: TextInputAction.next,
-                        borderRadius: 10,
-                        keyboardType: TextInputType.name,
-                        inputText: 'Nome',
-                        icon: const Icon(
-                          Icons.person_outline_rounded,
-                          color: cosmeticSecondaryColor,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Informe o Nome!';
-                          } else {
-                            name = value;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: cosmeticFormHeight - 20),
-                      CosmeticCpfFormField(
-                        controller: _cpfController,
-                        textInputAction: TextInputAction.done,
-                        borderRadius: 10,
-                        keyboardType: TextInputType.number,
-                        maskTextInputFormatter: CosmeticMasks.MASK_CPF,
-                        inputText: 'CPF',
-                        icon: const Icon(
-                          Icons.document_scanner_outlined,
-                          color: cosmeticSecondaryColor,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Informe o CPF!';
-                          }
-                          if (CPFValidator.isValid(value)) {
-                            cpf = value;
-                          } else {
-                            return 'CPF inválido!';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: cosmeticFormHeight - 10),
-                      SizedBox(
-                        width: double.infinity,
-                        child: CosmeticElevatedButton(
-                          onPressed: () => {
-                            if (_formKey.currentState!.validate())
-                              {
-                                FirebaseCustomerDetails.addCustomerDetails(
-                                  name: _nameController.text,
-                                  cpfCnpj: _cpfController.text,
-                                )
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CosmeticSlideBar(),
+                          Text(
+                            'Cadastro de Cliente',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          Text(
+                            'Para realizar o cadastro preencha os campos à baixo e clique em "Salvar".',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const SizedBox(height: cosmeticFormHeight - 20),
+                          CosmeticTextFormField(
+                            controller: _nameController,
+                            textInputAction: TextInputAction.next,
+                            borderRadius: 10,
+                            keyboardType: TextInputType.name,
+                            inputText: 'Nome',
+                            icon: const Icon(
+                              Icons.person_outline_rounded,
+                              color: cosmeticSecondaryColor,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Informe o Nome!';
+                              } else {
+                                name = value;
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: cosmeticFormHeight - 20),
+                          CosmeticCpfFormField(
+                            controller: _cpfController,
+                            textInputAction: TextInputAction.done,
+                            borderRadius: 10,
+                            keyboardType: TextInputType.number,
+                            maskTextInputFormatter: CosmeticMasks.MASK_CPF,
+                            inputText: 'CPF',
+                            icon: const Icon(
+                              Icons.document_scanner_outlined,
+                              color: cosmeticSecondaryColor,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Informe o CPF!';
+                              }
+                              if (CPFValidator.isValid(value)) {
+                                cpf = value;
+                              } else {
+                                return 'CPF inválido!';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: cosmeticFormHeight - 10),
+                          SizedBox(
+                            width: double.infinity,
+                            child: CosmeticElevatedButton(
+                              onPressed: () => {
+                                if (_formKey.currentState!.validate())
+                                  {
+                                    FirebaseCustomerDetails.addCustomerDetails(
+                                      name: _nameController.text,
+                                      cpfCnpj: _cpfController.text,
+                                    ),
+                                    _nameController.clear(),
+                                    _cpfController.clear(),
+                                    Navigator.pop(context),
+                                  },
                               },
-                          },
-                          buttonName: 'SALVAR',
-                        ),
-                      )
-                    ],
+                              buttonName: 'SALVAR',
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
