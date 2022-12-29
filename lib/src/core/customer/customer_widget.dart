@@ -52,7 +52,11 @@ class _CustomerWidgetState extends State<CustomerWidget> {
           stream: FirebaseCustomerDetails.readCustomerDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return const Text('Ocorreu um erro ao listar registros...');
+              return const Center(
+                child: Text(
+                  'Ocorreu um erro ao listar registros...',
+                ),
+              );
             } else if (snapshot.hasData) {
               final customers = snapshot.data!;
 

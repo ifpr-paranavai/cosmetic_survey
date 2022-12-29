@@ -1,11 +1,12 @@
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:cosmetic_survey/src/constants/image_path.dart';
-import 'package:cosmetic_survey/src/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
+import '../../authentication/welcome/welcome_widget.dart';
 import '../../components/cosmetic_profile_menu_widget.dart';
+import '../../constants/sizes.dart';
 import '../../firebase/auth/firebase_auth.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -122,9 +123,13 @@ class ProfileWidget extends StatelessWidget {
                   textColor: Colors.red,
                   endIcon: false,
                   onPress: () {
-                    Navigator.pop(context);
                     FirebaseAuthentication.signOut();
-                    Navigator.pop(context);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const WelcomeWidget(),
+                      ),
+                      (Route<dynamic> route) => false,
+                    );
                   },
                 ),
               ],

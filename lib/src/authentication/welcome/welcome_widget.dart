@@ -15,68 +15,66 @@ class WelcomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var deviceHeight = MediaQuery.of(context).size.height;
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: cosmeticWhiteColor,
-        body: Container(
-          padding: const EdgeInsets.all(cosmeticDefaultSize),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image(
-                image: const AssetImage(
-                  cosmeticHomeImage,
+    return Scaffold(
+      backgroundColor: cosmeticWhiteColor,
+      body: Container(
+        padding: const EdgeInsets.all(cosmeticDefaultSize),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Image(
+              image: const AssetImage(
+                cosmeticHomeImage,
+              ),
+              height: deviceHeight * 0.6,
+            ),
+            Column(
+              children: [
+                Text(
+                  'Cosmetic Survey',
+                  style: Theme.of(context).textTheme.headline4,
                 ),
-                height: deviceHeight * 0.6,
-              ),
-              Column(
-                children: [
-                  Text(
-                    'Cosmetic Survey',
-                    style: Theme.of(context).textTheme.headline4,
+                Text(
+                  'Gerenciando sonhos.',
+                  style: Theme.of(context).textTheme.bodyText1,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: CosmeticOutlinedButton(
+                    buttonName: 'ENTRE',
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginWidget(),
+                        ),
+                      )
+                    },
                   ),
-                  Text(
-                    'Gerenciando sonhos.',
-                    style: Theme.of(context).textTheme.bodyText1,
-                    textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Expanded(
+                  child: CosmeticElevatedButton(
+                    buttonName: 'CADASTRE-SE',
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpWidget(),
+                        ),
+                      )
+                    },
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: CosmeticOutlinedButton(
-                      buttonName: 'ENTRE',
-                      onPressed: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginWidget(),
-                          ),
-                        )
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Expanded(
-                    child: CosmeticElevatedButton(
-                      buttonName: 'CADASTRE-SE',
-                      onPressed: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpWidget(),
-                          ),
-                        )
-                      },
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );

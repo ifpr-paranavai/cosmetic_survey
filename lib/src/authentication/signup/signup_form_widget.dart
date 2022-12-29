@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/components/cosmetic_password_form_field.dart';
 import 'package:cosmetic_survey/src/components/cosmetic_text_form_field.dart';
+import 'package:cosmetic_survey/src/core/home/home_page_widget.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -106,7 +107,12 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
                         email: _emailController.text,
                         password: _passwordController.text,
                       ),
-                      Navigator.pop(context),
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const HomePageWidget(),
+                        ),
+                        (Route<dynamic> route) => false,
+                      ),
                     },
                 },
                 buttonName: 'CRIAR CONTA',

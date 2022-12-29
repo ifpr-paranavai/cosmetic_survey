@@ -12,81 +12,79 @@ class LoginWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: cosmeticWhiteColor,
-          elevation: 0,
-          iconTheme: const IconThemeData(
-            color: cosmeticPrimaryColor,
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: cosmeticWhiteColor,
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(
-              cosmeticDefaultSize,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CosmeticFormHeaderWidget(
-                  image: cosmeticLoginImage,
-                  tittle: 'Bem vindo(a) de volta!',
-                  textStyleTittle: Theme.of(context).textTheme.headline5,
-                  subtittle: 'Faça login para continuar de onde parou.',
-                ),
-                CosmeticLoginFormWidget(),
-                Column(
-                  children: [
-                    const Text('OU'),
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton.icon(
-                        label: const Text(
-                          'FAÇA LOGIN COM O GOOGLE',
-                          style: TextStyle(
-                            color: cosmeticSecondaryColor,
-                          ),
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: cosmeticPrimaryColor,
+        ),
+      ),
+      backgroundColor: cosmeticWhiteColor,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(
+            cosmeticDefaultSize,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CosmeticFormHeaderWidget(
+                image: cosmeticLoginImage,
+                tittle: 'Bem vindo(a) de volta!',
+                textStyleTittle: Theme.of(context).textTheme.headline5,
+                subtittle: 'Faça login para continuar de onde parou.',
+              ),
+              CosmeticLoginFormWidget(),
+              Column(
+                children: [
+                  const Text('OU'),
+                  const SizedBox(height: cosmeticFormHeight - 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      label: const Text(
+                        'FAÇA LOGIN COM O GOOGLE',
+                        style: TextStyle(
+                          color: cosmeticSecondaryColor,
                         ),
-                        onPressed: () {},
-                        icon: const Image(
-                          image: AssetImage(
-                            cosmeticGoogleLogoImage,
-                          ),
-                          width: 20.0,
+                      ),
+                      onPressed: () {},
+                      icon: const Image(
+                        image: AssetImage(
+                          cosmeticGoogleLogoImage,
                         ),
+                        width: 20.0,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpWidget(),
-                          ),
-                        );
-                      },
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Não possui uma conta? ',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            const TextSpan(
-                              text: 'CADASTRE-SE',
-                            )
-                          ],
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpWidget(),
                         ),
+                      );
+                    },
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Não possui uma conta? ',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const TextSpan(
+                            text: 'CADASTRE-SE',
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
+                    ),
+                  )
+                ],
+              )
+            ],
           ),
         ),
       ),

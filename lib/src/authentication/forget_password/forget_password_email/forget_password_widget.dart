@@ -16,71 +16,69 @@ class ForgetPasswordWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: cosmeticWhiteColor,
-          elevation: 0,
-          iconTheme: const IconThemeData(
-            color: cosmeticPrimaryColor,
-          ),
-        ),
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: cosmeticWhiteColor,
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(cosmeticDefaultSize),
-            child: Column(
-              children: [
-                const SizedBox(height: cosmeticDefaultSize),
-                CosmeticFormHeaderWidget(
-                  image: cosmeticForgetPasswordImage,
-                  tittle: 'Esqueceu a senha?',
-                  subtittle: 'Informe o email para recuperá-la!',
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  heightBetween: 30.0,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: cosmeticFormHeight),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CosmeticTextFormField(
-                        icon: const Icon(
-                          Icons.email_outlined,
-                          color: cosmeticSecondaryColor,
-                        ),
-                        inputText: 'E-Mail',
-                        textInputAction: TextInputAction.done,
-                        keyboardType: TextInputType.emailAddress,
-                        borderRadius: 10.0,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Informe o E-Mail!';
-                          }
-                          if (EmailValidator.validate(value)) {
-                            email = value;
-                          } else {
-                            return 'E-Mail inválido!';
-                          }
-                          return null;
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: cosmeticPrimaryColor,
+        ),
+      ),
+      backgroundColor: cosmeticWhiteColor,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(cosmeticDefaultSize),
+          child: Column(
+            children: [
+              const SizedBox(height: cosmeticDefaultSize),
+              CosmeticFormHeaderWidget(
+                image: cosmeticForgetPasswordImage,
+                tittle: 'Esqueceu a senha?',
+                subtittle: 'Informe o email para recuperá-la!',
+                crossAxisAlignment: CrossAxisAlignment.center,
+                heightBetween: 30.0,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: cosmeticFormHeight),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    CosmeticTextFormField(
+                      icon: const Icon(
+                        Icons.email_outlined,
+                        color: cosmeticSecondaryColor,
+                      ),
+                      inputText: 'E-Mail',
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.emailAddress,
+                      borderRadius: 10.0,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Informe o E-Mail!';
+                        }
+                        if (EmailValidator.validate(value)) {
+                          email = value;
+                        } else {
+                          return 'E-Mail inválido!';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20.0),
+                    SizedBox(
+                      width: double.infinity,
+                      child: CosmeticElevatedButton(
+                        buttonName: 'ENVIAR E-MAIL',
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {}
                         },
                       ),
-                      const SizedBox(height: 20.0),
-                      SizedBox(
-                        width: double.infinity,
-                        child: CosmeticElevatedButton(
-                          buttonName: 'Enviar E-Mail',
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {}
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

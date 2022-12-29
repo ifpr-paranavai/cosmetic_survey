@@ -103,11 +103,11 @@ class CosmeticLoginFormWidget extends StatelessWidget {
                         password: _passwordController.text,
                       ).then(
                         (value) => {
-                          Navigator.push(
-                            context,
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                               builder: (context) => const HomePageWidget(),
                             ),
+                            (Route<dynamic> route) => false,
                           ),
                         },
                       ),
