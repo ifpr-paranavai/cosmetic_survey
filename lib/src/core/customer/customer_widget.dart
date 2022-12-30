@@ -111,7 +111,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
-                            'Para realizar o cadastro preencha os campos à baixo e clique em "Salvar".',
+                            'Para realizar o cadastro preencha os campos à baixo e clique em "SALVAR".',
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
@@ -172,13 +172,14 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                                     _nameController.clear(),
                                     _cpfController.clear(),
                                     Navigator.pop(context),
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      CosmeticSnackBar.showSnackBar(
+                                        context: context,
+                                        message: 'Cliente criado.',
+                                      ),
+                                    ),
                                   },
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  CosmeticSnackBar.showSnackBar(
-                                    context: context,
-                                    message: 'Cliente criado.',
-                                  ),
-                                ),
                               },
                               buttonName: 'SALVAR',
                             ),

@@ -16,6 +16,18 @@ class FirebaseCustomerDetails {
     await docCustomer.set(customer);
   }
 
+  static Future updateCustomerDetails({required dynamic id, required String name, required String cpfCnpj}) async {
+    final docCustomer = FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc(id);
+
+    final customer = Customer(
+      id: docCustomer.id,
+      name: name.trim(),
+      cpfCnpj: cpfCnpj.trim(),
+    ).toJson();
+
+    await docCustomer.update(customer);
+  }
+
   static Stream<List<Customer>> readCustomerDetails() => FirebaseFirestore
       .instance.collection(FirebaseColletion.CUSTOMER).snapshots().map((snapshot) =>
           snapshot.docs.map((doc) => Customer.fromJson(doc.data())).toList());
