@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cosmetic_survey/src/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
@@ -163,16 +164,24 @@ class CosmeticCard extends StatelessWidget {
                 icon:
                     const Icon(Icons.delete_forever_rounded, color: Colors.red),
                 onPressed: () {
-                  FirebaseCustomerDetails.deleteCustomerDetails(
-                    id: customer.id,
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    CosmeticSnackBar.showSnackBar(
-                      context: context,
-                      message: 'Cliente excluído.',
-                      backgroundColor: Colors.red,
-                    ),
+                  CosmeticDialog.showAlertDialog(
+                    context: context,
+                    dialogTittle: 'Excluir Cliente',
+                    dialogDescription:
+                        'Tem certeza que deseja excluir este registro?',
+                    onPressed: () => {
+                      FirebaseCustomerDetails.deleteCustomerDetails(
+                        id: customer.id,
+                      ),
+                      Navigator.pop(context),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        CosmeticSnackBar.showSnackBar(
+                          context: context,
+                          message: 'Cliente excluído.',
+                          backgroundColor: Colors.red,
+                        ),
+                      ),
+                    },
                   );
                 },
               ),
