@@ -9,10 +9,14 @@ class CosmeticSnackBar {
   // EXEMPLO DE CHAMADA:
   // ScaffoldMessenger.of(context).showSnackBar(CosmeticSnackBar.showSnackBar(context: context, message: 'Mensagem desejada'));
 
-  static SnackBar showSnackBar({required BuildContext context, required String message}) {
+  static SnackBar showSnackBar({
+    required BuildContext context,
+    required String message,
+    Color? backgroundColor,
+  }) {
     return SnackBar(
       content: Text(message),
-      backgroundColor: cosmeticPrimaryColor,
+      backgroundColor: backgroundColor ?? cosmeticPrimaryColor,
       duration: const Duration(seconds: 3),
       padding: const EdgeInsets.all(20.0),
     );

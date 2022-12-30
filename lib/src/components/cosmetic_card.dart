@@ -38,8 +38,9 @@ class CosmeticCard extends StatelessWidget {
                 onPressed: () {
                   // TODO
                   ScaffoldMessenger.of(context).showSnackBar(
-                      CosmeticSnackBar.showSnackBar(
-                          context: context, message: 'Teste chamada SnackBar'));
+                    CosmeticSnackBar.showSnackBar(
+                        context: context, message: 'Teste chamada SnackBar'),
+                  );
                 },
               ),
               IconButton(
@@ -48,6 +49,14 @@ class CosmeticCard extends StatelessWidget {
                 onPressed: () {
                   FirebaseCustomerDetails.deleteCustomerDetails(
                     id: customer.id,
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    CosmeticSnackBar.showSnackBar(
+                      context: context,
+                      message: 'Cliente excluído.',
+                      backgroundColor: Colors.red,
+                    ),
                   );
                 },
               ),

@@ -10,6 +10,7 @@ import '../../components/cosmetic_cpf_form_field.dart';
 import '../../components/cosmetic_elevated_button.dart';
 import '../../components/cosmetic_floating_button.dart';
 import '../../components/cosmetic_slidebar.dart';
+import '../../components/cosmetic_snackbar.dart';
 import '../../components/cosmetic_text_form_field.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
@@ -172,6 +173,12 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                                     _cpfController.clear(),
                                     Navigator.pop(context),
                                   },
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  CosmeticSnackBar.showSnackBar(
+                                    context: context,
+                                    message: 'Cliente criado.',
+                                  ),
+                                ),
                               },
                               buttonName: 'SALVAR',
                             ),
