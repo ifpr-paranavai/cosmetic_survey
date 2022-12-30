@@ -4,6 +4,7 @@ import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:flutter/material.dart';
 
 import '../firebase/firestore/customer_details.dart';
+import 'cosmetic_snackbar.dart';
 
 class CosmeticCard extends StatelessWidget {
   Customer customer;
@@ -36,6 +37,9 @@ class CosmeticCard extends StatelessWidget {
                 icon: const Icon(Icons.edit),
                 onPressed: () {
                   // TODO
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      CosmeticSnackBar.showSnackBar(
+                          context: context, message: 'Teste chamada SnackBar'));
                 },
               ),
               IconButton(
