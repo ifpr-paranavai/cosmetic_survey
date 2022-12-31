@@ -1,4 +1,5 @@
 import 'package:cosmetic_survey/src/constants/colors.dart';
+import 'package:cosmetic_survey/src/core/brand/brand_widget.dart';
 import 'package:cosmetic_survey/src/core/profile/profile_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -29,12 +30,7 @@ class _CosmeticBottomNavigationBarState
         style: TextStyle(fontSize: 30),
       ),
     ),
-    const Center(
-      child: Text(
-        'Marcas',
-        style: TextStyle(fontSize: 30),
-      ),
-    ),
+    const BrandWidget(),
     const CustomerWidget(),
     const ProfileWidget(),
   ];

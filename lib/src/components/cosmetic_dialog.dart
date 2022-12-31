@@ -15,6 +15,11 @@ class CosmeticDialog {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
+            style: ButtonStyle(
+              overlayColor: MaterialStatePropertyAll<Color>(
+                cosmeticPrimaryColor.withOpacity(0.1),
+              ),
+            ),
             child: const Text(
               'Cancelar',
               style: TextStyle(
@@ -24,6 +29,11 @@ class CosmeticDialog {
           ),
           TextButton(
             onPressed: onPressed,
+            style: ButtonStyle(
+              overlayColor: MaterialStatePropertyAll<Color>(
+                cosmeticPrimaryColor.withOpacity(0.1),
+              ),
+            ),
             child: const Text(
               'OK',
               style: TextStyle(
