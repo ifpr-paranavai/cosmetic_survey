@@ -1,5 +1,5 @@
-import 'package:cosmetic_survey/src/components/cosmetic_card.dart';
 import 'package:cosmetic_survey/src/constants/masks.dart';
+import 'package:cosmetic_survey/src/core/customer/customer_card.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/firebase/firestore/customer_details.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
@@ -14,6 +14,7 @@ import '../../components/cosmetic_snackbar.dart';
 import '../../components/cosmetic_text_form_field.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
+import 'customer_actions.dart';
 
 class CustomerWidget extends StatefulWidget {
   const CustomerWidget({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
   String cpf = '';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext pageContext) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -66,11 +67,17 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                 itemBuilder: (context, index) {
                   var currentCustomer = customers[index];
 
+                  Customer customer = Customer(
+                    id: currentCustomer.id,
+                    name: currentCustomer.name,
+                    cpfCnpj: currentCustomer.cpfCnpj,
+                  );
+
                   return CosmeticCard(
-                    customer: Customer(
-                      id: currentCustomer.id,
-                      name: currentCustomer.name,
-                      cpfCnpj: currentCustomer.cpfCnpj,
+                    customer: customer,
+                    onPressedDelete: () => CustomerActions.deleteCustomer(
+                      context: context,
+                      customer: customer,
                     ),
                   );
                 },
@@ -172,7 +179,6 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                                     _nameController.clear(),
                                     _cpfController.clear(),
                                     Navigator.pop(context),
-
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CosmeticSnackBar.showSnackBar(
                                         context: context,

@@ -29,6 +29,12 @@ class _CosmeticBottomNavigationBarState
         style: TextStyle(fontSize: 30),
       ),
     ),
+    const Center(
+      child: Text(
+        'Marcas',
+        style: TextStyle(fontSize: 30),
+      ),
+    ),
     const CustomerWidget(),
     const ProfileWidget(),
   ];
@@ -74,6 +80,17 @@ class _CosmeticBottomNavigationBarState
               label: 'Pedidos',
               selectedIcon: Icon(
                 Icons.list_alt_rounded,
+                color: cosmeticPrimaryColor,
+              ),
+            ),
+            NavigationDestination(
+              icon: Icon(
+                Icons.branding_watermark_outlined,
+                color: Colors.black26,
+              ),
+              label: 'Marcas',
+              selectedIcon: Icon(
+                Icons.branding_watermark_rounded,
                 color: cosmeticPrimaryColor,
               ),
             ),
