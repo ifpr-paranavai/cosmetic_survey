@@ -1,6 +1,5 @@
 import 'package:cosmetic_survey/src/components/cosmetic_password_form_field.dart';
 import 'package:cosmetic_survey/src/components/cosmetic_text_form_field.dart';
-import 'package:cosmetic_survey/src/core/home/home_page_widget.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -99,18 +98,9 @@ class CosmeticLoginFormWidget extends StatelessWidget {
                   if (_formKey.currentState!.validate())
                     {
                       FirebaseAuthentication.signIn(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      ).then(
-                        (value) => {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const HomePageWidget(),
-                            ),
-                            (Route<dynamic> route) => false,
-                          ),
-                        },
-                      ),
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          context: context),
                     },
                 },
               ),
