@@ -106,12 +106,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
                         name: _nameController.text,
                         email: _emailController.text,
                         password: _passwordController.text,
-                      ),
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const HomePageWidget(),
-                        ),
-                        (Route<dynamic> route) => false,
+                        context: context
                       ),
                     },
                 },
