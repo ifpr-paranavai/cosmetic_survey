@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
-import 'package:cosmetic_survey/src/constants/image_path.dart';
 import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
+import 'package:cosmetic_survey/src/firebase/firestore/current_user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../authentication/welcome/welcome_widget.dart';
+import '../../components/cosmetic_circular_indicator.dart';
 import '../../components/cosmetic_profile_menu_widget.dart';
+import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
 import '../../firebase/auth/firebase_auth.dart';
 
@@ -34,105 +37,120 @@ class ProfileWidget extends StatelessWidget {
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(cosmeticDefaultSize),
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    SizedBox(
-                      height: 120,
-                      width: 120,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: const Image(
-                          image: AssetImage(
-                            cosmeticUserProfileImage,
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: CurrentUserData.readUserData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text(
+                      'Ocorreu um erro ao carregar registros...',
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  return Column(
+                    children: [
+                      Stack(
+                        children: [
+                          SizedBox(
+                            height: 120,
+                            width: 120,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: const Image(
+                                image: AssetImage(
+                                  cosmeticUserProfileImage,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: cosmeticPrimaryColor,
+                              ),
+                              //TODO IconButton para chamar a função de escolher a imagem de perfil
+                              child: const Icon(
+                                LineAwesomeIcons.alternate_pencil,
+                                size: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      //TODO definir o nome e email do usuário logado
+                      Text(
+                        snapshot.data!['name'],
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      Text(
+                        snapshot.data!['email'],
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: 200,
+                        child: ElevatedButton(
+                          onPressed: () => {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateProfileWidget(),
+                              ),
+                            )
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: cosmeticPrimaryColor,
+                            side: BorderSide.none,
+                            shape: const StadiumBorder(),
+                          ),
+                          child: const Text(
+                            'Editar Perfil',
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: cosmeticPrimaryColor,
-                        ),
-                        //TODO IconButton para chamar a função de escolher a imagem de perfil
-                        child: const Icon(
-                          LineAwesomeIcons.alternate_pencil,
-                          size: 20,
-                          color: Colors.black,
-                        ),
+                      const SizedBox(height: 30),
+                      const Divider(),
+                      CosmeticProfileMenuWidget(
+                        title: 'Configurações',
+                        icon: LineAwesomeIcons.cog,
+                        onPress: () {},
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                //TODO definir o nome e email do usuário logado
-                Text(
-                  'Andrey Silva Cordeiro',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Text(
-                  'andreybr2002@hotmail.com',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton(
-                    onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UpdateProfileWidget(),
-                        ),
-                      )
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: cosmeticPrimaryColor,
-                      side: BorderSide.none,
-                      shape: const StadiumBorder(),
-                    ),
-                    child: const Text(
-                      'Editar Perfil',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30),
-                const Divider(),
-                CosmeticProfileMenuWidget(
-                  title: 'Configurações',
-                  icon: LineAwesomeIcons.cog,
-                  onPress: () {},
-                ),
-                const Divider(),
-                const SizedBox(height: 10),
-                CosmeticProfileMenuWidget(
-                  title: 'Sobre o aplicativo',
-                  icon: LineAwesomeIcons.info,
-                  onPress: () {},
-                ),
-                CosmeticProfileMenuWidget(
-                  title: 'Sair',
-                  icon: LineAwesomeIcons.alternate_sign_out,
-                  textColor: Colors.red,
-                  endIcon: false,
-                  onPress: () {
-                    FirebaseAuthentication.signOut();
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => const WelcomeWidget(),
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      CosmeticProfileMenuWidget(
+                        title: 'Sobre o aplicativo',
+                        icon: LineAwesomeIcons.info,
+                        onPress: () {},
                       ),
-                      (Route<dynamic> route) => false,
-                    );
-                  },
-                ),
-              ],
+                      CosmeticProfileMenuWidget(
+                        title: 'Sair',
+                        icon: LineAwesomeIcons.alternate_sign_out,
+                        textColor: Colors.red,
+                        endIcon: false,
+                        onPress: () {
+                          FirebaseAuthentication.signOut();
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) => const WelcomeWidget(),
+                            ),
+                            (Route<dynamic> route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                } else {
+                  return const CosmeticCircularIndicator();
+                }
+              },
             ),
           ),
         ),

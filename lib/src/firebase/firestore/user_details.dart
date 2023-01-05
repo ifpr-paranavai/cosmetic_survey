@@ -27,18 +27,4 @@ class FirebaseUserDetails {
     }
     return null;
   }
-
-  // static Future<User?> getCurrentUserDetails({dynamic id}) async {
-  //   await FirebaseFirestore.instance
-  //       .collection(FirebaseColletion.USER).get().then(
-  //         (snapshot) => snapshot.docs.forEach(
-  //           (document) {
-  //             if (id == document.reference.id) {
-  //               return;
-  //             }
-  //           },
-  //         ),
-  //       );
-  //   return null;
-  // }
 }
