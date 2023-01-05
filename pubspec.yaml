@@ -45,11 +45,20 @@ dependencies:
   mask_text_input_formatter: ^2.4.0
   fluttertoast: ^8.1.2
   flutter_launcher_icons: ^0.11.0
+  flutter_native_splash: ^2.2.16
 
 flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/buddha-hand-bro.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/buddha-hand-bro.png
+
+  android_12:
+    image: assets/images/buddha-hand-bro.png
+    icon_background_color: "#ffffff"
 
 dev_dependencies:
   flutter_test:
