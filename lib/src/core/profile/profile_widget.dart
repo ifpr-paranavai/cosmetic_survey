@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
+import 'package:cosmetic_survey/src/core/entity/user.dart';
 import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
-import 'package:cosmetic_survey/src/firebase/firestore/current_user_data.dart';
+import 'package:cosmetic_survey/src/firebase/firestore/current_user_details.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
-import '../../authentication/welcome/welcome_widget.dart';
 import '../../components/cosmetic_circular_indicator.dart';
+import '../../components/cosmetic_dialog.dart';
 import '../../components/cosmetic_profile_menu_widget.dart';
 import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
@@ -38,7 +39,7 @@ class ProfileWidget extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(cosmeticDefaultSize),
             child: StreamBuilder<DocumentSnapshot>(
-              stream: CurrentUserData.readUserData(),
+              stream: CurrentUserDetails.readUserData(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
@@ -47,6 +48,12 @@ class ProfileWidget extends StatelessWidget {
                     ),
                   );
                 } else if (snapshot.hasData) {
+                  User user = User(
+                    id: snapshot.data!['id'],
+                    name: snapshot.data!['name'],
+                    email: snapshot.data!['email'],
+                  );
+
                   return Column(
                     children: [
                       Stack(
@@ -84,13 +91,12 @@ class ProfileWidget extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      //TODO definir o nome e email do usuário logado
                       Text(
-                        snapshot.data!['name'],
+                        user.name,
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       Text(
-                        snapshot.data!['email'],
+                        user.email,
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                       const SizedBox(height: 20),
@@ -101,7 +107,9 @@ class ProfileWidget extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => UpdateProfileWidget(),
+                                builder: (context) => UpdateProfileWidget(
+                                  user: user,
+                                ),
                               ),
                             )
                           },
@@ -136,12 +144,14 @@ class ProfileWidget extends StatelessWidget {
                         textColor: Colors.red,
                         endIcon: false,
                         onPress: () {
-                          FirebaseAuthentication.signOut();
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const WelcomeWidget(),
-                            ),
-                            (Route<dynamic> route) => false,
+                          CosmeticDialog.showAlertDialog(
+                            context: context,
+                            dialogTittle: 'Sair do Aplicativo?',
+                            dialogDescription:
+                                'Tem certeza que deseja realmente sair?',
+                            onPressed: () => {
+                              FirebaseAuthentication.signOut(context: context),
+                            },
                           );
                         },
                       ),

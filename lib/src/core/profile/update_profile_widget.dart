@@ -1,7 +1,10 @@
+import 'package:cosmetic_survey/src/core/entity/user.dart';
+import 'package:cosmetic_survey/src/firebase/firestore/current_user_details.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
+import '../../components/cosmetic_dialog.dart';
 import '../../components/cosmetic_password_form_field.dart';
 import '../../components/cosmetic_text_form_field.dart';
 import '../../constants/colors.dart';
@@ -9,7 +12,12 @@ import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
 
 class UpdateProfileWidget extends StatelessWidget {
-  UpdateProfileWidget({Key? key}) : super(key: key);
+  User user;
+
+  UpdateProfileWidget({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String name = '';
@@ -162,18 +170,18 @@ class UpdateProfileWidget extends StatelessWidget {
                       const SizedBox(height: cosmeticFormHeight),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //TODO informar a data da criação da conta do Usuário
                         children: [
-                          const Text.rich(
+                          Text.rich(
                             TextSpan(
                               text: 'Entrou em ',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                               ),
                               children: [
                                 TextSpan(
-                                  text: '14 de Dezembro de 2022',
-                                  style: TextStyle(
+                                  text: CurrentUserDetails
+                                      .getCurrentUserCreationTime(),
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12),
                                 ),
@@ -181,7 +189,18 @@ class UpdateProfileWidget extends StatelessWidget {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              CosmeticDialog.showAlertDialog(
+                                context: context,
+                                dialogTittle: 'Excluir conta?',
+                                dialogDescription:
+                                    'Tem certeza que deseja excluir sua conta? Todos os seus dados serão excluídos. Esta ação é irreverssível.',
+                                onPressed: () => {
+                                  CurrentUserDetails.deleteAccount(
+                                      context: context),
+                                },
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red.withOpacity(0.1),
                               elevation: 0,

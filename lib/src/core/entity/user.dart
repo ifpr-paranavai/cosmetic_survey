@@ -3,7 +3,7 @@ class User {
   late String name;
   late String email;
   late String? password;
-  late String? creationTime;
+  late DateTime? creationTime;
 
   User({
     this.id,
@@ -18,6 +18,7 @@ class User {
       'id': id,
       'name': name,
       'email': email,
+      'creationTime': creationTime,
     };
   }
 
@@ -25,5 +26,6 @@ class User {
         id: json['id'],
         name: json['name'],
         email: json['email'],
+        creationTime: json['creationTime'],
       );
 }
