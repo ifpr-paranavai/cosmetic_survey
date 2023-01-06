@@ -1,6 +1,7 @@
 import 'package:cosmetic_survey/src/firebase/auth/firebase_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../authentication/welcome/welcome_widget.dart';
 import '../../core/home/home_page_widget.dart';
@@ -73,5 +74,36 @@ class FirebaseAuthentication {
             ),
           },
         );
+  }
+
+  static Future resetPassword(
+      {required String email, required BuildContext context}) async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(
+            email: email.trim(),
+          )
+          .then(
+            (value) => {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const WelcomeWidget(),
+                ),
+                (Route<dynamic> route) => false,
+              ),
+            },
+          );
+      Fluttertoast.showToast(
+        msg: 'E-Mail para recuperação de senha enviado.',
+        gravity: ToastGravity.BOTTOM,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(
+          msg: 'E-Mail não encontrado.',
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    }
   }
 }

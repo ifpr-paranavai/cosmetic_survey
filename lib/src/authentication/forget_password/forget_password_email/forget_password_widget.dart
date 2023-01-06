@@ -2,6 +2,7 @@ import 'package:cosmetic_survey/src/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/components/cosmetic_form_header_widget.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:cosmetic_survey/src/constants/image_path.dart';
+import 'package:cosmetic_survey/src/firebase/auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class ForgetPasswordWidget extends StatelessWidget {
   ForgetPasswordWidget({Key? key}) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
   String email = '';
 
   @override
@@ -49,6 +51,7 @@ class ForgetPasswordWidget extends StatelessWidget {
                         Icons.email_outlined,
                         color: cosmeticSecondaryColor,
                       ),
+                      controller: _emailController,
                       inputText: 'E-Mail',
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.emailAddress,
@@ -71,7 +74,12 @@ class ForgetPasswordWidget extends StatelessWidget {
                       child: CosmeticElevatedButton(
                         buttonName: 'ENVIAR E-MAIL',
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {}
+                          if (_formKey.currentState!.validate()) {
+                            FirebaseAuthentication.resetPassword(
+                              email: _emailController.text,
+                              context: context,
+                            );
+                          }
                         },
                       ),
                     ),
