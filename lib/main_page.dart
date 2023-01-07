@@ -1,8 +1,8 @@
+import 'package:cosmetic_survey/src/core/verify_email/verify_email_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'src/authentication/welcome/welcome_widget.dart';
-import 'src/core/home/home_page_widget.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class MainPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return const HomePageWidget();
+            return const VerifyEmailWidget();
           } else {
             return const WelcomeWidget();
           }

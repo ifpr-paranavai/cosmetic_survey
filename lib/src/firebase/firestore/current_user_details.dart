@@ -18,6 +18,10 @@ class CurrentUserDetails {
     return FirebaseAuth.instance.currentUser!.uid;
   }
 
+  static bool isEmailVerified() {
+    return FirebaseAuth.instance.currentUser!.emailVerified;
+  }
+
   static Future deleteAccount({required BuildContext context}) async {
     return await FirebaseFirestore.instance
         .collection(FirebaseColletion.USER)

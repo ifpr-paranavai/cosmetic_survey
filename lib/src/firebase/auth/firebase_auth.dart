@@ -1,10 +1,10 @@
+import 'package:cosmetic_survey/src/core/verify_email/verify_email_widget.dart';
 import 'package:cosmetic_survey/src/firebase/auth/firebase_exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../authentication/welcome/welcome_widget.dart';
-import '../../core/home/home_page_widget.dart';
 import '../firestore/user_details.dart';
 
 class FirebaseAuthentication {
@@ -24,7 +24,7 @@ class FirebaseAuthentication {
             (value) => {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                  builder: (context) => const HomePageWidget(),
+                  builder: (context) => const VerifyEmailWidget(),
                 ),
                 (Route<dynamic> route) => false,
               ),
@@ -52,7 +52,7 @@ class FirebaseAuthentication {
             (value) => {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                  builder: (context) => const HomePageWidget(),
+                  builder: (context) => const VerifyEmailWidget(),
                 ),
                 (Route<dynamic> route) => false,
               ),
@@ -101,6 +101,34 @@ class FirebaseAuthentication {
       if (e.code == 'user-not-found') {
         Fluttertoast.showToast(
           msg: 'E-Mail não encontrado.',
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    }
+  }
+
+  static Future sendVerificationEmail({required BuildContext context}) async {
+    try {
+      return await FirebaseAuth.instance.currentUser!
+          .sendEmailVerification()
+          .then(
+            (value) => {
+              Fluttertoast.showToast(
+                msg: 'E-Mail enviado.',
+                gravity: ToastGravity.BOTTOM,
+              ),
+            },
+          );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'too-many-requests') {
+        return Fluttertoast.showToast(
+          msg:
+              'Um E-Mail já foi enviado. Aguarde um instante para enviá-lo novamente.',
+          gravity: ToastGravity.BOTTOM,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Ocorreu um erro. Código: ${e.code}',
           gravity: ToastGravity.BOTTOM,
         );
       }

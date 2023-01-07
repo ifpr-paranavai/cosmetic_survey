@@ -13,3 +13,5 @@ const String cosmeticUserProfileImage = 'assets/images/user-profile.png';
 
 const String cosmeticForgetPasswordImage =
     'assets/images/forgot-password-cuate.png';
+
+const String cosmeticSentEmail = 'assets/images/sent-message-bro.png';
