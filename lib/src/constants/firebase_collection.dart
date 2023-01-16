@@ -4,4 +4,5 @@ class FirebaseColletion {
   static const String ORDER = 'order';
   static const String BRAND = 'brand';
   static const String CUSTOMER = 'customer';
+  static const String PROFILE_IMAGE = 'profile_image';
 }

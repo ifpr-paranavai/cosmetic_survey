@@ -4,6 +4,7 @@ class User {
   late String email;
   late String? password;
   late DateTime? creationTime;
+  late String? imagePath;
 
   User({
     this.id,
@@ -11,6 +12,7 @@ class User {
     required this.email,
     this.password,
     this.creationTime,
+    this.imagePath,
   });
 
   Map<String, dynamic> toJson() {
@@ -19,6 +21,7 @@ class User {
       'name': name,
       'email': email,
       'creationTime': creationTime,
+      'imagePath': imagePath,
     };
   }
 
@@ -27,5 +30,6 @@ class User {
         name: json['name'],
         email: json['email'],
         creationTime: json['creationTime'],
+        imagePath: json['imagePath'],
       );
 }

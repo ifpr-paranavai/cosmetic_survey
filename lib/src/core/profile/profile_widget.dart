@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/entity/user.dart';
+import 'package:cosmetic_survey/src/core/profile/profile_actions.dart';
 import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
 import 'package:cosmetic_survey/src/firebase/firestore/current_user_details.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import '../../components/cosmetic_circular_indicator.dart';
 import '../../components/cosmetic_dialog.dart';
 import '../../components/cosmetic_profile_menu_widget.dart';
+import '../../components/cosmetic_slidebar.dart';
 import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
 import '../../firebase/auth/firebase_auth.dart';
@@ -52,6 +54,7 @@ class ProfileWidget extends StatelessWidget {
                     id: snapshot.data!['id'],
                     name: snapshot.data!['name'],
                     email: snapshot.data!['email'],
+                    imagePath: snapshot.data!['imagePath'],
                   );
 
                   return Column(
@@ -63,28 +66,113 @@ class ProfileWidget extends StatelessWidget {
                             width: 120,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: const Image(
-                                image: AssetImage(
-                                  cosmeticUserProfileImage,
+                              child: Image(
+                                image: NetworkImage(
+                                  user.imagePath != ''
+                                      ? user.imagePath!
+                                      : 'https://i.pinimg.com/564x/cb/b1/ef/cbb1ef1ee0bf43d633393d7203a4d497.jpg',
                                 ),
                               ),
                             ),
                           ),
                           Positioned(
                             bottom: 0,
-                            right: 0,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: cosmeticPrimaryColor,
-                              ),
-                              //TODO IconButton para chamar a função de escolher a imagem de perfil
-                              child: const Icon(
-                                LineAwesomeIcons.alternate_pencil,
-                                size: 20,
-                                color: Colors.black,
+                            right: 4,
+                            child: GestureDetector(
+                              onTap: () => {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 4.0,
+                                      left: cosmeticDefaultSize,
+                                      right: cosmeticDefaultSize,
+                                      bottom: cosmeticDefaultSize,
+                                    ),
+                                    child: Form(
+                                      // key: formKey,
+                                      child: SingleChildScrollView(
+                                        child: Container(
+                                          padding: EdgeInsets.only(
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const CosmeticSlideBar(),
+                                              const SizedBox(height: 5.0),
+                                              GestureDetector(
+                                                onTap: () => {
+                                                  ProfileActions
+                                                      .pickCameraImage(
+                                                    context: context,
+                                                  ).then((value) =>
+                                                      Navigator.pop(context)),
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(Icons.camera),
+                                                    const SizedBox(width: 10.0),
+                                                    Text(
+                                                      'Câmera',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5.0),
+                                              const Divider(),
+                                              const SizedBox(height: 5.0),
+                                              GestureDetector(
+                                                onTap: () => {
+                                                  ProfileActions
+                                                          .pickGalleryImage(
+                                                              context: context,
+                                                              user: user)
+                                                      .then((value) =>
+                                                          Navigator.pop(
+                                                              context)),
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(Icons.image),
+                                                    const SizedBox(width: 10.0),
+                                                    Text(
+                                                      'Galeria',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              },
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: cosmeticPrimaryColor,
+                                  border: Border.all(
+                                      width: 1.5, color: Colors.white),
+                                ),
+                                child: const Icon(
+                                  LineAwesomeIcons.alternate_pencil,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
