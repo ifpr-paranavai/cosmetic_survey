@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/brand/brand_widget.dart';
+import 'package:cosmetic_survey/src/core/product/product_widget.dart';
 import 'package:cosmetic_survey/src/core/profile/profile_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,7 @@ class _CosmeticBottomNavigationBarState
         style: TextStyle(fontSize: 30),
       ),
     ),
+    const ProductWidget(),
     const BrandWidget(),
     const CustomerWidget(),
     const ProfileWidget(),
@@ -76,6 +78,17 @@ class _CosmeticBottomNavigationBarState
               label: 'Pedidos',
               selectedIcon: Icon(
                 Icons.list_alt_rounded,
+                color: cosmeticPrimaryColor,
+              ),
+            ),
+            NavigationDestination(
+              icon: Icon(
+                Icons.shopping_bag_outlined,
+                color: Colors.black26,
+              ),
+              label: 'Produtos',
+              selectedIcon: Icon(
+                Icons.shopping_bag_rounded,
                 color: cosmeticPrimaryColor,
               ),
             ),

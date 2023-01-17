@@ -12,4 +12,22 @@ class Product {
     required this.quantity,
     required this.code,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'value': value,
+      'quantity': quantity,
+      'code': code,
+    };
+  }
+
+  static Product fromJson(Map<String, dynamic> json) => Product(
+        id: json['id'],
+        name: json['name'],
+        value: json['value'],
+        quantity: json['quantity'],
+        code: json['code'],
+      );
 }

@@ -1,12 +1,10 @@
-import 'package:cosmetic_survey/src/constants/masks.dart';
-import 'package:cosmetic_survey/src/core/customer/customer_card.dart';
-import 'package:cosmetic_survey/src/core/entity/customer.dart';
-import 'package:cosmetic_survey/src/firebase/firestore/customer_details.dart';
-import 'package:cpf_cnpj_validator/cpf_validator.dart';
+import 'package:cosmetic_survey/src/core/entity/product.dart';
+import 'package:cosmetic_survey/src/core/product/product_actions.dart';
+import 'package:cosmetic_survey/src/core/product/product_card.dart';
+import 'package:cosmetic_survey/src/firebase/firestore/product_details.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/cosmetic_circular_indicator.dart';
-import '../../components/cosmetic_cpf_form_field.dart';
 import '../../components/cosmetic_elevated_button.dart';
 import '../../components/cosmetic_floating_button.dart';
 import '../../components/cosmetic_slidebar.dart';
@@ -14,25 +12,28 @@ import '../../components/cosmetic_snackbar.dart';
 import '../../components/cosmetic_text_form_field.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
-import 'customer_actions.dart';
 
-class CustomerWidget extends StatefulWidget {
-  const CustomerWidget({Key? key}) : super(key: key);
+class ProductWidget extends StatefulWidget {
+  const ProductWidget({Key? key}) : super(key: key);
 
   @override
-  State<CustomerWidget> createState() => _CustomerWidgetState();
+  State<ProductWidget> createState() => _ProductWidgetState();
 }
 
-class _CustomerWidgetState extends State<CustomerWidget> {
+class _ProductWidgetState extends State<ProductWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _cpfController = TextEditingController();
+  final _codeController = TextEditingController();
+  final _valueController = TextEditingController();
+  final _quantityController = TextEditingController();
 
   String name = '';
-  String cpf = '';
+  String code = '';
+  double productValue = 0;
+  double quantity = 0;
 
   @override
-  Widget build(BuildContext pageContext) {
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -42,7 +43,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
           elevation: 0,
           centerTitle: true,
           title: const Text(
-            'Clientes',
+            'Produtos',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: cosmeticSecondaryColor,
@@ -50,8 +51,8 @@ class _CustomerWidgetState extends State<CustomerWidget> {
             ),
           ),
         ),
-        body: StreamBuilder<List<Customer>>(
-          stream: FirebaseCustomerDetails.readCustomerDetails(),
+        body: StreamBuilder<List<Product>>(
+          stream: FirebaseProductDetails.readProductDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -67,17 +68,19 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                 itemBuilder: (context, index) {
                   var currentCustomer = customers[index];
 
-                  Customer customer = Customer(
+                  Product product = Product(
                     id: currentCustomer.id,
                     name: currentCustomer.name,
-                    cpfCnpj: currentCustomer.cpfCnpj,
+                    value: currentCustomer.value,
+                    quantity: currentCustomer.quantity,
+                    code: currentCustomer.code,
                   );
 
-                  return CustomerCard(
-                    customer: customer,
-                    onPressedDelete: () => CustomerActions.deleteCustomer(
+                  return ProductCard(
+                    product: product,
+                    onPressedDelete: () => ProductActions.deleteProduct(
                       context: context,
-                      customer: customer,
+                      product: product,
                     ),
                   );
                 },
@@ -114,7 +117,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                         children: [
                           const CosmeticSlideBar(),
                           Text(
-                            'Cadastro de Cliente',
+                            'Cadastro de Produto',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           Text(
@@ -129,7 +132,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                             keyboardType: TextInputType.name,
                             inputText: 'Nome',
                             icon: const Icon(
-                              Icons.person_outline_rounded,
+                              Icons.edit,
                               color: cosmeticSecondaryColor,
                             ),
                             validator: (value) {
@@ -142,25 +145,61 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                             },
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticCpfFormField(
-                            controller: _cpfController,
-                            textInputAction: TextInputAction.done,
+                          CosmeticTextFormField(
+                            controller: _valueController,
+                            textInputAction: TextInputAction.next,
                             borderRadius: 10,
                             keyboardType: TextInputType.number,
-                            maskTextInputFormatter: CosmeticMasks.MASK_CPF,
-                            inputText: 'CPF',
+                            inputText: 'Valor',
                             icon: const Icon(
-                              Icons.document_scanner_outlined,
+                              Icons.attach_money,
                               color: cosmeticSecondaryColor,
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Informe o CPF!';
-                              }
-                              if (CPFValidator.isValid(value)) {
-                                cpf = value;
+                                return 'Informe o Valor!';
                               } else {
-                                return 'CPF inválido!';
+                                productValue = double.parse(value);
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: cosmeticFormHeight - 20),
+                          CosmeticTextFormField(
+                            controller: _quantityController,
+                            textInputAction: TextInputAction.next,
+                            borderRadius: 10,
+                            keyboardType: TextInputType.number,
+                            inputText: 'Quantidade',
+                            icon: const Icon(
+                              Icons.numbers,
+                              color: cosmeticSecondaryColor,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Informe a Quantidade!';
+                              } else {
+                                quantity = double.parse(value);
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: cosmeticFormHeight - 20),
+                          CosmeticTextFormField(
+                            controller: _codeController,
+                            textInputAction: TextInputAction.next,
+                            borderRadius: 10,
+                            keyboardType: TextInputType.number,
+                            inputText: 'Código',
+                            icon: const Icon(
+                              Icons.qr_code_2,
+                              color: cosmeticSecondaryColor,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Informe o Código!';
+                              } else {
+                                code = value;
                               }
                               return null;
                             },
@@ -172,12 +211,18 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                               onPressed: () => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    FirebaseCustomerDetails.addCustomerDetails(
-                                      name: _nameController.text,
-                                      cpfCnpj: _cpfController.text,
+                                    FirebaseProductDetails.addProductDetails(
+                                      product: Product(
+                                        name: name,
+                                        value: productValue,
+                                        quantity: quantity,
+                                        code: code,
+                                      ),
                                     ),
                                     _nameController.clear(),
-                                    _cpfController.clear(),
+                                    _codeController.clear(),
+                                    _valueController.clear(),
+                                    _quantityController.clear(),
                                     Navigator.pop(context),
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CosmeticSnackBar.showSnackBar(

@@ -1,17 +1,17 @@
 import 'dart:math';
 
-import 'package:cosmetic_survey/src/core/entity/customer.dart';
+import 'package:cosmetic_survey/src/core/product/product_actions.dart';
 import 'package:flutter/material.dart';
 
-import 'customer_actions.dart';
+import '../entity/product.dart';
 
-class CustomerCard extends StatelessWidget {
-  Customer customer;
+class ProductCard extends StatelessWidget {
+  Product product;
   VoidCallback onPressedDelete;
 
-  CustomerCard({
+  ProductCard({
     Key? key,
-    required this.customer,
+    required this.product,
     required this.onPressedDelete,
   }) : super(key: key);
 
@@ -29,20 +29,20 @@ class CustomerCard extends StatelessWidget {
               Colors.primaries[_random.nextInt(Colors.primaries.length)]
                   [_random.nextInt(9) * 100],
           child: Text(
-            customer.name.toString().substring(0, 1).toUpperCase(),
+            product.name.toString().substring(0, 1).toUpperCase(),
           ),
         ),
-        title: Text(customer.name),
-        subtitle: Text('CPF: ${customer.cpfCnpj}'),
+        title: Text(product.name),
+        subtitle: Text('Código: ${product.code}'),
         trailing: SizedBox(
           width: 100,
           child: Row(
             children: <Widget>[
               IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () => CustomerActions.updateCustomer(
+                onPressed: () => ProductActions.updateProduct(
                   context: context,
-                  customer: customer,
+                  product: product,
                   formKey: _formKey,
                 ),
               ),
