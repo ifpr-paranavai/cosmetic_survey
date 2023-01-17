@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/entity/user.dart';
 import 'package:cosmetic_survey/src/core/profile/profile_actions.dart';
 import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
-import 'package:cosmetic_survey/src/firebase/firestore/current_user_details.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -11,9 +9,10 @@ import '../../components/cosmetic_circular_indicator.dart';
 import '../../components/cosmetic_dialog.dart';
 import '../../components/cosmetic_profile_menu_widget.dart';
 import '../../components/cosmetic_slidebar.dart';
-import '../../constants/image_path.dart';
+import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
 import '../../firebase/auth/firebase_auth.dart';
+import '../../firebase/firestore/current_user_details.dart';
 
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({Key? key}) : super(key: key);
@@ -109,8 +108,8 @@ class ProfileWidget extends StatelessWidget {
                                                   ProfileActions
                                                       .pickCameraImage(
                                                     context: context,
-                                                  ).then((value) =>
-                                                      Navigator.pop(context)),
+                                                    user: user,
+                                                  ),
                                                 },
                                                 child: Row(
                                                   children: [
@@ -131,12 +130,10 @@ class ProfileWidget extends StatelessWidget {
                                               GestureDetector(
                                                 onTap: () => {
                                                   ProfileActions
-                                                          .pickGalleryImage(
-                                                              context: context,
-                                                              user: user)
-                                                      .then((value) =>
-                                                          Navigator.pop(
-                                                              context)),
+                                                      .pickGalleryImage(
+                                                    context: context,
+                                                    user: user,
+                                                  )
                                                 },
                                                 child: Row(
                                                   children: [

@@ -28,13 +28,6 @@ class FirebaseUserDetails {
         .collection(FirebaseColletion.USER)
         .doc(CurrentUserDetails.getCurrentUserUid());
 
-    final user = User(
-      id: docUser.id,
-      name: currentUser.name.trim(),
-      email: currentUser.email.trim(),
-      imagePath: imagePath.trim(),
-    ).toJson();
-
-    await docUser.update(user);
+    await docUser.update({'imagePath': imagePath});
   }
 }

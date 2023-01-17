@@ -15,3 +15,9 @@ const String cosmeticForgetPasswordImage =
     'assets/images/forgot-password-cuate.png';
 
 const String cosmeticSentEmail = 'assets/images/sent-message-bro.png';
+
+const String cosmeticFirestoreUrl =
+    'https://firebasestorage.googleapis.com/v0/b/cosmeticsurvey-3f433.appspot.com/o/profile_image%2F';
+
+const String cosmeticFirestoreUrlEnd =
+    '?alt=media&token=444d52e0-7c78-4067-826c-47c8fdbb0402';
