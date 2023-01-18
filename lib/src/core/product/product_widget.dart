@@ -3,6 +3,7 @@ import 'package:cosmetic_survey/src/core/product/product_actions.dart';
 import 'package:cosmetic_survey/src/core/product/product_card.dart';
 import 'package:cosmetic_survey/src/firebase/firestore/product_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 import '../../components/cosmetic_circular_indicator.dart';
 import '../../components/cosmetic_elevated_button.dart';
@@ -24,13 +25,13 @@ class _ProductWidgetState extends State<ProductWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _codeController = TextEditingController();
-  final _valueController = TextEditingController();
+  final _valueController = MoneyMaskedTextController();
   final _quantityController = TextEditingController();
 
   String name = '';
   String code = '';
   double productValue = 0;
-  double quantity = 0;
+  int quantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -61,19 +62,19 @@ class _ProductWidgetState extends State<ProductWidget> {
                 ),
               );
             } else if (snapshot.hasData) {
-              final customers = snapshot.data!;
+              final products = snapshot.data!;
 
               return ListView.builder(
-                itemCount: customers.length,
+                itemCount: products.length,
                 itemBuilder: (context, index) {
-                  var currentCustomer = customers[index];
+                  var currentProduct = products[index];
 
                   Product product = Product(
-                    id: currentCustomer.id,
-                    name: currentCustomer.name,
-                    value: currentCustomer.value,
-                    quantity: currentCustomer.quantity,
-                    code: currentCustomer.code,
+                    id: currentProduct.id,
+                    name: currentProduct.name,
+                    value: currentProduct.value,
+                    quantity: currentProduct.quantity,
+                    code: currentProduct.code,
                   );
 
                   return ProductCard(
@@ -159,7 +160,10 @@ class _ProductWidgetState extends State<ProductWidget> {
                               if (value == null || value.isEmpty) {
                                 return 'Informe o Valor!';
                               } else {
-                                productValue = double.parse(value);
+                                productValue = double.parse(value
+                                    .toString()
+                                    .replaceAll(',', '')
+                                    .replaceAll('.', ''));
                               }
                               return null;
                             },
@@ -179,7 +183,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               if (value == null || value.isEmpty) {
                                 return 'Informe a Quantidade!';
                               } else {
-                                quantity = double.parse(value);
+                                quantity = int.parse(value);
                               }
                               return null;
                             },

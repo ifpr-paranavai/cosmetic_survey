@@ -72,12 +72,12 @@ class _CosmeticBottomNavigationBarState
             ),
             NavigationDestination(
               icon: Icon(
-                Icons.list_alt_outlined,
+                Icons.inventory_outlined,
                 color: Colors.black26,
               ),
               label: 'Pedidos',
               selectedIcon: Icon(
-                Icons.list_alt_rounded,
+                Icons.inventory_rounded,
                 color: cosmeticPrimaryColor,
               ),
             ),
@@ -94,12 +94,12 @@ class _CosmeticBottomNavigationBarState
             ),
             NavigationDestination(
               icon: Icon(
-                Icons.branding_watermark_outlined,
+                Icons.dashboard,
                 color: Colors.black26,
               ),
               label: 'Marcas',
               selectedIcon: Icon(
-                Icons.branding_watermark_rounded,
+                Icons.space_dashboard_rounded,
                 color: cosmeticPrimaryColor,
               ),
             ),

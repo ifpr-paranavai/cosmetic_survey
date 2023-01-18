@@ -2,7 +2,7 @@ class Product {
   dynamic id;
   late String name;
   late double value;
-  late double quantity;
+  late int quantity;
   late String code;
 
   Product({

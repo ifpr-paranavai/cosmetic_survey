@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 import '../../components/cosmetic_dialog.dart';
 import '../../components/cosmetic_elevated_button.dart';
@@ -40,6 +41,9 @@ class ProductActions {
     required Product product,
     required GlobalKey<FormState> formKey,
   }) {
+    final valueController =
+        MoneyMaskedTextController(initialValue: product.value);
+
     return showModalBottomSheet<Widget>(
       isScrollControlled: true,
       context: context,
@@ -94,7 +98,7 @@ class ProductActions {
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
                   CosmeticTextFormField(
-                    initialValue: product.value.toString(),
+                    controller: valueController,
                     textInputAction: TextInputAction.next,
                     borderRadius: 10,
                     keyboardType: TextInputType.number,
@@ -107,7 +111,10 @@ class ProductActions {
                       if (value == null || value.isEmpty) {
                         return 'Informe o Valor!';
                       } else {
-                        product.value = double.parse(value);
+                        product.value = double.parse(value
+                            .toString()
+                            .replaceAll(',', '')
+                            .replaceAll('.', ''));
                       }
                       return null;
                     },
@@ -127,7 +134,7 @@ class ProductActions {
                       if (value == null || value.isEmpty) {
                         return 'Informe a Quantidade!';
                       } else {
-                        product.quantity = double.parse(value);
+                        product.quantity = int.parse(value);
                       }
                       return null;
                     },
@@ -162,10 +169,6 @@ class ProductActions {
                             FirebaseProductDetails.updateProductDetails(
                               product: product,
                             ),
-                            product.name = '',
-                            product.code = '',
-                            product.value = 0,
-                            product.quantity = 0,
                             Navigator.pop(context),
                             ScaffoldMessenger.of(context).showSnackBar(
                               CosmeticSnackBar.showSnackBar(
