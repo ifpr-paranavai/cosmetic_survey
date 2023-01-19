@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../authentication/welcome/welcome_widget.dart';
+import '../../core/authentication/welcome/welcome_widget.dart';
 import '../firestore/user_details.dart';
 
 class FirebaseAuthentication {

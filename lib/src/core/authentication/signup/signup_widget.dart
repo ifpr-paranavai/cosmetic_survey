@@ -1,14 +1,14 @@
-import 'package:cosmetic_survey/src/authentication/signup/signup_widget.dart';
+import 'package:cosmetic_survey/src/components/cosmetic_form_header_widget.dart';
+import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../components/cosmetic_form_header_widget.dart';
-import '../../constants/colors.dart';
-import '../../constants/image_path.dart';
-import '../../constants/sizes.dart';
-import 'login_form_widget.dart';
+import '../../../constants/image_path.dart';
+import '../../../constants/sizes.dart';
+import '../login/login_widget.dart';
+import 'signup_form_widget.dart';
 
-class LoginWidget extends StatelessWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+class SignUpWidget extends StatelessWidget {
+  const SignUpWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +30,12 @@ class LoginWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CosmeticFormHeaderWidget(
-                image: cosmeticLoginImage,
-                tittle: 'Bem vindo(a) de volta!',
+                image: cosmeticFSignUpImage,
+                tittle: 'Boas vindas!',
                 textStyleTittle: Theme.of(context).textTheme.headline5,
-                subtittle: 'Faça login para continuar de onde parou.',
+                subtittle: 'Crie seu perfil para começar sua jornada.',
               ),
-              CosmeticLoginFormWidget(),
+              CosmeticSignUpFormWidget(),
               Column(
                 children: [
                   const Text('OU'),
@@ -64,7 +64,7 @@ class LoginWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SignUpWidget(),
+                          builder: (context) => const LoginWidget(),
                         ),
                       );
                     },
@@ -72,11 +72,11 @@ class LoginWidget extends StatelessWidget {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Não possui uma conta? ',
+                            text: 'Já possui uma conta? ',
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const TextSpan(
-                            text: 'CADASTRE-SE',
+                            text: 'LOGIN',
                           )
                         ],
                       ),

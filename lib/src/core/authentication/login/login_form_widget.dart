@@ -3,22 +3,19 @@ import 'package:cosmetic_survey/src/components/cosmetic_text_form_field.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-import '../../components/cosmetic_elevated_button.dart';
-import '../../constants/colors.dart';
-import '../../constants/sizes.dart';
-import '../../firebase/auth/firebase_auth.dart';
+import '../../../components/cosmetic_elevated_button.dart';
+import '../../../constants/colors.dart';
+import '../../../constants/sizes.dart';
+import '../../../firebase/auth/firebase_auth.dart';
+import '../forget_password/forget_password_widget.dart';
 
-class CosmeticSignUpFormWidget extends StatelessWidget {
-  CosmeticSignUpFormWidget({
-    Key? key,
-  }) : super(key: key);
+class CosmeticLoginFormWidget extends StatelessWidget {
+  CosmeticLoginFormWidget({Key? key}) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  String name = '';
   String email = '';
   String password = '';
 
@@ -33,25 +30,6 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CosmeticTextFormField(
-              controller: _nameController,
-              textInputAction: TextInputAction.next,
-              borderRadius: 10,
-              keyboardType: TextInputType.name,
-              inputText: 'Nome',
-              icon: const Icon(
-                Icons.person_outline_rounded,
-                color: cosmeticSecondaryColor,
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Informe o Nome!';
-                } else {
-                  name = value;
-                }
-                return null;
-              },
-            ),
             const SizedBox(height: cosmeticFormHeight - 20),
             CosmeticTextFormField(
               controller: _emailController,
@@ -88,28 +66,43 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Informe a Senha!';
-                } else {
-                  password = value;
                 }
                 return null;
               },
             ),
-            const SizedBox(height: cosmeticFormHeight - 10),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ForgetPasswordWidget(),
+                  ),
+                );
+              },
+              child: const Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Esqueceu a Senha?',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: cosmeticFormHeight - 25),
             SizedBox(
               width: double.infinity,
               child: CosmeticElevatedButton(
+                buttonName: 'ENTRAR',
                 onPressed: () => {
                   if (_formKey.currentState!.validate())
                     {
-                      FirebaseAuthentication.signUp(
-                        name: _nameController.text,
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        context: context,
-                      ),
+                      FirebaseAuthentication.signIn(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                          context: context),
                     },
                 },
-                buttonName: 'CRIAR CONTA',
               ),
             )
           ],

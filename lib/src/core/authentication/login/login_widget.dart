@@ -1,14 +1,14 @@
-import 'package:cosmetic_survey/src/authentication/login/login_widget.dart';
-import 'package:cosmetic_survey/src/components/cosmetic_form_header_widget.dart';
-import 'package:cosmetic_survey/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/image_path.dart';
-import '../../constants/sizes.dart';
-import 'signup_form_widget.dart';
+import '../../../components/cosmetic_form_header_widget.dart';
+import '../../../constants/colors.dart';
+import '../../../constants/image_path.dart';
+import '../../../constants/sizes.dart';
+import '../signup/signup_widget.dart';
+import 'login_form_widget.dart';
 
-class SignUpWidget extends StatelessWidget {
-  const SignUpWidget({Key? key}) : super(key: key);
+class LoginWidget extends StatelessWidget {
+  const LoginWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +30,12 @@ class SignUpWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CosmeticFormHeaderWidget(
-                image: cosmeticFSignUpImage,
-                tittle: 'Boas vindas!',
+                image: cosmeticLoginImage,
+                tittle: 'Bem vindo(a) de volta!',
                 textStyleTittle: Theme.of(context).textTheme.headline5,
-                subtittle: 'Crie seu perfil para começar sua jornada.',
+                subtittle: 'Faça login para continuar de onde parou.',
               ),
-              CosmeticSignUpFormWidget(),
+              CosmeticLoginFormWidget(),
               Column(
                 children: [
                   const Text('OU'),
@@ -64,7 +64,7 @@ class SignUpWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginWidget(),
+                          builder: (context) => const SignUpWidget(),
                         ),
                       );
                     },
@@ -72,11 +72,11 @@ class SignUpWidget extends StatelessWidget {
                       TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Já possui uma conta? ',
+                            text: 'Não possui uma conta? ',
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const TextSpan(
-                            text: 'LOGIN',
+                            text: 'CADASTRE-SE',
                           )
                         ],
                       ),

@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cosmetic_survey/src/authentication/welcome/welcome_widget.dart';
 import 'package:cosmetic_survey/src/constants/firebase_collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+
+import '../../core/authentication/welcome/welcome_widget.dart';
 
 class CurrentUserDetails {
   static Stream<DocumentSnapshot> readUserData() {
