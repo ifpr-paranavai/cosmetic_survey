@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/cosmetic_form_header_widget.dart';
 import '../../../constants/colors.dart';
 import '../../../constants/image_path.dart';
 import '../../../constants/sizes.dart';
+import '../../../firebase/auth/google_auth.dart';
 import '../signup/signup_widget.dart';
 import 'login_form_widget.dart';
 
@@ -49,7 +51,13 @@ class LoginWidget extends StatelessWidget {
                           color: cosmeticSecondaryColor,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false,
+                        );
+                        provider.googleLogin(context: context);
+                      },
                       icon: const Image(
                         image: AssetImage(
                           cosmeticGoogleLogoImage,

@@ -98,9 +98,10 @@ class CosmeticLoginFormWidget extends StatelessWidget {
                   if (_formKey.currentState!.validate())
                     {
                       FirebaseAuthentication.signIn(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          context: context),
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                        context: context,
+                      ),
                     },
                 },
               ),

@@ -1,6 +1,8 @@
 import 'package:cosmetic_survey/src/components/cosmetic_form_header_widget.dart';
 import 'package:cosmetic_survey/src/constants/colors.dart';
+import 'package:cosmetic_survey/src/firebase/auth/google_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/image_path.dart';
 import '../../../constants/sizes.dart';
@@ -44,12 +46,18 @@ class SignUpWidget extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       label: const Text(
-                        'FAÇA LOGIN COM O GOOGLE',
+                        'CADASTRE-SE COM O GOOGLE',
                         style: TextStyle(
                           color: cosmeticSecondaryColor,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false,
+                        );
+                        provider.googleLogin(context: context);
+                      },
                       icon: const Image(
                         image: AssetImage(
                           cosmeticGoogleLogoImage,
