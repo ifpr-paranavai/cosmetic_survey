@@ -15,8 +15,16 @@ class CurrentUserDetails {
         .snapshots();
   }
 
+  static User getCurrentUserFromGoogle() {
+    return FirebaseAuth.instance.currentUser!;
+  }
+
   static String getCurrentUserUid() {
     return FirebaseAuth.instance.currentUser!.uid;
+  }
+
+  static String getCurrentUserProvider() {
+    return FirebaseAuth.instance.currentUser!.providerData.first.providerId;
   }
 
   static bool isEmailVerified() {

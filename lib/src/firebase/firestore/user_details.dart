@@ -11,7 +11,7 @@ class FirebaseUserDetails {
         .collection(FirebaseColletion.USER)
         .doc(CurrentUserDetails.getCurrentUserUid());
 
-    final user = User(
+    final user = CurrentUser(
       id: docUser.id,
       name: name.trim(),
       email: email.trim(),
@@ -23,7 +23,7 @@ class FirebaseUserDetails {
   }
 
   static Future addUserImagePath(
-      {required String imagePath, required User currentUser}) async {
+      {required String imagePath, required CurrentUser currentUser}) async {
     final docUser = FirebaseFirestore.instance
         .collection(FirebaseColletion.USER)
         .doc(CurrentUserDetails.getCurrentUserUid());

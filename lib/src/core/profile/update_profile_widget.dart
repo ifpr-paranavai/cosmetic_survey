@@ -12,7 +12,7 @@ import '../../constants/image_path.dart';
 import '../../constants/sizes.dart';
 
 class UpdateProfileWidget extends StatelessWidget {
-  User user;
+  CurrentUser user;
 
   UpdateProfileWidget({
     Key? key,

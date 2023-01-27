@@ -1,4 +1,4 @@
-class User {
+class CurrentUser {
   dynamic id;
   late String name;
   late String email;
@@ -6,7 +6,7 @@ class User {
   late DateTime? creationTime;
   late String? imagePath;
 
-  User({
+  CurrentUser({
     this.id,
     required this.name,
     required this.email,
@@ -25,7 +25,7 @@ class User {
     };
   }
 
-  static User fromJson(Map<String, dynamic> json) => User(
+  static CurrentUser fromJson(Map<String, dynamic> json) => CurrentUser(
         id: json['id'],
         name: json['name'],
         email: json['email'],

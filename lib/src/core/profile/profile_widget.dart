@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cosmetic_survey/src/core/entity/user.dart';
 import 'package:cosmetic_survey/src/core/profile/profile_actions.dart';
 import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -10,6 +11,7 @@ import '../../components/cosmetic_dialog.dart';
 import '../../components/cosmetic_profile_menu_widget.dart';
 import '../../components/cosmetic_slidebar.dart';
 import '../../constants/colors.dart';
+import '../../constants/firebase_providers.dart';
 import '../../constants/sizes.dart';
 import '../../firebase/auth/firebase_auth.dart';
 import '../../firebase/firestore/current_user_details.dart';
@@ -49,12 +51,29 @@ class ProfileWidget extends StatelessWidget {
                     ),
                   );
                 } else if (snapshot.hasData) {
-                  User user = User(
-                    id: snapshot.data!['id'],
-                    name: snapshot.data!['name'],
-                    email: snapshot.data!['email'],
-                    imagePath: snapshot.data!['imagePath'],
-                  );
+                  CurrentUser user = CurrentUser(name: '', email: '');
+
+                  //TODO fazer validações para não dar erro caso não tiver alguma informação
+                  if (CurrentUserDetails.getCurrentUserProvider() ==
+                      FirebaseProvider.GOOGLE) {
+                    User firebaseUser =
+                        CurrentUserDetails.getCurrentUserFromGoogle();
+
+                    user = CurrentUser(
+                      id: firebaseUser.uid,
+                      name: firebaseUser.displayName!,
+                      email: firebaseUser.email!,
+                      imagePath: firebaseUser.photoURL!,
+                    );
+                  } else if (CurrentUserDetails.getCurrentUserProvider() ==
+                      FirebaseProvider.EMAIL) {
+                    user = CurrentUser(
+                      id: snapshot.data!['id'],
+                      name: snapshot.data!['name'],
+                      email: snapshot.data!['email'],
+                      imagePath: snapshot.data!['imagePath'],
+                    );
+                  }
 
                   return Column(
                     children: [

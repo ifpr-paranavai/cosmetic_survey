@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ProfileActions {
   static Future pickCameraImage(
-      {required BuildContext context, required User user}) async {
+      {required BuildContext context, required CurrentUser user}) async {
     final ImagePicker picker = ImagePicker();
 
     final image = await picker.pickImage(source: ImageSource.camera);
@@ -30,7 +30,7 @@ class ProfileActions {
   }
 
   static Future pickGalleryImage(
-      {required BuildContext context, required User user}) async {
+      {required BuildContext context, required CurrentUser user}) async {
     final ImagePicker picker = ImagePicker();
 
     final image = await picker.pickImage(source: ImageSource.gallery);

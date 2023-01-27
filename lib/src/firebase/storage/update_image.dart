@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../../constants/image_path.dart';
 
 class StorageDetails {
-  static Future uploadFile({required String path, required User user}) async {
+  static Future uploadFile({required String path, required CurrentUser user}) async {
     final fileName = 'user_${CurrentUserDetails.getCurrentUserUid()}_profile';
     final finalUrl = cosmeticFirestoreUrl + fileName + cosmeticFirestoreUrlEnd;
 
