@@ -14,6 +14,7 @@ import '../../constants/colors.dart';
 import '../../constants/firebase_providers.dart';
 import '../../constants/sizes.dart';
 import '../../firebase/auth/firebase_auth.dart';
+import '../../firebase/auth/google_auth.dart';
 import '../../firebase/firestore/current_user_details.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -53,7 +54,6 @@ class ProfileWidget extends StatelessWidget {
                 } else if (snapshot.hasData) {
                   CurrentUser user = CurrentUser(name: '', email: '');
 
-                  //TODO fazer validações para não dar erro caso não tiver alguma informação
                   if (CurrentUserDetails.getCurrentUserProvider() ==
                       FirebaseProvider.GOOGLE) {
                     User firebaseUser =
@@ -254,7 +254,19 @@ class ProfileWidget extends StatelessWidget {
                             dialogDescription:
                                 'Tem certeza que deseja realmente sair?',
                             onPressed: () => {
-                              FirebaseAuthentication.signOut(context: context),
+                              if (CurrentUserDetails.getCurrentUserProvider() ==
+                                  FirebaseProvider.GOOGLE)
+                                {
+                                  GoogleSignInProvider.googleLogout(
+                                      context: context),
+                                }
+                              else if (CurrentUserDetails
+                                      .getCurrentUserProvider() ==
+                                  FirebaseProvider.EMAIL)
+                                {
+                                  FirebaseAuthentication.signOut(
+                                      context: context),
+                                }
                             },
                           );
                         },

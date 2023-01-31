@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../core/authentication/welcome/welcome_widget.dart';
 import '../../core/verify_email/verify_email_widget.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
@@ -32,5 +33,18 @@ class GoogleSignInProvider extends ChangeNotifier {
           },
         );
     notifyListeners();
+  }
+
+  static Future googleLogout({required BuildContext context}) async {
+    await GoogleSignIn().signOut().then(
+          (value) => {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const WelcomeWidget(),
+              ),
+              (Route<dynamic> route) => false,
+            ),
+          },
+        );
   }
 }
