@@ -46,7 +46,7 @@ class LoginWidget extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       label: const Text(
-                        'FAÇA LOGIN COM O GOOGLE',
+                        'ENTRAR COM O GOOGLE',
                         style: TextStyle(
                           color: cosmeticSecondaryColor,
                         ),

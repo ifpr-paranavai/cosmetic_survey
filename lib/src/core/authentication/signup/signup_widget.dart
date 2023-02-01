@@ -46,7 +46,7 @@ class SignUpWidget extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       label: const Text(
-                        'CADASTRE-SE COM O GOOGLE',
+                        'ENTRAR COM O GOOGLE',
                         style: TextStyle(
                           color: cosmeticSecondaryColor,
                         ),
