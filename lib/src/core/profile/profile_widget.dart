@@ -75,24 +75,21 @@ class ProfileWidget extends StatelessWidget {
                     );
                   }
 
+                  SizedBox sizedBox = const SizedBox();
+
+                  if (CurrentUserDetails.getCurrentUserProvider() ==
+                      FirebaseProvider.GOOGLE) {
+                    sizedBox = googleUserSizedBox(user);
+                  } else if (CurrentUserDetails.getCurrentUserProvider() ==
+                      FirebaseProvider.EMAIL) {
+                    sizedBox = emailUserSizedBox(user);
+                  }
+
                   return Column(
                     children: [
                       Stack(
                         children: [
-                          SizedBox(
-                            height: 120,
-                            width: 120,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image(
-                                image: NetworkImage(
-                                  user.imagePath != ''
-                                      ? user.imagePath!
-                                      : 'https://i.pinimg.com/564x/cb/b1/ef/cbb1ef1ee0bf43d633393d7203a4d497.jpg',
-                                ),
-                              ),
-                            ),
-                          ),
+                          sizedBox,
                           Positioned(
                             bottom: 0,
                             right: 4,
@@ -279,6 +276,33 @@ class ProfileWidget extends StatelessWidget {
               },
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  SizedBox emailUserSizedBox(CurrentUser user) {
+    return SizedBox(
+      height: 100,
+      width: 100,
+      child: ClipOval(
+        child: Image(
+          image: NetworkImage(
+            user.imagePath != ''
+                ? user.imagePath!
+                : 'https://i.pinimg.com/564x/cb/b1/ef/cbb1ef1ee0bf43d633393d7203a4d497.jpg',
+          ),
+          fit: BoxFit.fill,
+        ),
+      ),
+    );
+  }
+
+  SizedBox googleUserSizedBox(CurrentUser user) {
+    return SizedBox(
+      child: ClipOval(
+        child: Image(
+          image: NetworkImage(user.imagePath!),
         ),
       ),
     );
