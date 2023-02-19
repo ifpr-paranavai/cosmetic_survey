@@ -3,16 +3,16 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../constants/firebase_providers.dart';
 import '../../firebase/firestore/current_user_details.dart';
 
-class PermissionHandler {
-  Future askForPermissionCamera() async {
+class Utils {
+  static Future askPermissionCamera() async {
     return await Permission.camera.request();
   }
 
-  Future askForPermissionPhotos() async {
+  static Future askPermissionPhotos() async {
     return await Permission.photos.request();
   }
 
-  bool isFirebaseUser() {
+  static bool isFirebaseUser() {
     if (CurrentUserDetails.getCurrentUserProvider() ==
         FirebaseProvider.GOOGLE) {
       return true;

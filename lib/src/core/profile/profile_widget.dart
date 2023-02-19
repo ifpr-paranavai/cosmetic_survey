@@ -16,6 +16,7 @@ import '../../constants/sizes.dart';
 import '../../firebase/auth/firebase_auth.dart';
 import '../../firebase/auth/google_auth.dart';
 import '../../firebase/firestore/current_user_details.dart';
+import '../utils/utils.dart';
 
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({Key? key}) : super(key: key);
@@ -53,9 +54,9 @@ class ProfileWidget extends StatelessWidget {
                   );
                 } else if (snapshot.hasData) {
                   CurrentUser user = CurrentUser(name: '', email: '');
+                  SizedBox sizedBox = const SizedBox();
 
-                  if (CurrentUserDetails.getCurrentUserProvider() ==
-                      FirebaseProvider.GOOGLE) {
+                  if (Utils.isFirebaseUser()) {
                     User firebaseUser =
                         CurrentUserDetails.getCurrentUserFromGoogle();
 
@@ -65,23 +66,16 @@ class ProfileWidget extends StatelessWidget {
                       email: firebaseUser.email!,
                       imagePath: firebaseUser.photoURL!,
                     );
-                  } else if (CurrentUserDetails.getCurrentUserProvider() ==
-                      FirebaseProvider.EMAIL) {
+
+                    sizedBox = googleUserSizedBox(user);
+                  } else if (!Utils.isFirebaseUser()) {
                     user = CurrentUser(
                       id: snapshot.data!['id'],
                       name: snapshot.data!['name'],
                       email: snapshot.data!['email'],
                       imagePath: snapshot.data!['imagePath'],
                     );
-                  }
 
-                  SizedBox sizedBox = const SizedBox();
-
-                  if (CurrentUserDetails.getCurrentUserProvider() ==
-                      FirebaseProvider.GOOGLE) {
-                    sizedBox = googleUserSizedBox(user);
-                  } else if (CurrentUserDetails.getCurrentUserProvider() ==
-                      FirebaseProvider.EMAIL) {
                     sizedBox = emailUserSizedBox(user);
                   }
 
@@ -135,7 +129,7 @@ class ProfileWidget extends StatelessWidget {
                                                       'Câmera',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText2,
+                                                          .bodyMedium,
                                                     ),
                                                   ],
                                                 ),
@@ -159,7 +153,7 @@ class ProfileWidget extends StatelessWidget {
                                                       'Galeria',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText2,
+                                                          .bodyMedium,
                                                     ),
                                                   ],
                                                 ),
@@ -194,11 +188,11 @@ class ProfileWidget extends StatelessWidget {
                       const SizedBox(height: 10),
                       Text(
                         user.name,
-                        style: Theme.of(context).textTheme.headline6,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Text(
                         user.email,
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
