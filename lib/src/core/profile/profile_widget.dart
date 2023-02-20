@@ -91,78 +91,9 @@ class ProfileWidget extends StatelessWidget {
                               onTap: () => {
                                 showModalBottomSheet(
                                   context: context,
-                                  builder: (context) => Container(
-                                    padding: const EdgeInsets.only(
-                                      top: 4.0,
-                                      left: cosmeticDefaultSize,
-                                      right: cosmeticDefaultSize,
-                                      bottom: cosmeticDefaultSize,
-                                    ),
-                                    child: Form(
-                                      // key: formKey,
-                                      child: SingleChildScrollView(
-                                        child: Container(
-                                          padding: EdgeInsets.only(
-                                            bottom: MediaQuery.of(context)
-                                                .viewInsets
-                                                .bottom,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const CosmeticSlideBar(),
-                                              const SizedBox(height: 5.0),
-                                              GestureDetector(
-                                                onTap: () => {
-                                                  ProfileActions
-                                                      .pickCameraImage(
-                                                    context: context,
-                                                    user: user,
-                                                  ),
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    const Icon(Icons.camera),
-                                                    const SizedBox(width: 10.0),
-                                                    Text(
-                                                      'Câmera',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              const SizedBox(height: 5.0),
-                                              const Divider(),
-                                              const SizedBox(height: 5.0),
-                                              GestureDetector(
-                                                onTap: () => {
-                                                  ProfileActions
-                                                      .pickGalleryImage(
-                                                    context: context,
-                                                    user: user,
-                                                  )
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    const Icon(Icons.image),
-                                                    const SizedBox(width: 10.0),
-                                                    Text(
-                                                      'Galeria',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                  builder: (context) => modalBottomSheetContent(
+                                    context: context,
+                                    user: user,
                                   ),
                                 )
                               },
@@ -268,6 +199,80 @@ class ProfileWidget extends StatelessWidget {
                   return const CosmeticCircularIndicator();
                 }
               },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget modalBottomSheetContent(
+      {required BuildContext context, required CurrentUser user}) {
+    return Container(
+      padding: const EdgeInsets.only(
+        top: 4.0,
+        left: cosmeticDefaultSize,
+        right: cosmeticDefaultSize,
+        bottom: cosmeticDefaultSize,
+      ),
+      child: Form(
+        // key: formKey,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CosmeticSlideBar(),
+                const SizedBox(height: 5.0),
+                GestureDetector(
+                  onTap: () async => {
+                    if (await Utils.askPermissionCamera())
+                      {
+                        ProfileActions.pickCameraImage(
+                          context: context,
+                          user: user,
+                        ),
+                      }
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(Icons.camera),
+                      const SizedBox(width: 10.0),
+                      Text(
+                        'Câmera',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 5.0),
+                const Divider(),
+                const SizedBox(height: 5.0),
+                GestureDetector(
+                  onTap: () async => {
+                    if (await Utils.askPermissionStorage())
+                      {
+                        ProfileActions.pickGalleryImage(
+                          context: context,
+                          user: user,
+                        ),
+                      }
+                  },
+                  child: Row(
+                    children: [
+                      const Icon(Icons.image),
+                      const SizedBox(width: 10.0),
+                      Text(
+                        'Galeria',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),

@@ -4,12 +4,22 @@ import '../../constants/firebase_providers.dart';
 import '../../firebase/firestore/current_user_details.dart';
 
 class Utils {
-  static Future askPermissionCamera() async {
-    return await Permission.camera.request();
+  static Future<bool> askPermissionCamera() async {
+    var permission = await Permission.camera.request();
+
+    if (permission.isGranted) {
+      return true;
+    }
+    return false;
   }
 
-  static Future askPermissionPhotos() async {
-    return await Permission.photos.request();
+  static Future<bool> askPermissionStorage() async {
+    var permission = await Permission.storage.request();
+
+    if (permission.isGranted) {
+      return true;
+    }
+    return false;
   }
 
   static bool isFirebaseUser() {
