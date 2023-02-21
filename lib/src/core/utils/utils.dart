@@ -13,10 +13,24 @@ class Utils {
     return false;
   }
 
+  static Future<bool> isPermissionCameraDenied() async {
+    if (await Permission.camera.isDenied) {
+      return true;
+    }
+    return false;
+  }
+
   static Future<bool> askPermissionStorage() async {
     var permission = await Permission.storage.request();
 
     if (permission.isGranted) {
+      return true;
+    }
+    return false;
+  }
+
+  static Future<bool> isPermissionCameraStorage() async {
+    if (await Permission.storage.isDenied) {
       return true;
     }
     return false;

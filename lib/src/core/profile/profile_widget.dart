@@ -4,6 +4,7 @@ import 'package:cosmetic_survey/src/core/profile/profile_actions.dart';
 import 'package:cosmetic_survey/src/core/profile/update_profile_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../components/cosmetic_circular_indicator.dart';
@@ -55,6 +56,7 @@ class ProfileWidget extends StatelessWidget {
                 } else if (snapshot.hasData) {
                   CurrentUser user = CurrentUser(name: '', email: '');
                   SizedBox sizedBox = const SizedBox();
+                  GestureDetector gestureDetector = GestureDetector();
 
                   if (Utils.isFirebaseUser()) {
                     User firebaseUser =
@@ -68,6 +70,12 @@ class ProfileWidget extends StatelessWidget {
                     );
 
                     sizedBox = googleUserSizedBox(user);
+                    gestureDetector = GestureDetector(
+                      child: const SizedBox(
+                        height: 10,
+                        width: 10,
+                      ),
+                    );
                   } else if (!Utils.isFirebaseUser()) {
                     user = CurrentUser(
                       id: snapshot.data!['id'],
@@ -77,6 +85,8 @@ class ProfileWidget extends StatelessWidget {
                     );
 
                     sizedBox = emailUserSizedBox(user);
+                    gestureDetector =
+                        gestureDetectorEmailUser(context: context, user: user);
                   }
 
                   return Column(
@@ -87,32 +97,7 @@ class ProfileWidget extends StatelessWidget {
                           Positioned(
                             bottom: 0,
                             right: 4,
-                            child: GestureDetector(
-                              onTap: () => {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) => modalBottomSheetContent(
-                                    context: context,
-                                    user: user,
-                                  ),
-                                )
-                              },
-                              child: Container(
-                                width: 35,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: cosmeticPrimaryColor,
-                                  border: Border.all(
-                                      width: 1.5, color: Colors.white),
-                                ),
-                                child: const Icon(
-                                  LineAwesomeIcons.alternate_pencil,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
+                            child: gestureDetector,
                           ),
                         ],
                       ),
@@ -235,7 +220,8 @@ class ProfileWidget extends StatelessWidget {
                           context: context,
                           user: user,
                         ),
-                      }
+                      },
+                    handlePermissionCamera(),
                   },
                   child: Row(
                     children: [
@@ -259,7 +245,8 @@ class ProfileWidget extends StatelessWidget {
                           context: context,
                           user: user,
                         ),
-                      }
+                      },
+                    handlePermissionStorage(),
                   },
                   child: Row(
                     children: [
@@ -275,6 +262,55 @@ class ProfileWidget extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  handlePermissionCamera() async {
+    if (await Utils.isPermissionCameraDenied()) {
+      Fluttertoast.showToast(
+        msg:
+            'A permissão foi negada! Acesse as configurações do dispositivo e permita que o aplicativo Cosmetic Survey acesse a Câmera.',
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
+  }
+
+  handlePermissionStorage() async {
+    if (await Utils.isPermissionCameraDenied()) {
+      Fluttertoast.showToast(
+        msg:
+            'A permissão foi negada! Acesse as configurações do dispositivo e permita que o aplicativo Cosmetic Survey acesse Arquivos e mídia.',
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
+  }
+
+  GestureDetector gestureDetectorEmailUser(
+      {required BuildContext context, required CurrentUser user}) {
+    return GestureDetector(
+      onTap: () => {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => modalBottomSheetContent(
+            context: context,
+            user: user,
+          ),
+        )
+      },
+      child: Container(
+        width: 35,
+        height: 35,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: cosmeticPrimaryColor,
+          border: Border.all(width: 1.5, color: Colors.white),
+        ),
+        child: const Icon(
+          LineAwesomeIcons.alternate_pencil,
+          size: 20,
+          color: Colors.black,
         ),
       ),
     );
