@@ -11,7 +11,7 @@ class FirebaseProductDetails {
       id: docCustomer.id,
       name: product.name.trim(),
       code: product.code.trim(),
-      value: product.value,
+      value: product.value / 100,
     ).toJson();
 
     await docCustomer.set(docProduct);
@@ -26,7 +26,7 @@ class FirebaseProductDetails {
       id: docCustomer.id,
       name: product.name.trim(),
       code: product.code.trim(),
-      value: product.value,
+      value: product.value / 100,
     ).toJson();
 
     await docCustomer.update(docProduct);
