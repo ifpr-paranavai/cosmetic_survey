@@ -121,26 +121,6 @@ class ProductActions {
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
                   CosmeticTextFormField(
-                    initialValue: product.quantity.toString(),
-                    textInputAction: TextInputAction.next,
-                    borderRadius: 10,
-                    keyboardType: TextInputType.number,
-                    inputText: 'Quantidade',
-                    icon: const Icon(
-                      Icons.numbers,
-                      color: cosmeticSecondaryColor,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Informe a Quantidade!';
-                      } else {
-                        product.quantity = int.parse(value);
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: cosmeticFormHeight - 20),
-                  CosmeticTextFormField(
                     initialValue: product.code,
                     textInputAction: TextInputAction.next,
                     borderRadius: 10,

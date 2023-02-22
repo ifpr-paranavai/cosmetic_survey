@@ -12,7 +12,6 @@ class FirebaseProductDetails {
       name: product.name.trim(),
       code: product.code.trim(),
       value: product.value,
-      quantity: product.quantity,
     ).toJson();
 
     await docCustomer.set(docProduct);
@@ -28,7 +27,6 @@ class FirebaseProductDetails {
       name: product.name.trim(),
       code: product.code.trim(),
       value: product.value,
-      quantity: product.quantity,
     ).toJson();
 
     await docCustomer.update(docProduct);

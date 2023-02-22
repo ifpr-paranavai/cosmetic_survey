@@ -26,12 +26,10 @@ class _ProductWidgetState extends State<ProductWidget> {
   final _nameController = TextEditingController();
   final _codeController = TextEditingController();
   final _valueController = MoneyMaskedTextController();
-  final _quantityController = TextEditingController();
 
   String name = '';
   String code = '';
   double productValue = 0;
-  int quantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +71,6 @@ class _ProductWidgetState extends State<ProductWidget> {
                     id: currentProduct.id,
                     name: currentProduct.name,
                     value: currentProduct.value,
-                    quantity: currentProduct.quantity,
                     code: currentProduct.code,
                   );
 
@@ -170,26 +167,6 @@ class _ProductWidgetState extends State<ProductWidget> {
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
                           CosmeticTextFormField(
-                            controller: _quantityController,
-                            textInputAction: TextInputAction.next,
-                            borderRadius: 10,
-                            keyboardType: TextInputType.number,
-                            inputText: 'Quantidade',
-                            icon: const Icon(
-                              Icons.numbers,
-                              color: cosmeticSecondaryColor,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Informe a Quantidade!';
-                              } else {
-                                quantity = int.parse(value);
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticTextFormField(
                             controller: _codeController,
                             textInputAction: TextInputAction.next,
                             borderRadius: 10,
@@ -219,14 +196,12 @@ class _ProductWidgetState extends State<ProductWidget> {
                                       product: Product(
                                         name: name,
                                         value: productValue,
-                                        quantity: quantity,
                                         code: code,
                                       ),
                                     ),
                                     _nameController.clear(),
                                     _codeController.clear(),
                                     _valueController.clear(),
-                                    _quantityController.clear(),
                                     Navigator.pop(context),
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CosmeticSnackBar.showSnackBar(
