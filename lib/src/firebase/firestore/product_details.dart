@@ -10,7 +10,7 @@ class FirebaseProductDetails {
     final docProduct = Product(
       id: docCustomer.id,
       name: product.name.trim(),
-      code: product.code.trim(),
+      code: product.code,
       value: product.value / 100,
     ).toJson();
 
@@ -25,7 +25,7 @@ class FirebaseProductDetails {
     final docProduct = Product(
       id: docCustomer.id,
       name: product.name.trim(),
-      code: product.code.trim(),
+      code: product.code,
       value: product.value / 100,
     ).toJson();
 

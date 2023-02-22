@@ -121,7 +121,7 @@ class ProductActions {
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
                   CosmeticTextFormField(
-                    initialValue: product.code,
+                    initialValue: product.code.toString(),
                     textInputAction: TextInputAction.next,
                     borderRadius: 10,
                     keyboardType: TextInputType.number,
@@ -134,7 +134,7 @@ class ProductActions {
                       if (value == null || value.isEmpty) {
                         return 'Informe o Código!';
                       } else {
-                        product.code = value;
+                        product.code = int.parse(value);
                       }
                       return null;
                     },

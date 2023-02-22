@@ -28,7 +28,7 @@ class _ProductWidgetState extends State<ProductWidget> {
   final _valueController = MoneyMaskedTextController();
 
   String name = '';
-  String code = '';
+  int code = 0;
   double productValue = 0;
 
   @override
@@ -180,7 +180,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               if (value == null || value.isEmpty) {
                                 return 'Informe o Código!';
                               } else {
-                                code = value;
+                                code = int.parse(value);
                               }
                               return null;
                             },

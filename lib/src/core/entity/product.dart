@@ -2,7 +2,7 @@ class Product {
   dynamic id;
   late String name;
   late double value;
-  late String code;
+  late int code;
 
   Product({
     this.id,
