@@ -5,6 +5,7 @@ import 'package:cosmetic_survey/src/core/profile/profile_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../customer/customer_widget.dart';
+import '../order/order_widget.dart';
 
 class CosmeticBottomNavigationBar extends StatefulWidget {
   const CosmeticBottomNavigationBar({Key? key}) : super(key: key);
@@ -25,12 +26,7 @@ class _CosmeticBottomNavigationBarState
         style: TextStyle(fontSize: 30),
       ),
     ),
-    const Center(
-      child: Text(
-        'Pedidos',
-        style: TextStyle(fontSize: 30),
-      ),
-    ),
+    const OrderWidget(),
     const ProductWidget(),
     const BrandWidget(),
     const CustomerWidget(),

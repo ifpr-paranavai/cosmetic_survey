@@ -31,7 +31,7 @@ class FirebaseAuthentication {
             },
           );
 
-      FirebaseUserDetails.addUserDetails(name: name, email: email);
+      UserDetails.addUserDetails(name: name, email: email);
     } on FirebaseAuthException catch (e) {
       FirebaseExceptions.catchFirebaseException(e.code);
     }

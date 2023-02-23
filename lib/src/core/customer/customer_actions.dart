@@ -23,7 +23,7 @@ class CustomerActions {
       dialogTittle: 'Excluir Cliente',
       dialogDescription: 'Tem certeza que deseja excluir este registro?',
       onPressed: () => {
-        FirebaseCustomerDetails.deleteCustomerDetails(
+        CustomerDetails.deleteCustomerDetails(
           id: customer.id,
         ),
         Navigator.pop(context),
@@ -126,7 +126,7 @@ class CustomerActions {
                       onPressed: () => {
                         if (formKey.currentState!.validate())
                           {
-                            FirebaseCustomerDetails.updateCustomerDetails(
+                            CustomerDetails.updateCustomerDetails(
                               id: customer.id,
                               name: customer.name,
                               cpfCnpj: customer.cpfCnpj,

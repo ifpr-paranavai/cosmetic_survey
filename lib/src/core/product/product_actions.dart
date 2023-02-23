@@ -21,7 +21,7 @@ class ProductActions {
       dialogTittle: 'Excluir Produto',
       dialogDescription: 'Tem certeza que deseja excluir este registro?',
       onPressed: () => {
-        FirebaseProductDetails.deleteProductDetails(
+        ProductDetails.deleteProductDetails(
           id: product.id,
         ),
         Navigator.pop(context),
@@ -146,7 +146,7 @@ class ProductActions {
                       onPressed: () => {
                         if (formKey.currentState!.validate())
                           {
-                            FirebaseProductDetails.updateProductDetails(
+                            ProductDetails.updateProductDetails(
                               product: product,
                             ),
                             Navigator.pop(context),

@@ -51,7 +51,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
           ),
         ),
         body: StreamBuilder<List<Customer>>(
-          stream: FirebaseCustomerDetails.readCustomerDetails(),
+          stream: CustomerDetails.readCustomerDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -172,7 +172,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                               onPressed: () => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    FirebaseCustomerDetails.addCustomerDetails(
+                                    CustomerDetails.addCustomerDetails(
                                       name: _nameController.text,
                                       cpfCnpj: _cpfController.text,
                                     ),

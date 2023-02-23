@@ -4,7 +4,7 @@ import 'package:cosmetic_survey/src/firebase/firestore/current_user_details.dart
 
 import '../../constants/firebase_collection.dart';
 
-class FirebaseUserDetails {
+class UserDetails {
   static Future addUserDetails(
       {required String name, required String email}) async {
     final docUser = FirebaseFirestore.instance

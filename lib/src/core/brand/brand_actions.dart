@@ -20,7 +20,7 @@ class BrandActions {
       dialogTittle: 'Excluir Marca',
       dialogDescription: 'Tem certeza que deseja excluir este registro?',
       onPressed: () => {
-        FirebaseBrandDetails.deleteBrandDetails(
+        BrandDetails.deleteBrandDetails(
           id: brand.id,
         ),
         Navigator.pop(context),
@@ -99,7 +99,7 @@ class BrandActions {
                       onPressed: () => {
                         if (formKey.currentState!.validate())
                           {
-                            FirebaseBrandDetails.updateBrandDetails(
+                            BrandDetails.updateBrandDetails(
                               id: brand.id,
                               name: brand.name,
                             ),

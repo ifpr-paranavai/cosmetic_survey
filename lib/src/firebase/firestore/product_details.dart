@@ -2,19 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cosmetic_survey/src/constants/firebase_collection.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 
-class FirebaseProductDetails {
+class ProductDetails {
   static Future addProductDetails({required Product product}) async {
-    final docCustomer =
+    final docProduct =
         FirebaseFirestore.instance.collection(FirebaseColletion.PRODUCT).doc();
 
-    final docProduct = Product(
-      id: docCustomer.id,
+    final doc = Product(
+      id: docProduct.id,
       name: product.name.trim(),
       code: product.code,
       value: product.value / 100,
     ).toJson();
 
-    await docCustomer.set(docProduct);
+    await docProduct.set(doc);
   }
 
   static Future updateProductDetails({required Product product}) async {

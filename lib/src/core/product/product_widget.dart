@@ -51,7 +51,7 @@ class _ProductWidgetState extends State<ProductWidget> {
           ),
         ),
         body: StreamBuilder<List<Product>>(
-          stream: FirebaseProductDetails.readProductDetails(),
+          stream: ProductDetails.readProductDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -192,7 +192,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               onPressed: () => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    FirebaseProductDetails.addProductDetails(
+                                    ProductDetails.addProductDetails(
                                       product: Product(
                                         name: name,
                                         value: productValue,

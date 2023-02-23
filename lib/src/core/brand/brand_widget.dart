@@ -46,7 +46,7 @@ class _CustomerWidgetState extends State<BrandWidget> {
           ),
         ),
         body: StreamBuilder<List<Brand>>(
-          stream: FirebaseBrandDetails.readBrandDetails(),
+          stream: BrandDetails.readBrandDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -142,7 +142,7 @@ class _CustomerWidgetState extends State<BrandWidget> {
                               onPressed: () => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    FirebaseBrandDetails.addBrandDetails(
+                                    BrandDetails.addBrandDetails(
                                       name: _nameController.text,
                                     ),
                                     _nameController.clear(),

@@ -3,7 +3,7 @@ import 'package:cosmetic_survey/src/core/entity/customer.dart';
 
 import '../../constants/firebase_collection.dart';
 
-class FirebaseCustomerDetails {
+class CustomerDetails {
   static Future addCustomerDetails({required String name, required String cpfCnpj}) async {
     final docCustomer = FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc();
 

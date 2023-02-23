@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../constants/firebase_collection.dart';
 import '../../core/entity/brand.dart';
 
-class FirebaseBrandDetails {
+class BrandDetails {
   static Future addBrandDetails({required String name}) async {
     final docBrand = FirebaseFirestore.instance.collection(FirebaseColletion.BRAND).doc();
 

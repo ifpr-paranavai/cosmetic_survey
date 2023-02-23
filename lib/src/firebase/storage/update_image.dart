@@ -20,7 +20,7 @@ class StorageDetails {
 
     final result = await ref.putFile(File(path));
 
-    FirebaseUserDetails.addUserImagePath(
+    UserDetails.addUserImagePath(
         imagePath: finalUrl, currentUser: user);
 
     return result;
