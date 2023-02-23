@@ -1,6 +1,6 @@
 import 'package:cosmetic_survey/main_page.dart';
-import 'package:cosmetic_survey/src/constants/colors.dart';
-import 'package:cosmetic_survey/src/firebase/auth/google_auth.dart';
+import 'package:cosmetic_survey/src/core/constants/colors.dart';
+import 'package:cosmetic_survey/src/core/firebase/auth/google_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

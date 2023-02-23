@@ -1,7 +1,6 @@
+import 'package:cosmetic_survey/src/core/constants/firebase_providers.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../../constants/firebase_providers.dart';
-import '../../firebase/firestore/current_user_details.dart';
 
 class Utils {
   static Future<bool> askPermissionCamera() async {
