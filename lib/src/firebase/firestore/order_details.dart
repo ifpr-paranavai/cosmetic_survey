@@ -10,6 +10,7 @@ class OrderDetails {
     final doc = CosmeticOrder(
       id: docOrder.id,
       products: order.products,
+      customer: order.customer,
       totalValue: order.totalValue,
       cicle: order.cicle,
     ).toJson();
@@ -25,6 +26,7 @@ class OrderDetails {
     final doc = CosmeticOrder(
       id: docOrder.id,
       products: order.products,
+      customer: order.customer,
       totalValue: order.totalValue,
       cicle: order.cicle,
     ).toJson();

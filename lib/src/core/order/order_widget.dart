@@ -1,5 +1,11 @@
+import 'package:cosmetic_survey/src/components/cosmetic_floating_button.dart';
+import 'package:cosmetic_survey/src/core/entity/order.dart';
+import 'package:cosmetic_survey/src/core/order/order_actions.dart';
+import 'package:cosmetic_survey/src/core/order/order_card.dart';
+import 'package:cosmetic_survey/src/firebase/firestore/order_details.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/cosmetic_circular_indicator.dart';
 import '../../constants/colors.dart';
 
 class OrderWidget extends StatefulWidget {
@@ -28,6 +34,51 @@ class _OrderWidgetState extends State<OrderWidget> {
               fontSize: 25,
             ),
           ),
+        ),
+        body: StreamBuilder<List<CosmeticOrder>>(
+          stream: OrderDetails.readOrderDetails(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text(
+                  'Ocorreu um erro ao listar registros...',
+                ),
+              );
+            } else if (snapshot.hasData) {
+              final orders = snapshot.data!;
+
+              return ListView.builder(
+                itemCount: orders.length,
+                itemBuilder: (context, index) {
+                  var currentOrder = orders[index];
+
+                  CosmeticOrder order = CosmeticOrder(
+                    id: currentOrder.id,
+                    products: currentOrder.products,
+                    customer: currentOrder.customer,
+                    totalValue: currentOrder.totalValue,
+                    cicle: currentOrder.cicle,
+                  );
+
+                  return OrderCard(
+                    order: order,
+                    onPressedDelete: () => OrderActions.deleteOrder(
+                      context: context,
+                      orderId: order.id,
+                    ),
+                  );
+                },
+              );
+            } else {
+              return const CosmeticCircularIndicator();
+            }
+          },
+        ),
+        floatingActionButton: CosmeticFloatingActionButton(
+          onPressed: () => {
+            //TODO tela para cadastrar um pedido
+          },
+          icon: Icons.add,
         ),
       ),
     );
