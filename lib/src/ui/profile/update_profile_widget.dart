@@ -8,6 +8,7 @@ import 'package:cosmetic_survey/src/core/entity/user.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class UpdateProfileWidget extends StatelessWidget {
@@ -189,6 +190,8 @@ class UpdateProfileWidget extends StatelessWidget {
                           ),
                           ElevatedButton(
                             onPressed: () {
+                              HapticFeedback.vibrate();
+
                               CosmeticDialog.showAlertDialog(
                                 context: context,
                                 dialogTittle: 'Excluir conta?',

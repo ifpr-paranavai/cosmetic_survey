@@ -15,6 +15,7 @@ import 'package:cosmetic_survey/src/ui/profile/profile_actions.dart';
 import 'package:cosmetic_survey/src/ui/profile/update_profile_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
@@ -154,6 +155,8 @@ class ProfileWidget extends StatelessWidget {
                         textColor: Colors.red,
                         endIcon: false,
                         onPress: () {
+                          HapticFeedback.vibrate();
+
                           CosmeticDialog.showAlertDialog(
                             context: context,
                             dialogTittle: 'Sair do Aplicativo?',

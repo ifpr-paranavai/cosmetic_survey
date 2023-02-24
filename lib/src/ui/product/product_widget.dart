@@ -11,6 +11,7 @@ import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart
 import 'package:cosmetic_survey/src/ui/product/product_actions.dart';
 import 'package:cosmetic_survey/src/ui/product/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 class ProductWidget extends StatefulWidget {
@@ -75,10 +76,14 @@ class _ProductWidgetState extends State<ProductWidget> {
 
                   return ProductCard(
                     product: product,
-                    onPressedDelete: () => ProductActions.deleteProduct(
-                      context: context,
-                      product: product,
-                    ),
+                    onPressedDelete: () {
+                      HapticFeedback.vibrate();
+
+                      ProductActions.deleteProduct(
+                        context: context,
+                        product: product,
+                      );
+                    },
                   );
                 },
               );

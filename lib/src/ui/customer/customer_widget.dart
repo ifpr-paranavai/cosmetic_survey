@@ -13,6 +13,7 @@ import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dar
 import 'package:cosmetic_survey/src/ui/customer/customer_card.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'customer_actions.dart';
 
@@ -75,10 +76,14 @@ class _CustomerWidgetState extends State<CustomerWidget> {
 
                   return CustomerCard(
                     customer: customer,
-                    onPressedDelete: () => CustomerActions.deleteCustomer(
-                      context: context,
-                      customer: customer,
-                    ),
+                    onPressedDelete: () {
+                      HapticFeedback.vibrate();
+
+                      CustomerActions.deleteCustomer(
+                        context: context,
+                        customer: customer,
+                      );
+                    },
                   );
                 },
               );

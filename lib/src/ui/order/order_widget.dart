@@ -6,6 +6,7 @@ import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/ui/order/order_actions.dart';
 import 'package:cosmetic_survey/src/ui/order/order_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class OrderWidget extends StatefulWidget {
   const OrderWidget({Key? key}) : super(key: key);
@@ -61,10 +62,14 @@ class _OrderWidgetState extends State<OrderWidget> {
 
                   return OrderCard(
                     order: order,
-                    onPressedDelete: () => OrderActions.deleteOrder(
-                      context: context,
-                      orderId: order.id,
-                    ),
+                    onPressedDelete: () {
+                      HapticFeedback.vibrate();
+
+                      OrderActions.deleteOrder(
+                        context: context,
+                        orderId: order.id,
+                      );
+                    },
                   );
                 },
               );

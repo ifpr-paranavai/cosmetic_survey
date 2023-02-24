@@ -10,6 +10,7 @@ import 'package:cosmetic_survey/src/core/entity/brand.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/ui/brand/brand_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'brand_actions.dart';
 
@@ -69,10 +70,14 @@ class _CustomerWidgetState extends State<BrandWidget> {
 
                   return BrandCard(
                     brand: brand,
-                    onPressedDelete: () => BrandActions.deleteBrand(
-                      context: context,
-                      brand: brand,
-                    ),
+                    onPressedDelete: () {
+                      HapticFeedback.vibrate();
+
+                      BrandActions.deleteBrand(
+                        context: context,
+                        brand: brand,
+                      );
+                    },
                   );
                 },
               );
