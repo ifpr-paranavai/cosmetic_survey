@@ -1,25 +1,25 @@
 class Customer {
   dynamic id;
   late String name;
-  late String cpfCnpj;
+  late String cpf;
 
   Customer({
     this.id,
     required this.name,
-    required this.cpfCnpj,
+    required this.cpf,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
-      'cpfCnpj': cpfCnpj,
+      'cpf': cpf,
     };
   }
 
   static Customer fromJson(Map<String, dynamic> json) => Customer(
         id: json['id'],
         name: json['name'],
-        cpfCnpj: json['cpfCnpj'],
+        cpf: json['cpf'],
       );
 }

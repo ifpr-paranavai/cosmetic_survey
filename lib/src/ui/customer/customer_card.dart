@@ -33,7 +33,7 @@ class CustomerCard extends StatelessWidget {
           ),
         ),
         title: Text(customer.name),
-        subtitle: Text('CPF: ${customer.cpfCnpj}'),
+        subtitle: Text('CPF: ${customer.cpf}'),
         trailing: SizedBox(
           width: 100,
           child: Row(

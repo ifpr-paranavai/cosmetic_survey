@@ -96,7 +96,7 @@ class CustomerActions {
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
                   CosmeticCpfFormField(
-                    initialValue: customer.cpfCnpj,
+                    initialValue: customer.cpf,
                     textInputAction: TextInputAction.done,
                     borderRadius: 10,
                     keyboardType: TextInputType.number,
@@ -111,7 +111,7 @@ class CustomerActions {
                         return 'Informe o CPF!';
                       }
                       if (CPFValidator.isValid(value)) {
-                        customer.cpfCnpj = value;
+                        customer.cpf = value;
                       } else {
                         return 'CPF inválido!';
                       }
@@ -128,10 +128,10 @@ class CustomerActions {
                             CustomerDetails.updateCustomerDetails(
                               id: customer.id,
                               name: customer.name,
-                              cpfCnpj: customer.cpfCnpj,
+                              cpfCnpj: customer.cpf,
                             ),
                             customer.name = '',
-                            customer.cpfCnpj = '',
+                            customer.cpf = '',
                             Navigator.pop(context),
                             ScaffoldMessenger.of(context).showSnackBar(
                               CosmeticSnackBar.showSnackBar(

@@ -70,7 +70,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                   Customer customer = Customer(
                     id: currentCustomer.id,
                     name: currentCustomer.name,
-                    cpfCnpj: currentCustomer.cpfCnpj,
+                    cpf: currentCustomer.cpf,
                   );
 
                   return CustomerCard(

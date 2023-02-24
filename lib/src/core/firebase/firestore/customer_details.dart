@@ -10,7 +10,7 @@ class CustomerDetails {
     final customer = Customer(
       id: docCustomer.id,
       name: name.trim(),
-      cpfCnpj: cpfCnpj.trim(),
+      cpf: cpfCnpj.trim(),
     ).toJson();
 
     await docCustomer.set(customer);
@@ -22,7 +22,7 @@ class CustomerDetails {
     final customer = Customer(
       id: docCustomer.id,
       name: name.trim(),
-      cpfCnpj: cpfCnpj.trim(),
+      cpf: cpfCnpj.trim(),
     ).toJson();
 
     await docCustomer.update(customer);
