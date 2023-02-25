@@ -1,4 +1,5 @@
 import 'package:cosmetic_survey/src/core/components/cosmetic_circular_indicator.dart';
+import 'package:cosmetic_survey/src/core/components/cosmetic_dropdown.dart';
 import 'package:cosmetic_survey/src/core/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/core/components/cosmetic_floating_button.dart';
 import 'package:cosmetic_survey/src/core/components/cosmetic_slidebar.dart';
@@ -189,6 +190,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                               return null;
                             },
                           ),
+                          const SizedBox(height: cosmeticFormHeight - 20),
+                          const CosmeticDropdown(),
                           const SizedBox(height: cosmeticFormHeight - 10),
                           SizedBox(
                             width: double.infinity,

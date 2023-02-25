@@ -33,4 +33,20 @@ class BrandDetails {
   static void deleteBrandDetails({required dynamic id}) {
     FirebaseFirestore.instance.collection(FirebaseColletion.BRAND).doc(id).delete();
   }
+
+  static List<String> readBrandNames() {
+    List<String> brandNames = [];
+
+    readBrandDetails().forEach(
+      (element) {
+        brandNames.add(element.iterator.current.name);
+
+        for (var i in element) {
+          brandNames.add(i.name);
+        }
+      },
+    );
+
+    return brandNames;
+  }
 }

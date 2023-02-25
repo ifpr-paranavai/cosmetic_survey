@@ -58,6 +58,7 @@ dependencies:
   google_sign_in: ^5.4.4
   provider: ^6.0.5
   permission_handler: ^10.2.0
+  animated_custom_dropdown: ^1.4.0
 
 flutter_icons:
   android: true
