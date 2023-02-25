@@ -1,14 +1,14 @@
-import 'package:cosmetic_survey/src/core/components/cosmetic_circular_indicator.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_floating_button.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_slidebar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_snackbar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/brand.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/ui/brand/brand_card.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -114,11 +114,11 @@ class _CustomerWidgetState extends State<BrandWidget> {
                           const CosmeticSlideBar(),
                           Text(
                             'Cadastro de Marca',
-                            style: Theme.of(context).textTheme.headline4,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                           Text(
                             'Para realizar o cadastro preencha os campos à baixo e clique em "SALVAR".',
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
                           CosmeticTextFormField(

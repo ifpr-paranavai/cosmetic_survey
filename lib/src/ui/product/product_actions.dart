@@ -1,12 +1,12 @@
-import 'package:cosmetic_survey/src/core/components/cosmetic_dialog.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_slidebar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_snackbar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 

@@ -1,8 +1,8 @@
-import 'package:cosmetic_survey/src/core/components/cosmetic_form_header_widget.dart';
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/image_path.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/firebase/auth/google_auth.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_form_header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +34,7 @@ class LoginWidget extends StatelessWidget {
               CosmeticFormHeaderWidget(
                 image: cosmeticLoginImage,
                 tittle: 'Bem vindo(a) de volta!',
-                textStyleTittle: Theme.of(context).textTheme.headline5,
+                textStyleTittle: Theme.of(context).textTheme.headlineSmall,
                 subtittle: 'Faça login para continuar de onde parou.',
               ),
               CosmeticLoginFormWidget(),
@@ -81,7 +81,7 @@ class LoginWidget extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: 'Não possui uma conta? ',
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const TextSpan(
                             text: 'CADASTRE-SE',

@@ -1,8 +1,8 @@
-import 'package:cosmetic_survey/src/core/components/cosmetic_circular_indicator.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_floating_button.dart';
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
 import 'package:cosmetic_survey/src/ui/order/order_actions.dart';
 import 'package:cosmetic_survey/src/ui/order/order_card.dart';
 import 'package:flutter/material.dart';

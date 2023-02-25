@@ -1,12 +1,12 @@
-import 'package:cosmetic_survey/src/core/components/cosmetic_dialog.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_slidebar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_snackbar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/brand.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class BrandActions {
@@ -65,11 +65,11 @@ class BrandActions {
                   const CosmeticSlideBar(),
                   Text(
                     'Atualizar Marca',
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(
                     'Para atualizar as informações preencha os campos à baixo e clique em "ATUALIZAR".',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
                   CosmeticTextFormField(

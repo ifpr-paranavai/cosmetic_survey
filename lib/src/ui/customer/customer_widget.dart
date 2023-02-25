@@ -1,15 +1,15 @@
-import 'package:cosmetic_survey/src/core/components/cosmetic_circular_indicator.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_cpf_form_field.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_floating_button.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_slidebar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_snackbar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/masks.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_cpf_form_field.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/ui/customer/customer_card.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
@@ -120,11 +120,11 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                           const CosmeticSlideBar(),
                           Text(
                             'Cadastro de Cliente',
-                            style: Theme.of(context).textTheme.headline4,
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                           Text(
                             'Para realizar o cadastro preencha os campos à baixo e clique em "SALVAR".',
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
                           CosmeticTextFormField(

@@ -1,8 +1,8 @@
-import 'package:cosmetic_survey/src/core/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_outlined_button.dart';
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/image_path.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_outlined_button.dart';
 import 'package:flutter/material.dart';
 
 import '../login/login_widget.dart';
@@ -32,11 +32,11 @@ class WelcomeWidget extends StatelessWidget {
               children: [
                 Text(
                   'Cosmetic Survey',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 Text(
                   'Gerenciando sonhos.',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
               ],

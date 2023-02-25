@@ -1,14 +1,14 @@
-import 'package:cosmetic_survey/src/core/components/cosmetic_cpf_form_field.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_dialog.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_slidebar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_snackbar.dart';
-import 'package:cosmetic_survey/src/core/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/masks.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_cpf_form_field.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -68,11 +68,11 @@ class CustomerActions {
                   const CosmeticSlideBar(),
                   Text(
                     'Atualizar Cliente',
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(
                     'Para atualizar as informações preencha os campos à baixo e clique em "ATUALIZAR".',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
                   CosmeticTextFormField(
