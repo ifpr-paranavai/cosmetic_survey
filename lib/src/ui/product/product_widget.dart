@@ -1,6 +1,7 @@
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
@@ -27,6 +28,8 @@ class _ProductWidgetState extends State<ProductWidget> {
   final _nameController = TextEditingController();
   final _codeController = TextEditingController();
   final _valueController = MoneyMaskedTextController();
+
+  var list = BrandDetails.readBrandNames();
 
   String name = '';
   int code = 0;
@@ -191,7 +194,10 @@ class _ProductWidgetState extends State<ProductWidget> {
                             },
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
-                          const CosmeticDropdown(),
+                          CosmeticDropdown(
+                            hintText: 'Selecione uma Marca',
+                            options: list,
+                          ),
                           const SizedBox(height: cosmeticFormHeight - 10),
                           SizedBox(
                             width: double.infinity,

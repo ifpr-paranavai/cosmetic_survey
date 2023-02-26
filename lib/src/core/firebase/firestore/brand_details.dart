@@ -35,18 +35,16 @@ class BrandDetails {
   }
 
   static List<String> readBrandNames() {
-    List<String> brandNames = [];
+    List<String> brands = [];
 
     readBrandDetails().forEach(
       (element) {
-        brandNames.add(element.iterator.current.name);
-
         for (var i in element) {
-          brandNames.add(i.name);
+          brands.add(i.name);
         }
       },
     );
 
-    return brandNames;
+    return brands;
   }
 }
