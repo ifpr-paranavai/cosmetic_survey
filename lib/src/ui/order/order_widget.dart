@@ -16,6 +16,8 @@ class OrderWidget extends StatefulWidget {
 }
 
 class _OrderWidgetState extends State<OrderWidget> {
+  OrderDetails orderDetails = OrderDetails();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,7 +38,7 @@ class _OrderWidgetState extends State<OrderWidget> {
           ),
         ),
         body: StreamBuilder<List<CosmeticOrder>>(
-          stream: OrderDetails.readOrderDetails(),
+          stream: orderDetails.readOrderDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(

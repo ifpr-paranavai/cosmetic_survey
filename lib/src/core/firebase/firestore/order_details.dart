@@ -3,7 +3,7 @@ import 'package:cosmetic_survey/src/core/constants/firebase_collection.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 
 class OrderDetails {
-  static Future addOrderDetails({required CosmeticOrder order}) async {
+  Future addOrderDetails({required CosmeticOrder order}) async {
     final docOrder =
         FirebaseFirestore.instance.collection(FirebaseColletion.ORDER).doc();
 
@@ -18,7 +18,7 @@ class OrderDetails {
     await docOrder.set(doc);
   }
 
-  static Future updateOrderDetails({required CosmeticOrder order}) async {
+  Future updateOrderDetails({required CosmeticOrder order}) async {
     final docOrder = FirebaseFirestore.instance
         .collection(FirebaseColletion.ORDER)
         .doc(order.id);
@@ -34,15 +34,14 @@ class OrderDetails {
     await docOrder.update(doc);
   }
 
-  static Stream<List<CosmeticOrder>> readOrderDetails() =>
-      FirebaseFirestore.instance
-          .collection(FirebaseColletion.ORDER)
-          .snapshots()
-          .map((snapshot) => snapshot.docs
-              .map((doc) => CosmeticOrder.fromJson(doc.data()))
-              .toList());
+  Stream<List<CosmeticOrder>> readOrderDetails() => FirebaseFirestore.instance
+      .collection(FirebaseColletion.ORDER)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => CosmeticOrder.fromJson(doc.data()))
+          .toList());
 
-  static void deleteOrderDetails({required dynamic id}) {
+  void deleteOrderDetails({required dynamic id}) {
     FirebaseFirestore.instance
         .collection(FirebaseColletion.ORDER)
         .doc(id)

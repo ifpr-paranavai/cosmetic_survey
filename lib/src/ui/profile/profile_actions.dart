@@ -8,19 +8,20 @@ class ProfileActions {
   static Future pickCameraImage(
       {required BuildContext context, required CurrentUser user}) async {
     final ImagePicker picker = ImagePicker();
+    StorageDetails storageDetails = StorageDetails();
 
     final image = await picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
-      StorageDetails.uploadFile(path: image.path, user: user).then(
-        (value) => {
-          Navigator.pop(context),
-          Fluttertoast.showToast(
-            msg: 'Imagem de perfil atualizada!',
-            gravity: ToastGravity.BOTTOM,
-          ),
-        },
-      );
+      storageDetails.uploadFile(path: image.path, user: user).then(
+            (value) => {
+              Navigator.pop(context),
+              Fluttertoast.showToast(
+                msg: 'Imagem de perfil atualizada!',
+                gravity: ToastGravity.BOTTOM,
+              ),
+            },
+          );
     } else {
       Fluttertoast.showToast(
         msg: 'Nenhuma imagem tirada.',
@@ -32,19 +33,20 @@ class ProfileActions {
   static Future pickGalleryImage(
       {required BuildContext context, required CurrentUser user}) async {
     final ImagePicker picker = ImagePicker();
+    StorageDetails storageDetails = StorageDetails();
 
     final image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      StorageDetails.uploadFile(path: image.path, user: user).then(
-        (value) => {
-          Navigator.pop(context),
-          Fluttertoast.showToast(
-            msg: 'Imagem de perfil atualizada!',
-            gravity: ToastGravity.BOTTOM,
-          ),
-        },
-      );
+      storageDetails.uploadFile(path: image.path, user: user).then(
+            (value) => {
+              Navigator.pop(context),
+              Fluttertoast.showToast(
+                msg: 'Imagem de perfil atualizada!',
+                gravity: ToastGravity.BOTTOM,
+              ),
+            },
+          );
     } else {
       Fluttertoast.showToast(
         msg: 'Nenhuma imagem selecionada.',

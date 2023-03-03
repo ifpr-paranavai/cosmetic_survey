@@ -17,6 +17,8 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  FirebaseAuthentication firebaseAuthentication = FirebaseAuthentication();
+
   String name = '';
   String email = '';
   String password = '';
@@ -100,7 +102,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
                 onPressed: () => {
                   if (_formKey.currentState!.validate())
                     {
-                      FirebaseAuthentication.signUp(
+                      firebaseAuthentication.signUp(
                         name: _nameController.text,
                         email: _emailController.text,
                         password: _passwordController.text,

@@ -36,7 +36,7 @@ class GoogleSignInProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  static Future googleLogout({required BuildContext context}) async {
+  Future googleLogout({required BuildContext context}) async {
     await GoogleSignIn().signOut().then(
           (value) => {
             Navigator.of(context).pushAndRemoveUntil(

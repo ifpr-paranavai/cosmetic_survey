@@ -4,7 +4,7 @@ import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import '../../constants/firebase_collection.dart';
 
 class CustomerDetails {
-  static Future addCustomerDetails({required String name, required String cpfCnpj}) async {
+  Future addCustomerDetails({required String name, required String cpfCnpj}) async {
     final docCustomer = FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc();
 
     final customer = Customer(
@@ -16,7 +16,7 @@ class CustomerDetails {
     await docCustomer.set(customer);
   }
 
-  static Future updateCustomerDetails({required dynamic id, required String name, required String cpfCnpj}) async {
+  Future updateCustomerDetails({required dynamic id, required String name, required String cpfCnpj}) async {
     final docCustomer = FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc(id);
 
     final customer = Customer(
@@ -28,11 +28,11 @@ class CustomerDetails {
     await docCustomer.update(customer);
   }
 
-  static Stream<List<Customer>> readCustomerDetails() => FirebaseFirestore
+  Stream<List<Customer>> readCustomerDetails() => FirebaseFirestore
       .instance.collection(FirebaseColletion.CUSTOMER).snapshots().map((snapshot) =>
           snapshot.docs.map((doc) => Customer.fromJson(doc.data())).toList());
 
-  static void deleteCustomerDetails({required dynamic id}) {
+  void deleteCustomerDetails({required dynamic id}) {
     FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc(id).delete();
   }
 }

@@ -8,13 +8,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../firestore/user_details.dart';
 
 class FirebaseAuthentication {
-  static Future signUp({
+  Future signUp({
     required String name,
     required String email,
     required String password,
     required BuildContext context,
   }) async {
     try {
+      UserDetails userDetails = UserDetails();
+
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
             email: email.trim(),
@@ -31,13 +33,13 @@ class FirebaseAuthentication {
             },
           );
 
-      UserDetails.addUserDetails(name: name, email: email);
+      userDetails.addUserDetails(name: name, email: email);
     } on FirebaseAuthException catch (e) {
       FirebaseExceptions.catchFirebaseException(e.code);
     }
   }
 
-  static Future signIn({
+  Future signIn({
     required String email,
     required String password,
     required BuildContext context,
@@ -63,7 +65,7 @@ class FirebaseAuthentication {
     }
   }
 
-  static Future signOut({required BuildContext context}) async {
+  Future signOut({required BuildContext context}) async {
     await FirebaseAuth.instance.signOut().then(
           (value) => {
             Navigator.of(context).pushAndRemoveUntil(
@@ -76,7 +78,7 @@ class FirebaseAuthentication {
         );
   }
 
-  static Future resetPassword(
+  Future resetPassword(
       {required String email, required BuildContext context}) async {
     try {
       await FirebaseAuth.instance
@@ -107,7 +109,7 @@ class FirebaseAuthentication {
     }
   }
 
-  static Future sendVerificationEmail({required BuildContext context}) async {
+  Future sendVerificationEmail({required BuildContext context}) async {
     try {
       return await FirebaseAuth.instance.currentUser!
           .sendEmailVerification()

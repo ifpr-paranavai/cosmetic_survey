@@ -29,7 +29,8 @@ class _ProductWidgetState extends State<ProductWidget> {
   final _codeController = TextEditingController();
   final _valueController = MoneyMaskedTextController();
 
-  var list = BrandDetails.readBrandNames();
+  BrandDetails brandDetails = BrandDetails();
+  ProductDetails productDetails = ProductDetails();
 
   String name = '';
   int code = 0;
@@ -37,6 +38,8 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var list = brandDetails.readBrandNames();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -55,7 +58,7 @@ class _ProductWidgetState extends State<ProductWidget> {
           ),
         ),
         body: StreamBuilder<List<Product>>(
-          stream: ProductDetails.readProductDetails(),
+          stream: productDetails.readProductDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -205,7 +208,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               onPressed: () => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    ProductDetails.addProductDetails(
+                                    productDetails.addProductDetails(
                                       product: Product(
                                         name: name,
                                         value: productValue,

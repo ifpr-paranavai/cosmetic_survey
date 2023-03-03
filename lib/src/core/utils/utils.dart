@@ -36,7 +36,9 @@ class Utils {
   }
 
   static bool isFirebaseUser() {
-    if (CurrentUserDetails.getCurrentUserProvider() ==
+    CurrentUserDetails currentUserDetails = CurrentUserDetails();
+    
+    if (currentUserDetails.getCurrentUserProvider() ==
         FirebaseProvider.GOOGLE) {
       return true;
     }

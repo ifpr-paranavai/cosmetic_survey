@@ -5,11 +5,12 @@ import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details
 import '../../constants/firebase_collection.dart';
 
 class UserDetails {
-  static Future addUserDetails(
-      {required String name, required String email}) async {
+  Future addUserDetails({required String name, required String email}) async {
+    CurrentUserDetails currentUserDetails = CurrentUserDetails();
+
     final docUser = FirebaseFirestore.instance
         .collection(FirebaseColletion.USER)
-        .doc(CurrentUserDetails.getCurrentUserUid());
+        .doc(currentUserDetails.getCurrentUserUid());
 
     final user = CurrentUser(
       id: docUser.id,
@@ -22,11 +23,13 @@ class UserDetails {
     await docUser.set(user);
   }
 
-  static Future addUserImagePath(
+  Future addUserImagePath(
       {required String imagePath, required CurrentUser currentUser}) async {
+    CurrentUserDetails currentUserDetails = CurrentUserDetails();
+
     final docUser = FirebaseFirestore.instance
         .collection(FirebaseColletion.USER)
-        .doc(CurrentUserDetails.getCurrentUserUid());
+        .doc(currentUserDetails.getCurrentUserUid());
 
     await docUser.update({'imagePath': imagePath});
   }

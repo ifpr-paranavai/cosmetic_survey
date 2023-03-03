@@ -29,6 +29,8 @@ class _CustomerWidgetState extends State<CustomerWidget> {
   final _nameController = TextEditingController();
   final _cpfController = TextEditingController();
 
+  CustomerDetails customerDetails = CustomerDetails();
+
   String name = '';
   String cpf = '';
 
@@ -52,7 +54,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
           ),
         ),
         body: StreamBuilder<List<Customer>>(
-          stream: CustomerDetails.readCustomerDetails(),
+          stream: customerDetails.readCustomerDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -177,7 +179,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                               onPressed: () => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    CustomerDetails.addCustomerDetails(
+                                    customerDetails.addCustomerDetails(
                                       name: _nameController.text,
                                       cpfCnpj: _cpfController.text,
                                     ),

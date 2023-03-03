@@ -25,6 +25,8 @@ class _CustomerWidgetState extends State<BrandWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
 
+  BrandDetails brandDetails = BrandDetails();
+
   String name = '';
 
   @override
@@ -47,7 +49,7 @@ class _CustomerWidgetState extends State<BrandWidget> {
           ),
         ),
         body: StreamBuilder<List<Brand>>(
-          stream: BrandDetails.readBrandDetails(),
+          stream: brandDetails.readBrandDetails(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -147,7 +149,7 @@ class _CustomerWidgetState extends State<BrandWidget> {
                               onPressed: () => {
                                 if (_formKey.currentState!.validate())
                                   {
-                                    BrandDetails.addBrandDetails(
+                                    brandDetails.addBrandDetails(
                                       name: _nameController.text,
                                     ),
                                     _nameController.clear(),

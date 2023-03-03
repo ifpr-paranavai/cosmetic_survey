@@ -15,12 +15,14 @@ class ProductActions {
     required BuildContext context,
     required Product product,
   }) {
+    ProductDetails productDetails = ProductDetails();
+
     return CosmeticDialog.showAlertDialog(
       context: context,
       dialogTittle: 'Excluir Produto',
       dialogDescription: 'Tem certeza que deseja excluir este registro?',
       onPressed: () => {
-        ProductDetails.deleteProductDetails(
+        productDetails.deleteProductDetails(
           id: product.id,
         ),
         Navigator.pop(context),
@@ -40,6 +42,8 @@ class ProductActions {
     required Product product,
     required GlobalKey<FormState> formKey,
   }) {
+    ProductDetails productDetails = ProductDetails();
+
     final valueController =
         MoneyMaskedTextController(initialValue: product.value);
 
@@ -145,7 +149,7 @@ class ProductActions {
                       onPressed: () => {
                         if (formKey.currentState!.validate())
                           {
-                            ProductDetails.updateProductDetails(
+                            productDetails.updateProductDetails(
                               product: product,
                             ),
                             Navigator.pop(context),

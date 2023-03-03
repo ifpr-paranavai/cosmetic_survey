@@ -19,6 +19,9 @@ class VerifyEmailWidget extends StatefulWidget {
 }
 
 class _VerifyEmailWidgetState extends State<VerifyEmailWidget> {
+  FirebaseAuthentication firebaseAuthentication = FirebaseAuthentication();
+  CurrentUserDetails currentUserDetails = CurrentUserDetails();
+
   bool isEmailVerified = false;
   Timer? timer;
 
@@ -26,10 +29,10 @@ class _VerifyEmailWidgetState extends State<VerifyEmailWidget> {
   void initState() {
     super.initState();
 
-    isEmailVerified = CurrentUserDetails.isEmailVerified();
+    isEmailVerified = currentUserDetails.isEmailVerified();
 
     if (!isEmailVerified) {
-      FirebaseAuthentication.sendVerificationEmail(context: context);
+      firebaseAuthentication.sendVerificationEmail(context: context);
 
       timer = Timer.periodic(
         const Duration(seconds: 3),
@@ -95,7 +98,7 @@ class _VerifyEmailWidgetState extends State<VerifyEmailWidget> {
                     width: double.infinity,
                     child: CosmeticElevatedButton(
                       onPressed: () {
-                        FirebaseAuthentication.sendVerificationEmail(
+                        firebaseAuthentication.sendVerificationEmail(
                             context: context);
                       },
                       buttonName: 'REENVIAR E-MAIL',
@@ -105,7 +108,7 @@ class _VerifyEmailWidgetState extends State<VerifyEmailWidget> {
                   SizedBox(
                     width: double.infinity,
                     child: CosmeticOutlinedButton(
-                      onPressed: () => FirebaseAuthentication.signOut(
+                      onPressed: () => firebaseAuthentication.signOut(
                         context: context,
                       ),
                       buttonName: 'SAIR',

@@ -8,12 +8,14 @@ class OrderActions {
     required BuildContext context,
     required dynamic orderId,
   }) {
+    OrderDetails orderDetails = OrderDetails();
+
     return CosmeticDialog.showAlertDialog(
       context: context,
       dialogTittle: 'Excluir Pedido',
       dialogDescription: 'Tem certeza que deseja excluir este registro?',
       onPressed: () => {
-        OrderDetails.deleteOrderDetails(
+        orderDetails.deleteOrderDetails(
           id: orderId,
         ),
         Navigator.pop(context),

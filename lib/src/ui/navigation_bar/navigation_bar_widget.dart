@@ -30,7 +30,7 @@ class _CosmeticBottomNavigationBarState
     const ProductWidget(),
     const BrandWidget(),
     const CustomerWidget(),
-    const ProfileWidget(),
+    ProfileWidget(),
   ];
 
   @override

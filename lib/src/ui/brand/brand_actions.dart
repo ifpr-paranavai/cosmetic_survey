@@ -14,12 +14,14 @@ class BrandActions {
     required BuildContext context,
     required Brand brand,
   }) {
+    BrandDetails brandDetails = BrandDetails();
+
     return CosmeticDialog.showAlertDialog(
       context: context,
       dialogTittle: 'Excluir Marca',
       dialogDescription: 'Tem certeza que deseja excluir este registro?',
       onPressed: () => {
-        BrandDetails.deleteBrandDetails(
+        brandDetails.deleteBrandDetails(
           id: brand.id,
         ),
         Navigator.pop(context),
@@ -39,6 +41,8 @@ class BrandActions {
     required Brand brand,
     required GlobalKey<FormState> formKey,
   }) {
+    BrandDetails brandDetails = BrandDetails();
+
     return showModalBottomSheet<Widget>(
       isScrollControlled: true,
       context: context,
@@ -98,7 +102,7 @@ class BrandActions {
                       onPressed: () => {
                         if (formKey.currentState!.validate())
                           {
-                            BrandDetails.updateBrandDetails(
+                            brandDetails.updateBrandDetails(
                               id: brand.id,
                               name: brand.name,
                             ),

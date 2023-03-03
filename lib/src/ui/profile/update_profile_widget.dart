@@ -20,6 +20,7 @@ class UpdateProfileWidget extends StatelessWidget {
   }) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  CurrentUserDetails currentUserDetails = CurrentUserDetails();
   String name = '';
   String email = '';
   String password = '';
@@ -179,7 +180,7 @@ class UpdateProfileWidget extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: CurrentUserDetails
+                                  text: currentUserDetails
                                       .getCurrentUserCreationTime(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -198,7 +199,7 @@ class UpdateProfileWidget extends StatelessWidget {
                                 dialogDescription:
                                     'Tem certeza que deseja excluir sua conta? Todos os seus dados serão excluídos. Esta ação é irreverssível.',
                                 onPressed: () => {
-                                  CurrentUserDetails.deleteAccount(
+                                  currentUserDetails.deleteAccount(
                                       context: context),
                                 },
                               );

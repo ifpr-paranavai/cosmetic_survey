@@ -17,12 +17,14 @@ class CustomerActions {
     required BuildContext context,
     required Customer customer,
   }) {
+    CustomerDetails customerDetails = CustomerDetails();
+
     return CosmeticDialog.showAlertDialog(
       context: context,
       dialogTittle: 'Excluir Cliente',
       dialogDescription: 'Tem certeza que deseja excluir este registro?',
       onPressed: () => {
-        CustomerDetails.deleteCustomerDetails(
+        customerDetails.deleteCustomerDetails(
           id: customer.id,
         ),
         Navigator.pop(context),
@@ -42,6 +44,8 @@ class CustomerActions {
     required Customer customer,
     required GlobalKey<FormState> formKey,
   }) {
+    CustomerDetails customerDetails = CustomerDetails();
+
     return showModalBottomSheet<Widget>(
       isScrollControlled: true,
       context: context,
@@ -125,7 +129,7 @@ class CustomerActions {
                       onPressed: () => {
                         if (formKey.currentState!.validate())
                           {
-                            CustomerDetails.updateCustomerDetails(
+                            customerDetails.updateCustomerDetails(
                               id: customer.id,
                               name: customer.name,
                               cpfCnpj: customer.cpf,

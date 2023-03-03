@@ -13,6 +13,9 @@ class ForgetPasswordWidget extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+
+  FirebaseAuthentication firebaseAuthentication = FirebaseAuthentication();
+
   String email = '';
 
   @override
@@ -74,7 +77,7 @@ class ForgetPasswordWidget extends StatelessWidget {
                         buttonName: 'ENVIAR E-MAIL',
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            FirebaseAuthentication.resetPassword(
+                            firebaseAuthentication.resetPassword(
                               email: _emailController.text,
                               context: context,
                             );

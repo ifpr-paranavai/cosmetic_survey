@@ -3,7 +3,7 @@ import 'package:cosmetic_survey/src/core/constants/firebase_collection.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 
 class ProductDetails {
-  static Future addProductDetails({required Product product}) async {
+  Future addProductDetails({required Product product}) async {
     final docProduct =
         FirebaseFirestore.instance.collection(FirebaseColletion.PRODUCT).doc();
 
@@ -17,7 +17,7 @@ class ProductDetails {
     await docProduct.set(doc);
   }
 
-  static Future updateProductDetails({required Product product}) async {
+  Future updateProductDetails({required Product product}) async {
     final docCustomer = FirebaseFirestore.instance
         .collection(FirebaseColletion.PRODUCT)
         .doc(product.id);
@@ -32,14 +32,13 @@ class ProductDetails {
     await docCustomer.update(docProduct);
   }
 
-  static Stream<List<Product>> readProductDetails() => FirebaseFirestore
-      .instance
+  Stream<List<Product>> readProductDetails() => FirebaseFirestore.instance
       .collection(FirebaseColletion.PRODUCT)
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList());
 
-  static void deleteProductDetails({required dynamic id}) {
+  void deleteProductDetails({required dynamic id}) {
     FirebaseFirestore.instance
         .collection(FirebaseColletion.PRODUCT)
         .doc(id)

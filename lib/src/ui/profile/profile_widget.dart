@@ -20,7 +20,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfileWidget extends StatelessWidget {
-  const ProfileWidget({Key? key}) : super(key: key);
+  ProfileWidget({Key? key}) : super(key: key);
+  CurrentUserDetails currentUserDetails = CurrentUserDetails();
+  FirebaseAuthentication firebaseAuthentication = FirebaseAuthentication();
+  GoogleSignInProvider googleSignInProvider = GoogleSignInProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,7 @@ class ProfileWidget extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(cosmeticDefaultSize),
             child: StreamBuilder<DocumentSnapshot>(
-              stream: CurrentUserDetails.readUserData(),
+              stream: currentUserDetails.readUserData(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(
@@ -60,7 +63,7 @@ class ProfileWidget extends StatelessWidget {
 
                   if (Utils.isFirebaseUser()) {
                     User firebaseUser =
-                        CurrentUserDetails.getCurrentUserFromGoogle();
+                        currentUserDetails.getCurrentUserFromGoogle();
 
                     user = CurrentUser(
                       id: firebaseUser.uid,
@@ -163,17 +166,17 @@ class ProfileWidget extends StatelessWidget {
                             dialogDescription:
                                 'Tem certeza que deseja realmente sair?',
                             onPressed: () => {
-                              if (CurrentUserDetails.getCurrentUserProvider() ==
+                              if (currentUserDetails.getCurrentUserProvider() ==
                                   FirebaseProvider.GOOGLE)
                                 {
-                                  GoogleSignInProvider.googleLogout(
+                                  googleSignInProvider.googleLogout(
                                       context: context),
                                 }
-                              else if (CurrentUserDetails
+                              else if (currentUserDetails
                                       .getCurrentUserProvider() ==
                                   FirebaseProvider.EMAIL)
                                 {
-                                  FirebaseAuthentication.signOut(
+                                  firebaseAuthentication.signOut(
                                       context: context),
                                 }
                             },
