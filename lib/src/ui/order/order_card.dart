@@ -27,13 +27,13 @@ class OrderCard extends StatelessWidget {
               Colors.primaries[_random.nextInt(Colors.primaries.length)]
                   [_random.nextInt(9) * 100],
           child: Text(
-            order.customer.name.toString().substring(0, 1).toUpperCase(),
+            order.products.first.name.toString().substring(0, 1).toUpperCase(),
           ),
         ),
-        title: Text(order.customer.name),
-        subtitle: Text(
-            //TODO formatar valor
-            'Valor total: R\$ ${order.totalValue} | Qtd. de Itens: ${order.products.length}'),
+        title: Text(order.products.first.name),
+        // subtitle: Text(
+        //     //TODO formatar valor
+        //     'Valor total: R\$ ${order.totalValue} | Qtd. de Itens: ${order.products.length}'),
         trailing: SizedBox(
           width: 100,
           child: Row(

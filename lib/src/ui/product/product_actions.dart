@@ -45,7 +45,7 @@ class ProductActions {
     ProductDetails productDetails = ProductDetails();
 
     final valueController =
-        MoneyMaskedTextController(initialValue: product.value);
+        MoneyMaskedTextController(initialValue: product.price);
 
     return showModalBottomSheet<Widget>(
       isScrollControlled: true,
@@ -114,7 +114,7 @@ class ProductActions {
                       if (value == null || value.isEmpty) {
                         return 'Informe o Valor!';
                       } else {
-                        product.value = double.parse(value
+                        product.price = double.parse(value
                             .toString()
                             .replaceAll(',', '')
                             .replaceAll('.', ''));

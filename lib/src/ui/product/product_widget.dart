@@ -35,7 +35,7 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   String name = '';
   int code = 0;
-  double productValue = 0;
+  double price = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   Product product = Product(
                     id: currentProduct.id,
                     name: currentProduct.name,
-                    value: currentProduct.value,
+                    price: currentProduct.price,
                     code: currentProduct.code,
                   );
 
@@ -169,7 +169,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               if (value == null || value.isEmpty) {
                                 return 'Informe o Valor!';
                               } else {
-                                productValue = double.parse(value
+                                price = double.parse(value
                                     .toString()
                                     .replaceAll(',', '')
                                     .replaceAll('.', ''));
@@ -213,7 +213,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                                     productDetails.addProductDetails(
                                       product: Product(
                                         name: name,
-                                        value: productValue,
+                                        price: price,
                                         code: code,
                                         //brandName: _dropdownController.text,
                                       ),

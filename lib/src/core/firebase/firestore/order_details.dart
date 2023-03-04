@@ -10,9 +10,8 @@ class OrderDetails {
     final doc = CosmeticOrder(
       id: docOrder.id,
       products: order.products,
-      customer: order.customer,
-      totalValue: order.totalValue,
       cicle: order.cicle,
+      saleDate: order.saleDate,
     ).toJson();
 
     await docOrder.set(doc);
@@ -26,9 +25,8 @@ class OrderDetails {
     final doc = CosmeticOrder(
       id: docOrder.id,
       products: order.products,
-      customer: order.customer,
-      totalValue: order.totalValue,
       cicle: order.cicle,
+      saleDate: order.saleDate,
     ).toJson();
 
     await docOrder.update(doc);

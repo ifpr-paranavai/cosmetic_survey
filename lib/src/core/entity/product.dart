@@ -1,13 +1,13 @@
 class Product {
   dynamic id;
   late String name;
-  late double value;
+  late double price;
   late int code;
 
   Product({
     this.id,
     required this.name,
-    required this.value,
+    required this.price,
     required this.code,
   });
 
@@ -15,7 +15,7 @@ class Product {
     return {
       'id': id,
       'name': name,
-      'value': value,
+      'price': price,
       'code': code,
     };
   }
@@ -23,7 +23,7 @@ class Product {
   static Product fromJson(Map<String, dynamic> json) => Product(
         id: json['id'],
         name: json['name'],
-        value: json['value'],
+        price: json['price'],
         code: json['code'],
       );
 }

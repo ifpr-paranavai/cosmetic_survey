@@ -11,7 +11,7 @@ class ProductDetails {
       id: docProduct.id,
       name: product.name.trim(),
       code: product.code,
-      value: product.value / 100,
+      price: product.price / 100,
     ).toJson();
 
     await docProduct.set(doc);
@@ -26,7 +26,7 @@ class ProductDetails {
       id: docCustomer.id,
       name: product.name.trim(),
       code: product.code,
-      value: product.value / 100,
+      price: product.price / 100,
     ).toJson();
 
     await docCustomer.update(docProduct);
