@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 
 class CosmeticDropdown extends StatefulWidget {
   String hintText = '';
-  List<String> options = [];
+  List<String> items = [];
+  TextEditingController controller;
 
   CosmeticDropdown({
     Key? key,
-    required this.options,
+    required this.items,
     required this.hintText,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -16,14 +18,12 @@ class CosmeticDropdown extends StatefulWidget {
 }
 
 class _CosmeticDropdownState extends State<CosmeticDropdown> {
-  final textController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return CustomDropdown.search(
       hintText: widget.hintText,
-      items: widget.options,
-      controller: textController,
+      items: widget.items,
+      controller: widget.controller,
       borderSide: const BorderSide(
         width: 0.6,
       ),

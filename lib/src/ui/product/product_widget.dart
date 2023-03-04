@@ -28,6 +28,7 @@ class _ProductWidgetState extends State<ProductWidget> {
   final _nameController = TextEditingController();
   final _codeController = TextEditingController();
   final _valueController = MoneyMaskedTextController();
+  final _dropdownController = TextEditingController();
 
   BrandDetails brandDetails = BrandDetails();
   ProductDetails productDetails = ProductDetails();
@@ -199,7 +200,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                           const SizedBox(height: cosmeticFormHeight - 20),
                           CosmeticDropdown(
                             hintText: 'Selecione uma Marca',
-                            options: list,
+                            items: list,
+                            controller: _dropdownController,
                           ),
                           const SizedBox(height: cosmeticFormHeight - 10),
                           SizedBox(
@@ -213,6 +215,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                                         name: name,
                                         value: productValue,
                                         code: code,
+                                        //brandName: _dropdownController.text,
                                       ),
                                     ),
                                     _nameController.clear(),
