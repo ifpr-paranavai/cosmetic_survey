@@ -4,9 +4,9 @@ import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_cpf_form_field.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_mask_form_field.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
@@ -28,11 +28,9 @@ class _CustomerWidgetState extends State<CustomerWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _cpfController = TextEditingController();
+  final _cellNumberController = TextEditingController();
 
   CustomerDetails customerDetails = CustomerDetails();
-
-  String name = '';
-  String cpf = '';
 
   @override
   Widget build(BuildContext pageContext) {
@@ -74,6 +72,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                     id: currentCustomer.id,
                     name: currentCustomer.name,
                     cpf: currentCustomer.cpf,
+                    cellNumber: currentCustomer.cellNumber,
                   );
 
                   return CustomerCard(
@@ -143,15 +142,15 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                               if (value == null || value.isEmpty) {
                                 return 'Informe o Nome!';
                               } else {
-                                name = value;
+                                _nameController.text = value;
                               }
                               return null;
                             },
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticCpfFormField(
+                          CosmeticMaskFormField(
                             controller: _cpfController,
-                            textInputAction: TextInputAction.done,
+                            textInputAction: TextInputAction.next,
                             borderRadius: 10,
                             keyboardType: TextInputType.number,
                             maskTextInputFormatter: CosmeticMasks.MASK_CPF,
@@ -165,9 +164,34 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                                 return 'Informe o CPF!';
                               }
                               if (CPFValidator.isValid(value)) {
-                                cpf = value;
+                                _cpfController.text = value;
                               } else {
                                 return 'CPF inválido!';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: cosmeticFormHeight - 20),
+                          CosmeticMaskFormField(
+                            controller: _cellNumberController,
+                            textInputAction: TextInputAction.done,
+                            borderRadius: 10,
+                            keyboardType: TextInputType.number,
+                            maskTextInputFormatter:
+                                CosmeticMasks.MASK_CELL_NUMBER,
+                            inputText: 'Número de Telefone',
+                            icon: const Icon(
+                              Icons.phone_outlined,
+                              color: cosmeticSecondaryColor,
+                            ),
+                            validator: (value) {
+                              if (!value.isEmpty &&
+                                  value.toString().length != 15) {
+                                return 'Número inválido, use o formato (99) 99999-9999';
+                              }
+
+                              if (value.toString().length == 15) {
+                                _cellNumberController.text = value;
                               }
                               return null;
                             },
@@ -180,11 +204,15 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                                 if (_formKey.currentState!.validate())
                                   {
                                     customerDetails.addCustomerDetails(
-                                      name: _nameController.text,
-                                      cpfCnpj: _cpfController.text,
+                                      cCustomer: Customer(
+                                        name: _nameController.text,
+                                        cpf: _cpfController.text,
+                                        cellNumber: _cellNumberController.text,
+                                      ),
                                     ),
                                     _nameController.clear(),
                                     _cpfController.clear(),
+                                    _cellNumberController.clear(),
                                     Navigator.pop(context),
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CosmeticSnackBar.showSnackBar(

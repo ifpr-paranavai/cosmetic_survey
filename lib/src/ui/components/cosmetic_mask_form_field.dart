@@ -2,7 +2,7 @@ import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class CosmeticCpfFormField extends StatelessWidget {
+class CosmeticMaskFormField extends StatelessWidget {
   String inputText;
   Icon icon;
   TextInputType keyboardType;
@@ -13,7 +13,7 @@ class CosmeticCpfFormField extends StatelessWidget {
   MaskTextInputFormatter maskTextInputFormatter;
   TextInputAction? textInputAction;
 
-  CosmeticCpfFormField({
+  CosmeticMaskFormField({
     Key? key,
     required this.inputText,
     required this.icon,

@@ -4,35 +4,45 @@ import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import '../../constants/firebase_collection.dart';
 
 class CustomerDetails {
-  Future addCustomerDetails({required String name, required String cpfCnpj}) async {
-    final docCustomer = FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc();
+  Future addCustomerDetails({required Customer cCustomer}) async {
+    final docCustomer =
+        FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc();
 
     final customer = Customer(
       id: docCustomer.id,
-      name: name.trim(),
-      cpf: cpfCnpj.trim(),
+      name: cCustomer.name.trim(),
+      cpf: cCustomer.cpf.trim(),
+      cellNumber: cCustomer.cellNumber?.trim(),
     ).toJson();
 
     await docCustomer.set(customer);
   }
 
-  Future updateCustomerDetails({required dynamic id, required String name, required String cpfCnpj}) async {
-    final docCustomer = FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc(id);
+  Future updateCustomerDetails({required Customer cCustomer}) async {
+    final docCustomer = FirebaseFirestore.instance
+        .collection(FirebaseColletion.CUSTOMER)
+        .doc(cCustomer.id);
 
     final customer = Customer(
       id: docCustomer.id,
-      name: name.trim(),
-      cpf: cpfCnpj.trim(),
+      name: cCustomer.name.trim(),
+      cpf: cCustomer.cpf.trim(),
+      cellNumber: cCustomer.cellNumber?.trim(),
     ).toJson();
 
     await docCustomer.update(customer);
   }
 
-  Stream<List<Customer>> readCustomerDetails() => FirebaseFirestore
-      .instance.collection(FirebaseColletion.CUSTOMER).snapshots().map((snapshot) =>
+  Stream<List<Customer>> readCustomerDetails() => FirebaseFirestore.instance
+      .collection(FirebaseColletion.CUSTOMER)
+      .snapshots()
+      .map((snapshot) =>
           snapshot.docs.map((doc) => Customer.fromJson(doc.data())).toList());
 
   void deleteCustomerDetails({required dynamic id}) {
-    FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc(id).delete();
+    FirebaseFirestore.instance
+        .collection(FirebaseColletion.CUSTOMER)
+        .doc(id)
+        .delete();
   }
 }

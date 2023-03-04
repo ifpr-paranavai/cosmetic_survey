@@ -3,9 +3,9 @@ import 'package:cosmetic_survey/src/core/constants/masks.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_cpf_form_field.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_mask_form_field.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
@@ -99,9 +99,9 @@ class CustomerActions {
                     },
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
-                  CosmeticCpfFormField(
+                  CosmeticMaskFormField(
                     initialValue: customer.cpf,
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.next,
                     borderRadius: 10,
                     keyboardType: TextInputType.number,
                     maskTextInputFormatter: CosmeticMasks.MASK_CPF,
@@ -122,6 +122,34 @@ class CustomerActions {
                       return null;
                     },
                   ),
+                  const SizedBox(height: cosmeticFormHeight - 20),
+                  CosmeticMaskFormField(
+                    initialValue: customer.cellNumber,
+                    textInputAction: TextInputAction.done,
+                    borderRadius: 10,
+                    keyboardType: TextInputType.number,
+                    maskTextInputFormatter: CosmeticMasks.MASK_CELL_NUMBER,
+                    inputText: 'Número de Telefone',
+                    icon: const Icon(
+                      Icons.phone_outlined,
+                      color: cosmeticSecondaryColor,
+                    ),
+                    validator: (value) {
+                      if (!value.isEmpty && value.toString().length != 15) {
+                        return 'Número inválido, use o formato (99) 99999-9999';
+                      }
+
+                      if (value.toString().length == 15) {
+                        customer.cellNumber = value;
+                      }
+
+                      if (value.toString().isEmpty) {
+                        customer.cellNumber = '';
+                      }
+
+                      return null;
+                    },
+                  ),
                   const SizedBox(height: cosmeticFormHeight - 10),
                   SizedBox(
                     width: double.infinity,
@@ -130,9 +158,12 @@ class CustomerActions {
                         if (formKey.currentState!.validate())
                           {
                             customerDetails.updateCustomerDetails(
-                              id: customer.id,
-                              name: customer.name,
-                              cpfCnpj: customer.cpf,
+                              cCustomer: Customer(
+                                id: customer.id,
+                                name: customer.name,
+                                cpf: customer.cpf,
+                                cellNumber: customer.cellNumber,
+                              ),
                             ),
                             customer.name = '',
                             customer.cpf = '',
