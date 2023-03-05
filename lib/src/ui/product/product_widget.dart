@@ -87,6 +87,7 @@ class _ProductWidgetState extends State<ProductWidget> {
 
                   return ProductCard(
                     product: product,
+                    brands: brands,
                     onPressedDelete: () {
                       HapticFeedback.vibrate();
 
@@ -144,6 +145,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                             borderRadius: 10,
                             keyboardType: TextInputType.name,
                             inputText: 'Nome',
+                            readOnly: false,
                             icon: const Icon(
                               Icons.edit,
                               color: cosmeticSecondaryColor,
@@ -164,6 +166,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                             borderRadius: 10,
                             keyboardType: TextInputType.number,
                             inputText: 'Valor',
+                            readOnly: false,
                             icon: const Icon(
                               Icons.attach_money,
                               color: cosmeticSecondaryColor,
@@ -186,6 +189,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                             textInputAction: TextInputAction.next,
                             borderRadius: 10,
                             keyboardType: TextInputType.number,
+                            readOnly: false,
                             inputText: 'Código',
                             icon: const Icon(
                               Icons.qr_code_2,
@@ -218,7 +222,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                                         name: name,
                                         price: price,
                                         code: code,
-                                        brandId: _getBrandId(
+                                        brandId: brandDetails.getBrandId(
                                           brands: brands,
                                           brandName: _dropdownController.text,
                                         ),
@@ -252,14 +256,5 @@ class _ProductWidgetState extends State<ProductWidget> {
         ),
       ),
     );
-  }
-
-  dynamic _getBrandId(
-      {required List<Brand> brands, required String brandName}) {
-    for (var i in brands) {
-      if (i.name == brandName) {
-        return i.id;
-      }
-    }
   }
 }

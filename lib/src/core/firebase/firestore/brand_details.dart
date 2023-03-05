@@ -66,4 +66,21 @@ class BrandDetails {
 
     return brands;
   }
+
+  dynamic getBrandId({required List<Brand> brands, required String brandName}) {
+    for (var i in brands) {
+      if (i.name == brandName) {
+        return i.id;
+      }
+    }
+  }
+
+  dynamic getBrandName(
+      {required List<Brand> brands, required dynamic brandId}) {
+    for (var i in brands) {
+      if (i.id == brandId) {
+        return i.name;
+      }
+    }
+  }
 }

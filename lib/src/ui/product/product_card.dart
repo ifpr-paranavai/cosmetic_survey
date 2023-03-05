@@ -4,14 +4,18 @@ import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/ui/product/product_actions.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/entity/brand.dart';
+
 class ProductCard extends StatelessWidget {
   Product product;
   VoidCallback onPressedDelete;
+  List<Brand> brands;
 
   ProductCard({
     Key? key,
     required this.product,
     required this.onPressedDelete,
+    required this.brands,
   }) : super(key: key);
 
   final _random = Random();
@@ -43,6 +47,7 @@ class ProductCard extends StatelessWidget {
                   context: context,
                   product: product,
                   formKey: _formKey,
+                  brands: brands,
                 ),
               ),
               IconButton(

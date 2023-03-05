@@ -85,6 +85,7 @@ class CustomerActions {
                     borderRadius: 10,
                     keyboardType: TextInputType.name,
                     inputText: 'Nome',
+                    readOnly: false,
                     icon: const Icon(
                       Icons.person_outline_rounded,
                       color: cosmeticSecondaryColor,
@@ -135,11 +136,11 @@ class CustomerActions {
                       color: cosmeticSecondaryColor,
                     ),
                     validator: (value) {
-                      if (!value.isEmpty && value.toString().length != 15) {
-                        return 'Número inválido, use o formato (99) 99999-9999';
+                      if (!value.isEmpty && value.toString().length != 16) {
+                        return 'Número inválido, use o formato (99) 9 9999-9999';
                       }
 
-                      if (value.toString().length == 15) {
+                      if (value.toString().length == 16) {
                         customer.cellNumber = value;
                       }
 

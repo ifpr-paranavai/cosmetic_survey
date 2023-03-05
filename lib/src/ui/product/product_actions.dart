@@ -1,6 +1,7 @@
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
@@ -9,6 +10,8 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+
+import '../../core/entity/brand.dart';
 
 class ProductActions {
   static Future deleteProduct({
@@ -41,8 +44,10 @@ class ProductActions {
     required BuildContext context,
     required Product product,
     required GlobalKey<FormState> formKey,
+    required List<Brand> brands,
   }) {
     ProductDetails productDetails = ProductDetails();
+    BrandDetails brandDetails = BrandDetails();
 
     final valueController =
         MoneyMaskedTextController(initialValue: product.price);
@@ -86,6 +91,7 @@ class ProductActions {
                     borderRadius: 10,
                     keyboardType: TextInputType.name,
                     inputText: 'Nome',
+                    readOnly: false,
                     icon: const Icon(
                       Icons.edit,
                       color: cosmeticSecondaryColor,
@@ -106,6 +112,7 @@ class ProductActions {
                     borderRadius: 10,
                     keyboardType: TextInputType.number,
                     inputText: 'Valor',
+                    readOnly: false,
                     icon: const Icon(
                       Icons.attach_money,
                       color: cosmeticSecondaryColor,
@@ -129,6 +136,7 @@ class ProductActions {
                     borderRadius: 10,
                     keyboardType: TextInputType.number,
                     inputText: 'Código',
+                    readOnly: false,
                     icon: const Icon(
                       Icons.qr_code_2,
                       color: cosmeticSecondaryColor,
@@ -141,6 +149,22 @@ class ProductActions {
                       }
                       return null;
                     },
+                  ),
+                  const SizedBox(height: cosmeticFormHeight - 20),
+                  CosmeticTextFormField(
+                    initialValue: brandDetails.getBrandName(
+                      brands: brands,
+                      brandId: product.brandId,
+                    ),
+                    textInputAction: TextInputAction.done,
+                    borderRadius: 10,
+                    keyboardType: TextInputType.number,
+                    inputText: 'Marca',
+                    readOnly: true,
+                    icon: const Icon(
+                      Icons.space_dashboard_rounded,
+                      color: cosmeticSecondaryColor,
+                    ),
                   ),
                   const SizedBox(height: cosmeticFormHeight - 10),
                   SizedBox(

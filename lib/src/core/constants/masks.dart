@@ -8,7 +8,7 @@ class CosmeticMasks {
   );
 
   static var MASK_CELL_NUMBER = MaskTextInputFormatter(
-    mask: '(##) #####-####',
+    mask: '(##) # ####-####',
     filter: {"#": RegExp(r'[0-9]')},
     type: MaskAutoCompletionType.lazy,
   );
