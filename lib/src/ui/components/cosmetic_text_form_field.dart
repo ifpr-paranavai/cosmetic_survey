@@ -10,6 +10,7 @@ class CosmeticTextFormField extends StatelessWidget {
   FormFieldValidator? validator;
   TextEditingController? controller;
   TextInputAction? textInputAction;
+  bool readOnly;
 
   CosmeticTextFormField({
     Key? key,
@@ -17,6 +18,7 @@ class CosmeticTextFormField extends StatelessWidget {
     required this.icon,
     required this.keyboardType,
     required this.borderRadius,
+    required this.readOnly,
     this.validator,
     this.initialValue,
     this.controller,
@@ -31,6 +33,7 @@ class CosmeticTextFormField extends StatelessWidget {
       initialValue: initialValue,
       keyboardType: keyboardType,
       validator: validator,
+      readOnly: readOnly,
       decoration: InputDecoration(
         label: Text(inputText),
         prefixIcon: icon,

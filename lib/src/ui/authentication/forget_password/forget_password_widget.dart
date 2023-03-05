@@ -55,6 +55,7 @@ class ForgetPasswordWidget extends StatelessWidget {
                       ),
                       controller: _emailController,
                       inputText: 'E-Mail',
+                      readOnly: false,
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.emailAddress,
                       borderRadius: 10.0,

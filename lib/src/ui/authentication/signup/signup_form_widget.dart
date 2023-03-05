@@ -40,6 +40,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
               borderRadius: 10,
               keyboardType: TextInputType.name,
               inputText: 'Nome',
+              readOnly: false,
               icon: const Icon(
                 Icons.person_outline_rounded,
                 color: cosmeticSecondaryColor,
@@ -60,6 +61,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
               borderRadius: 10,
               keyboardType: TextInputType.emailAddress,
               inputText: 'E-Mail',
+              readOnly: false,
               icon: const Icon(
                 Icons.email_outlined,
                 color: cosmeticSecondaryColor,

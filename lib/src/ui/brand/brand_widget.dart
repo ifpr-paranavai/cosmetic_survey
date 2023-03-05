@@ -129,6 +129,7 @@ class _CustomerWidgetState extends State<BrandWidget> {
                             borderRadius: 10,
                             keyboardType: TextInputType.name,
                             inputText: 'Nome',
+                            readOnly: false,
                             icon: const Icon(
                               Icons.drive_file_rename_outline,
                               color: cosmeticSecondaryColor,

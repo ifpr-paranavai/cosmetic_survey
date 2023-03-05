@@ -39,6 +39,7 @@ class CosmeticLoginFormWidget extends StatelessWidget {
               borderRadius: 10,
               keyboardType: TextInputType.emailAddress,
               inputText: 'E-Mail',
+              readOnly: false,
               icon: const Icon(
                 Icons.email_outlined,
                 color: cosmeticSecondaryColor,

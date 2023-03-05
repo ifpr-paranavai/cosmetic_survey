@@ -98,6 +98,7 @@ class UpdateProfileWidget extends StatelessWidget {
                         borderRadius: 100,
                         keyboardType: TextInputType.name,
                         inputText: 'Nome',
+                        readOnly: false,
                         icon: const Icon(
                           Icons.person_outline_rounded,
                           color: cosmeticSecondaryColor,
@@ -116,6 +117,7 @@ class UpdateProfileWidget extends StatelessWidget {
                         borderRadius: 100,
                         keyboardType: TextInputType.emailAddress,
                         inputText: 'E-Mail',
+                        readOnly: false,
                         icon: const Icon(
                           Icons.email_outlined,
                           color: cosmeticSecondaryColor,
