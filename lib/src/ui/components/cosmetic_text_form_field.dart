@@ -7,7 +7,7 @@ class CosmeticTextFormField extends StatelessWidget {
   TextInputType keyboardType;
   String? initialValue;
   double borderRadius;
-  FormFieldValidator validator;
+  FormFieldValidator? validator;
   TextEditingController? controller;
   TextInputAction? textInputAction;
 
@@ -17,7 +17,7 @@ class CosmeticTextFormField extends StatelessWidget {
     required this.icon,
     required this.keyboardType,
     required this.borderRadius,
-    required this.validator,
+    this.validator,
     this.initialValue,
     this.controller,
     this.textInputAction,

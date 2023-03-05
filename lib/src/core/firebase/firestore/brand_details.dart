@@ -47,4 +47,23 @@ class BrandDetails {
 
     return brands;
   }
+
+  List<Brand> readBrands() {
+    List<Brand> brands = [];
+
+    readBrandDetails().forEach(
+      (element) {
+        for (var i in element) {
+          var brand = Brand(
+            id: i.id,
+            name: i.name,
+          );
+
+          brands.add(brand);
+        }
+      },
+    );
+
+    return brands;
+  }
 }

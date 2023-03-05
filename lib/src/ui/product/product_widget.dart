@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
+import 'package:cosmetic_survey/src/core/entity/brand.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
@@ -40,6 +41,7 @@ class _ProductWidgetState extends State<ProductWidget> {
   @override
   Widget build(BuildContext context) {
     var list = brandDetails.readBrandNames();
+    var brands = brandDetails.readBrands();
 
     return SafeArea(
       child: Scaffold(
@@ -80,6 +82,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     name: currentProduct.name,
                     price: currentProduct.price,
                     code: currentProduct.code,
+                    brandId: currentProduct.brandId,
                   );
 
                   return ProductCard(
@@ -215,12 +218,16 @@ class _ProductWidgetState extends State<ProductWidget> {
                                         name: name,
                                         price: price,
                                         code: code,
-                                        //brandName: _dropdownController.text,
+                                        brandId: _getBrandId(
+                                          brands: brands,
+                                          brandName: _dropdownController.text,
+                                        ),
                                       ),
                                     ),
                                     _nameController.clear(),
                                     _codeController.clear(),
                                     _valueController.clear(),
+                                    _dropdownController.clear(),
                                     Navigator.pop(context),
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CosmeticSnackBar.showSnackBar(
@@ -245,5 +252,14 @@ class _ProductWidgetState extends State<ProductWidget> {
         ),
       ),
     );
+  }
+
+  dynamic _getBrandId(
+      {required List<Brand> brands, required String brandName}) {
+    for (var i in brands) {
+      if (i.name == brandName) {
+        return i.id;
+      }
+    }
   }
 }
