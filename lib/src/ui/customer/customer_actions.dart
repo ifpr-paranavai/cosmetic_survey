@@ -86,6 +86,7 @@ class CustomerActions {
                     keyboardType: TextInputType.name,
                     inputText: 'Nome',
                     readOnly: false,
+                    maxLengh: 55,
                     icon: const Icon(
                       Icons.person_outline_rounded,
                       color: cosmeticSecondaryColor,

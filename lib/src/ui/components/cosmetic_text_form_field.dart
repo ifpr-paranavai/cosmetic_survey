@@ -11,6 +11,7 @@ class CosmeticTextFormField extends StatelessWidget {
   TextEditingController? controller;
   TextInputAction? textInputAction;
   bool readOnly;
+  int? maxLengh;
 
   CosmeticTextFormField({
     Key? key,
@@ -23,6 +24,7 @@ class CosmeticTextFormField extends StatelessWidget {
     this.initialValue,
     this.controller,
     this.textInputAction,
+    this.maxLengh,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class CosmeticTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       readOnly: readOnly,
+      maxLength: maxLengh,
       decoration: InputDecoration(
         label: Text(inputText),
         prefixIcon: icon,

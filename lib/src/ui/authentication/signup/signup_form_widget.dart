@@ -91,6 +91,8 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Informe a Senha!';
+                } else if (value.toString().length < 6) {
+                  return 'A senha deve conter no mínimo 6 caracteres!';
                 } else {
                   password = value;
                 }

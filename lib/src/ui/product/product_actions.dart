@@ -90,6 +90,7 @@ class ProductActions {
                     textInputAction: TextInputAction.next,
                     borderRadius: 10,
                     keyboardType: TextInputType.name,
+                    maxLengh: 55,
                     inputText: 'Nome',
                     readOnly: false,
                     icon: const Icon(

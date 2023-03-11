@@ -9,6 +9,7 @@ class CosmeticPasswordFormField extends StatefulWidget {
   FormFieldValidator validator;
   TextEditingController? controller;
   TextInputAction? textInputAction;
+  int? maxLengh;
 
   CosmeticPasswordFormField({
     Key? key,
@@ -19,6 +20,7 @@ class CosmeticPasswordFormField extends StatefulWidget {
     required this.validator,
     this.controller,
     this.textInputAction,
+    this.maxLengh,
   }) : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class _CosmeticPasswordFormField extends State<CosmeticPasswordFormField> {
       initialValue: widget.initialValue,
       keyboardType: TextInputType.visiblePassword,
       validator: widget.validator,
+      maxLength: widget.maxLengh,
       decoration: InputDecoration(
         label: Text(
           widget.inputText,

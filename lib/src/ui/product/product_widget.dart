@@ -145,6 +145,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                             borderRadius: 10,
                             keyboardType: TextInputType.name,
                             inputText: 'Nome',
+                            maxLengh: 55,
                             readOnly: false,
                             icon: const Icon(
                               Icons.edit,
@@ -236,7 +237,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CosmeticSnackBar.showSnackBar(
                                         context: context,
-                                        message: 'Cliente criado.',
+                                        message: 'Produto criado.',
                                       ),
                                     ),
                                   },
