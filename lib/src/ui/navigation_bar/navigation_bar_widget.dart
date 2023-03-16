@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/ui/brand/brand_widget.dart';
+import 'package:cosmetic_survey/src/ui/home/home_widget.dart';
 import 'package:cosmetic_survey/src/ui/product/product_widget.dart';
 import 'package:cosmetic_survey/src/ui/profile/profile_widget.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,7 @@ class _CosmeticBottomNavigationBarState
   int index = 0;
 
   final screens = [
-    const Center(
-      child: Text(
-        'Inicio',
-        style: TextStyle(fontSize: 30),
-      ),
-    ),
+    const HomeWidget(),
     const OrderWidget(),
     const ProductWidget(),
     const BrandWidget(),
