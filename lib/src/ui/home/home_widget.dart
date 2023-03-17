@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cosmetic_survey/src/core/entity/user.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
+import 'package:cosmetic_survey/src/ui/home/home_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -56,9 +57,31 @@ class _HomeWidgetState extends State<HomeWidget> {
 
                   return Column(
                     children: [
+                      //TODO fazer com que o texto fique na esquerda
                       Text(
                         '${currentUserDetails.getTimeDay()}, ${currentUserDetails.handleName(user.name)}!',
                         style: Theme.of(context).textTheme.titleLarge,
+                        textAlign: TextAlign.left,
+                      ),
+                      HomeCard(
+                        value: 500.00,
+                        description: 'Valor total das vendas',
+                        amountValue: true,
+                      ),
+                      HomeCard(
+                        quantity: 15,
+                        description: 'Pedidos realizados',
+                        amountValue: false,
+                      ),
+                      HomeCard(
+                        value: 300.00,
+                        description: 'Valor recebido',
+                        amountValue: true,
+                      ),
+                      HomeCard(
+                        value: 200.00,
+                        description: 'Valor a receber',
+                        amountValue: true,
                       ),
                     ],
                   );

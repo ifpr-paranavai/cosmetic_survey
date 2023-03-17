@@ -1,6 +1,5 @@
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
-import 'package:cosmetic_survey/src/core/entity/brand.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
