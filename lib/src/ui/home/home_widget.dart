@@ -57,12 +57,28 @@ class _HomeWidgetState extends State<HomeWidget> {
 
                   return Column(
                     children: [
-                      //TODO fazer com que o texto fique na esquerda
-                      Text(
-                        '${currentUserDetails.getTimeDay()}, ${currentUserDetails.handleName(user.name)}!',
-                        style: Theme.of(context).textTheme.titleLarge,
-                        textAlign: TextAlign.left,
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '${currentUserDetails.getCurrentTime()}, ${currentUserDetails.handleName(user.name)}!',
+                                style: Theme.of(context).textTheme.titleLarge,
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                currentUserDetails.getCurrentDate(),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
+                      const Divider(),
+                      const SizedBox(height: 15.0),
                       HomeCard(
                         value: 500.00,
                         description: 'Valor total das vendas',

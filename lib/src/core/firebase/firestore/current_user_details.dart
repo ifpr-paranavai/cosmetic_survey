@@ -39,16 +39,22 @@ class CurrentUserDetails {
     return firstLetter + restOfTheName;
   }
 
-  String getTimeDay() {
+  String getCurrentTime() {
     var currentTime = DateTime.now();
 
-    if (currentTime.hour >= 7 && currentTime.hour < 12) {
+    if (currentTime.hour >= 6 && currentTime.hour < 12) {
       return 'Bom dia';
     } else if (currentTime.hour >= 12 && currentTime.hour < 18) {
       return 'Boa tarde';
     } else {
       return 'Boa noite';
     }
+  }
+
+  String getCurrentDate() {
+    return DateFormat(DateFormat.MONTH_WEEKDAY_DAY, 'pt_Br')
+        .format(DateTime.now().toLocal())
+        .toString();
   }
 
   Future deleteAccount({required BuildContext context}) async {
