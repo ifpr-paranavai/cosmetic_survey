@@ -3,10 +3,13 @@ import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
+import 'package:cosmetic_survey/src/ui/order/create_order_widget.dart';
 import 'package:cosmetic_survey/src/ui/order/order_actions.dart';
 import 'package:cosmetic_survey/src/ui/order/order_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../core/firebase/firestore/brand_details.dart';
 
 class OrderWidget extends StatefulWidget {
   const OrderWidget({Key? key}) : super(key: key);
@@ -17,9 +20,12 @@ class OrderWidget extends StatefulWidget {
 
 class _OrderWidgetState extends State<OrderWidget> {
   OrderDetails orderDetails = OrderDetails();
+  BrandDetails brandDetails = BrandDetails();
 
   @override
   Widget build(BuildContext context) {
+    var brands = brandDetails.readBrandNames();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -81,7 +87,12 @@ class _OrderWidgetState extends State<OrderWidget> {
         ),
         floatingActionButton: CosmeticFloatingActionButton(
           onPressed: () => {
-            //TODO tela para cadastrar um pedido
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CreateOrderWidget(brands: brands),
+              ),
+            ),
           },
           icon: Icons.add,
         ),
