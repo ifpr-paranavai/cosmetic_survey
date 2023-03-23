@@ -9,27 +9,12 @@ class OrderDetails {
 
     final doc = CosmeticOrder(
       id: docOrder.id,
-      products: order.products,
+      // products: order.products,
       cicle: order.cicle,
-      saleDate: order.saleDate,
+      saleDate: DateTime.now(),
     ).toJson();
 
     await docOrder.set(doc);
-  }
-
-  Future updateOrderDetails({required CosmeticOrder order}) async {
-    final docOrder = FirebaseFirestore.instance
-        .collection(FirebaseColletion.ORDER)
-        .doc(order.id);
-
-    final doc = CosmeticOrder(
-      id: docOrder.id,
-      products: order.products,
-      cicle: order.cicle,
-      saleDate: order.saleDate,
-    ).toJson();
-
-    await docOrder.update(doc);
   }
 
   Stream<List<CosmeticOrder>> readOrderDetails() => FirebaseFirestore.instance

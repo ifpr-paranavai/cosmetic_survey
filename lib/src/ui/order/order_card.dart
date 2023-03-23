@@ -26,11 +26,9 @@ class OrderCard extends StatelessWidget {
           backgroundColor:
               Colors.primaries[_random.nextInt(Colors.primaries.length)]
                   [_random.nextInt(9) * 100],
-          child: Text(
-            order.products.first.name.toString().substring(0, 1).toUpperCase(),
-          ),
+          child: const Text('TEST'), //TODO ver qual informação colocar aqui
         ),
-        title: Text(order.products.first.name),
+        title: Text(order.cicle.toString()),
         // subtitle: Text(
         //     //TODO formatar valor
         //     'Valor total: R\$ ${order.totalValue} | Qtd. de Itens: ${order.products.length}'),

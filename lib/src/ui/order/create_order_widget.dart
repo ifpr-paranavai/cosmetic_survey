@@ -98,9 +98,8 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                           if (_formKey.currentState!.validate()) {
                             orderDetails.addOrderDetails(
                               order: CosmeticOrder(
-                                products: [],
+                                // products: [],
                                 cicle: cicle,
-                                saleDate: DateTime.now(),
                               ),
                             );
                             _dropdownController.clear();

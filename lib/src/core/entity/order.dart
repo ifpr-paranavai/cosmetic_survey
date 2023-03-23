@@ -1,22 +1,23 @@
-import 'package:cosmetic_survey/src/core/entity/product.dart';
+
 
 class CosmeticOrder {
   dynamic id;
-  late List<Product> products = <Product>[];
+
+  // late List<Product> products = <Product>[];
   late int cicle;
-  late DateTime saleDate;
+  late DateTime? saleDate;
 
   CosmeticOrder({
     this.id,
-    required this.products,
+    // required this.products,
     required this.cicle,
-    required this.saleDate,
+    this.saleDate,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'products': products,
+      // 'products': products,
       'cicle': cicle,
       'saleDate': saleDate,
     };
@@ -24,8 +25,8 @@ class CosmeticOrder {
 
   static CosmeticOrder fromJson(Map<String, dynamic> json) => CosmeticOrder(
         id: json['id'],
-        products: json['products'], //TODO fazer a conversão corretamente
+        // products: json['products'], //TODO fazer a conversão corretamente
         cicle: json['cicle'],
-        saleDate: json['saleDate'],
+        // saleDate: json['saleDate'],
       );
 }
