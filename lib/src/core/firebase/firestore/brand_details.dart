@@ -10,17 +10,21 @@ class BrandDetails {
     final brand = Brand(
       id: docBrand.id,
       name: name.trim(),
+      creationTime: DateTime.now(),
     ).toJson();
 
     await docBrand.set(brand);
   }
 
-  Future updateBrandDetails({required dynamic id, required String name}) async {
-    final docBrand = FirebaseFirestore.instance.collection(FirebaseColletion.BRAND).doc(id);
+  Future updateBrandDetails({required Brand cBrand}) async {
+    final docBrand = FirebaseFirestore.instance
+        .collection(FirebaseColletion.BRAND)
+        .doc(cBrand.id);
 
     final brand = Brand(
       id: docBrand.id,
-      name: name.trim(),
+      name: cBrand.name.trim(),
+      creationTime: cBrand.creationTime,
     ).toJson();
 
     await docBrand.update(brand);

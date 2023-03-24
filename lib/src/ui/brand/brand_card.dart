@@ -32,6 +32,9 @@ class BrandCard extends StatelessWidget {
             brand.name.toString().substring(0, 1).toUpperCase(),
           ),
         ),
+        onTap: () {
+          BrandActions.showInfoDialog(context: context, brand: brand);
+        },
         title: Text(brand.name),
         trailing: SizedBox(
           width: 100,

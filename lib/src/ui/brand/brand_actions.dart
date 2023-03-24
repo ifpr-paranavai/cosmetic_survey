@@ -9,6 +9,8 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/utils/utils.dart';
+
 class BrandActions {
   static Future deleteBrand({
     required BuildContext context,
@@ -105,8 +107,7 @@ class BrandActions {
                         if (formKey.currentState!.validate())
                           {
                             brandDetails.updateBrandDetails(
-                              id: brand.id,
-                              name: brand.name,
+                              cBrand: brand,
                             ),
                             brand.name = '',
                             Navigator.pop(context),
@@ -126,6 +127,36 @@ class BrandActions {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  static Future showInfoDialog(
+      {required BuildContext context, required Brand brand}) {
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Informações detalhadas'),
+        content: Text(
+            'Nome: ${brand.name}\nData de criação: ${Utils.formatDate(date: brand.creationTime!)}'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ButtonStyle(
+              overlayColor: MaterialStatePropertyAll<Color>(
+                cosmeticPrimaryColor.withOpacity(0.1),
+              ),
+            ),
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: cosmeticPrimaryColor,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

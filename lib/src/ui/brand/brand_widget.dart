@@ -68,6 +68,7 @@ class _CustomerWidgetState extends State<BrandWidget> {
                   Brand brand = Brand(
                     id: currentBrand.id,
                     name: currentBrand.name,
+                    creationTime: currentBrand.creationTime,
                   );
 
                   return BrandCard(

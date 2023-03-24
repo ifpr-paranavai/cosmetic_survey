@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 import '../../core/entity/brand.dart';
+import '../../core/utils/utils.dart';
 
 class ProductActions {
   static Future deleteProduct({
@@ -194,6 +195,45 @@ class ProductActions {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  static Future showInfoDialog(
+      {required BuildContext context,
+      required Product product,
+      required List<Brand> brands}) {
+    BrandDetails brandDetails = BrandDetails();
+
+    var brand = brandDetails.getBrandName(
+      brands: brands,
+      brandId: product.brandId,
+    );
+
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Informações detalhadas'),
+        content: Text(
+            'Nome: ${product.name}\nPreço: R\$ ${product.price}\nCódigo: ${product.code}\nMarca: $brand\nData de criação: ${Utils.formatDate(date: product.creationTime!)}'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ButtonStyle(
+              overlayColor: MaterialStatePropertyAll<Color>(
+                cosmeticPrimaryColor.withOpacity(0.1),
+              ),
+            ),
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: cosmeticPrimaryColor,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

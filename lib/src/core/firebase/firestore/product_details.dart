@@ -13,6 +13,7 @@ class ProductDetails {
       code: product.code,
       price: product.price / 100,
       brandId: product.brandId,
+      creationTime: DateTime.now(),
     ).toJson();
 
     await docProduct.set(doc);
@@ -29,6 +30,7 @@ class ProductDetails {
       code: product.code,
       price: product.price / 100,
       brandId: product.brandId,
+      creationTime: product.creationTime,
     ).toJson();
 
     await docCustomer.update(docProduct);

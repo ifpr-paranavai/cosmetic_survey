@@ -3,6 +3,7 @@ import 'package:cosmetic_survey/src/core/constants/masks.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
+import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_mask_form_field.dart';
@@ -165,6 +166,7 @@ class CustomerActions {
                                 name: customer.name,
                                 cpf: customer.cpf,
                                 cellNumber: customer.cellNumber,
+                                creationTime: customer.creationTime,
                               ),
                             ),
                             customer.name = '',
@@ -186,6 +188,39 @@ class CustomerActions {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  static Future showInfoDialog(
+      {required BuildContext context, required Customer customer}) {
+    var cellNumber =
+        customer.cellNumber != '' ? customer.cellNumber : 'Não informado.';
+
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Informações detalhadas'),
+        content: Text(
+            'Nome: ${customer.name}\nCPF: ${customer.cpf}\nTelefone: $cellNumber\nData de criação: ${Utils.formatDate(date: customer.creationTime!)}'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ButtonStyle(
+              overlayColor: MaterialStatePropertyAll<Color>(
+                cosmeticPrimaryColor.withOpacity(0.1),
+              ),
+            ),
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: cosmeticPrimaryColor,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

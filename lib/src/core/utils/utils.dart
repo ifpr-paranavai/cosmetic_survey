@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/core/constants/firebase_providers.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Utils {
@@ -37,11 +38,17 @@ class Utils {
 
   static bool isFirebaseUser() {
     CurrentUserDetails currentUserDetails = CurrentUserDetails();
-    
+
     if (currentUserDetails.getCurrentUserProvider() ==
         FirebaseProvider.GOOGLE) {
       return true;
     }
     return false;
+  }
+
+  static String formatDate({required DateTime date}) {
+    return DateFormat(DateFormat.YEAR_MONTH_DAY, 'pt_Br')
+        .format(date)
+        .toString();
   }
 }

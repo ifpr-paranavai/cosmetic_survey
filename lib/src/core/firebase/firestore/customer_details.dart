@@ -13,6 +13,7 @@ class CustomerDetails {
       name: cCustomer.name.trim(),
       cpf: cCustomer.cpf.trim(),
       cellNumber: cCustomer.cellNumber?.trim(),
+      creationTime: DateTime.now(),
     ).toJson();
 
     await docCustomer.set(customer);
@@ -28,6 +29,7 @@ class CustomerDetails {
       name: cCustomer.name.trim(),
       cpf: cCustomer.cpf.trim(),
       cellNumber: cCustomer.cellNumber?.trim(),
+      creationTime: cCustomer.creationTime,
     ).toJson();
 
     await docCustomer.update(customer);

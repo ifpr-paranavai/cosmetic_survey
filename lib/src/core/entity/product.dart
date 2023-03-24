@@ -4,6 +4,7 @@ class Product {
   late double price;
   late int code;
   late dynamic brandId;
+  late DateTime? creationTime;
 
   Product({
     this.id,
@@ -11,6 +12,7 @@ class Product {
     required this.price,
     required this.code,
     required this.brandId,
+    this.creationTime,
   });
 
   Map<String, dynamic> toJson() {
@@ -20,6 +22,7 @@ class Product {
       'price': price,
       'code': code,
       'brandId': brandId,
+      'creationTime': creationTime,
     };
   }
 
@@ -29,5 +32,6 @@ class Product {
         price: json['price'],
         code: json['code'],
         brandId: json['brandId'],
+        creationTime: json['creationTime'].toDate(),
       );
 }

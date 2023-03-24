@@ -3,12 +3,14 @@ class Customer {
   late String name;
   late String cpf;
   String? cellNumber;
+  late DateTime? creationTime;
 
   Customer({
     this.id,
     required this.name,
     required this.cpf,
     this.cellNumber,
+    this.creationTime,
   });
 
   Map<String, dynamic> toJson() {
@@ -17,6 +19,7 @@ class Customer {
       'name': name,
       'cpf': cpf,
       'cellNumber': cellNumber,
+      'creationTime': creationTime,
     };
   }
 
@@ -25,5 +28,6 @@ class Customer {
         name: json['name'],
         cpf: json['cpf'],
         cellNumber: json['cellNumber'],
+        creationTime: json['creationTime'].toDate(),
       );
 }

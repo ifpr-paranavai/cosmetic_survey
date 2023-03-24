@@ -73,6 +73,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                     name: currentCustomer.name,
                     cpf: currentCustomer.cpf,
                     cellNumber: currentCustomer.cellNumber,
+                    creationTime: currentCustomer.creationTime,
                   );
 
                   return CustomerCard(

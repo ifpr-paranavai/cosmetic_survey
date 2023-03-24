@@ -4,6 +4,7 @@ import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
@@ -82,6 +83,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     price: currentProduct.price,
                     code: currentProduct.code,
                     brandId: currentProduct.brandId,
+                    creationTime: currentProduct.creationTime,
                   );
 
                   return ProductCard(
@@ -105,152 +107,166 @@ class _ProductWidgetState extends State<ProductWidget> {
         ),
         floatingActionButton: CosmeticFloatingActionButton(
           onPressed: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              builder: (context) => Container(
-                padding: const EdgeInsets.only(
-                  top: 4.0,
-                  left: cosmeticDefaultSize,
-                  right: cosmeticDefaultSize,
-                  bottom: cosmeticDefaultSize,
+            if (brands.isEmpty) {
+              CosmeticDialog.showAlertDialog(
+                context: context,
+                dialogTittle: 'Informação!',
+                dialogDescription:
+                    'Cadastre uma Marca antes de cadastrar um Produto!',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                showCancelButton: false,
+              );
+            } else {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CosmeticSlideBar(),
-                          Text(
-                            'Cadastro de Produto',
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          Text(
-                            'Para realizar o cadastro preencha os campos à baixo e clique em "SALVAR".',
-                            style: Theme.of(context).textTheme.bodyText1,
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticTextFormField(
-                            controller: _nameController,
-                            textInputAction: TextInputAction.next,
-                            borderRadius: 10,
-                            keyboardType: TextInputType.name,
-                            inputText: 'Nome',
-                            maxLengh: 55,
-                            readOnly: false,
-                            icon: const Icon(
-                              Icons.edit,
-                              color: cosmeticSecondaryColor,
+                builder: (context) => Container(
+                  padding: const EdgeInsets.only(
+                    top: 4.0,
+                    left: cosmeticDefaultSize,
+                    right: cosmeticDefaultSize,
+                    bottom: cosmeticDefaultSize,
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const CosmeticSlideBar(),
+                            Text(
+                              'Cadastro de Produto',
+                              style: Theme.of(context).textTheme.headline4,
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Informe o Nome!';
-                              } else {
-                                name = value;
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticTextFormField(
-                            controller: _valueController,
-                            textInputAction: TextInputAction.next,
-                            borderRadius: 10,
-                            keyboardType: TextInputType.number,
-                            inputText: 'Valor',
-                            readOnly: false,
-                            icon: const Icon(
-                              Icons.attach_money,
-                              color: cosmeticSecondaryColor,
+                            Text(
+                              'Para realizar o cadastro preencha os campos à baixo e clique em "SALVAR".',
+                              style: Theme.of(context).textTheme.bodyText1,
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Informe o Valor!';
-                              } else {
-                                price = double.parse(value
-                                    .toString()
-                                    .replaceAll(',', '')
-                                    .replaceAll('.', ''));
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticTextFormField(
-                            controller: _codeController,
-                            textInputAction: TextInputAction.next,
-                            borderRadius: 10,
-                            keyboardType: TextInputType.number,
-                            readOnly: false,
-                            inputText: 'Código',
-                            icon: const Icon(
-                              Icons.qr_code_2,
-                              color: cosmeticSecondaryColor,
+                            const SizedBox(height: cosmeticFormHeight - 20),
+                            CosmeticTextFormField(
+                              controller: _nameController,
+                              textInputAction: TextInputAction.next,
+                              borderRadius: 10,
+                              keyboardType: TextInputType.name,
+                              inputText: 'Nome',
+                              maxLengh: 55,
+                              readOnly: false,
+                              icon: const Icon(
+                                Icons.edit,
+                                color: cosmeticSecondaryColor,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Informe o Nome!';
+                                } else {
+                                  name = value;
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Informe o Código!';
-                              } else {
-                                code = int.parse(value);
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticDropdown(
-                            hintText: 'Selecione uma Marca',
-                            items: list,
-                            controller: _dropdownController,
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 10),
-                          SizedBox(
-                            width: double.infinity,
-                            child: CosmeticElevatedButton(
-                              onPressed: () => {
-                                if (_formKey.currentState!.validate())
-                                  {
-                                    productDetails.addProductDetails(
-                                      product: Product(
-                                        name: name,
-                                        price: price,
-                                        code: code,
-                                        brandId: brandDetails.getBrandId(
-                                          brands: brands,
-                                          brandName: _dropdownController.text,
+                            const SizedBox(height: cosmeticFormHeight - 20),
+                            CosmeticTextFormField(
+                              controller: _valueController,
+                              textInputAction: TextInputAction.next,
+                              borderRadius: 10,
+                              keyboardType: TextInputType.number,
+                              inputText: 'Valor',
+                              readOnly: false,
+                              icon: const Icon(
+                                Icons.attach_money,
+                                color: cosmeticSecondaryColor,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Informe o Valor!';
+                                } else {
+                                  price = double.parse(value
+                                      .toString()
+                                      .replaceAll(',', '')
+                                      .replaceAll('.', ''));
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: cosmeticFormHeight - 20),
+                            CosmeticTextFormField(
+                              controller: _codeController,
+                              textInputAction: TextInputAction.next,
+                              borderRadius: 10,
+                              keyboardType: TextInputType.number,
+                              readOnly: false,
+                              inputText: 'Código',
+                              icon: const Icon(
+                                Icons.qr_code_2,
+                                color: cosmeticSecondaryColor,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Informe o Código!';
+                                } else {
+                                  code = int.parse(value);
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: cosmeticFormHeight - 20),
+                            CosmeticDropdown(
+                              hintText: 'Selecione uma Marca',
+                              items: list,
+                              controller: _dropdownController,
+                            ),
+                            const SizedBox(height: cosmeticFormHeight - 10),
+                            SizedBox(
+                              width: double.infinity,
+                              child: CosmeticElevatedButton(
+                                onPressed: () => {
+                                  if (_formKey.currentState!.validate())
+                                    {
+                                      productDetails.addProductDetails(
+                                        product: Product(
+                                          name: name,
+                                          price: price,
+                                          code: code,
+                                          brandId: brandDetails.getBrandId(
+                                            brands: brands,
+                                            brandName: _dropdownController.text,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    _nameController.clear(),
-                                    _codeController.clear(),
-                                    _valueController.clear(),
-                                    _dropdownController.clear(),
-                                    Navigator.pop(context),
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      CosmeticSnackBar.showSnackBar(
-                                        context: context,
-                                        message: 'Produto criado.',
+                                      _nameController.clear(),
+                                      _codeController.clear(),
+                                      _valueController.clear(),
+                                      _dropdownController.clear(),
+                                      Navigator.pop(context),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        CosmeticSnackBar.showSnackBar(
+                                          context: context,
+                                          message: 'Produto criado.',
+                                        ),
                                       ),
-                                    ),
-                                  },
-                              },
-                              buttonName: 'SALVAR',
-                            ),
-                          )
-                        ],
+                                    },
+                                },
+                                buttonName: 'SALVAR',
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            );
+              );
+            }
           },
           icon: Icons.add,
         ),

@@ -35,6 +35,10 @@ class ProductCard extends StatelessWidget {
             product.name.toString().substring(0, 1).toUpperCase(),
           ),
         ),
+        onTap: () {
+          ProductActions.showInfoDialog(
+              context: context, product: product, brands: brands);
+        },
         title: Text(product.name),
         subtitle: Text('Código: ${product.code}'),
         trailing: SizedBox(

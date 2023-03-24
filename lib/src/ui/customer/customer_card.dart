@@ -32,6 +32,9 @@ class CustomerCard extends StatelessWidget {
             customer.name.toString().substring(0, 1).toUpperCase(),
           ),
         ),
+        onTap: () {
+          CustomerActions.showInfoDialog(context: context, customer: customer);
+        },
         title: Text(customer.name),
         subtitle: Text('CPF: ${customer.cpf}'),
         trailing: SizedBox(
