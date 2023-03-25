@@ -12,6 +12,8 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomerActions {
   static Future deleteCustomer({
@@ -196,6 +198,7 @@ class CustomerActions {
       {required BuildContext context, required Customer customer}) {
     var cellNumber =
         customer.cellNumber != '' ? customer.cellNumber : 'Não informado.';
+    bool cellNumberInformed = customer.cellNumber != '';
 
     return showDialog<String>(
       context: context,
@@ -204,6 +207,12 @@ class CustomerActions {
         content: Text(
             'Nome: ${customer.name}\nCPF: ${customer.cpf}\nTelefone: $cellNumber\nData de criação: ${Utils.formatDate(date: customer.creationTime!)}'),
         actions: <Widget>[
+          cellNumberInformed
+              ? sendWhatsAppMessage(phoneNumber: cellNumber!)
+              : const SizedBox(),
+          cellNumberInformed
+              ? makeCall(phoneNumber: cellNumber!)
+              : const SizedBox(),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
@@ -221,6 +230,39 @@ class CustomerActions {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  static IconButton makeCall({required String phoneNumber}) {
+    return IconButton(
+      onPressed: () {
+        launchUrl(
+          Uri(
+            scheme: 'tel',
+            path: phoneNumber,
+          ),
+        );
+      },
+      icon: const Icon(
+        Icons.call,
+        color: Colors.green,
+      ),
+    );
+  }
+
+  static IconButton sendWhatsAppMessage({required String phoneNumber}) {
+    return IconButton(
+      onPressed: () {
+        launchUrl(
+          Uri.parse(
+            "whatsapp://send?phone=$phoneNumber&text=",
+          ),
+        );
+      },
+      icon: const Icon(
+        FontAwesomeIcons.whatsapp,
+        color: cosmeticWhatsAppColor,
       ),
     );
   }
