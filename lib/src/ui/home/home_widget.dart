@@ -17,6 +17,7 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   CurrentUserDetails currentUserDetails = CurrentUserDetails();
+  Utils utils = Utils();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +72,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           Row(
                             children: [
                               Text(
-                                currentUserDetails.getCurrentDate(),
+                                utils.getCurrentDateMonthWeekdayDay(),
                               ),
                             ],
                           )

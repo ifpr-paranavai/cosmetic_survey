@@ -12,6 +12,7 @@ class OrderDetails {
       // products: order.products,
       cicle: order.cicle,
       saleDate: DateTime.now(),
+      comments: order.comments?.trim(),
     ).toJson();
 
     await docOrder.set(doc);

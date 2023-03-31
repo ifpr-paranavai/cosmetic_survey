@@ -51,12 +51,6 @@ class CurrentUserDetails {
     }
   }
 
-  String getCurrentDate() {
-    return DateFormat(DateFormat.MONTH_WEEKDAY_DAY, 'pt_Br')
-        .format(DateTime.now().toLocal())
-        .toString();
-  }
-
   Future deleteAccount({required BuildContext context}) async {
     CurrentUserDetails currentUserDetails = CurrentUserDetails();
 

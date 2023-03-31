@@ -51,4 +51,16 @@ class Utils {
         .format(date)
         .toString();
   }
+
+  String getCurrentDateMonthWeekdayDay() {
+    return DateFormat(DateFormat.MONTH_WEEKDAY_DAY, 'pt_Br')
+        .format(DateTime.now().toLocal())
+        .toString();
+  }
+
+  String getCurrentDateYearNumMonthDay() {
+    return DateFormat(DateFormat.YEAR_NUM_MONTH_DAY, 'pt_Br')
+        .format(DateTime.now().toLocal())
+        .toString();
+  }
 }

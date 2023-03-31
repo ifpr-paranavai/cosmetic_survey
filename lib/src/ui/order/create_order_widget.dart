@@ -1,7 +1,7 @@
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
+import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
@@ -10,9 +10,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/colors.dart';
 
 class CreateOrderWidget extends StatefulWidget {
-  List<String> brands = [];
-
-  CreateOrderWidget({Key? key, required this.brands}) : super(key: key);
+  const CreateOrderWidget({Key? key}) : super(key: key);
 
   @override
   State<CreateOrderWidget> createState() => _CreateOrderWidgetState();
@@ -20,12 +18,13 @@ class CreateOrderWidget extends StatefulWidget {
 
 class _CreateOrderWidgetState extends State<CreateOrderWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _dropdownController = TextEditingController();
   final _cicleController = TextEditingController();
+  final _commentsController = TextEditingController();
 
   OrderDetails orderDetails = OrderDetails();
+  Utils utils = Utils();
 
-  int cicle = 0;
+  var cicle = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +62,13 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    CosmeticDropdown(
-                      hintText: 'Selecione uma Marca',
-                      items: widget.brands,
-                      controller: _dropdownController,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Data atual: ${utils.getCurrentDateYearNumMonthDay()}',
+                        ),
+                      ],
                     ),
                     const SizedBox(height: cosmeticFormHeight - 20),
                     CosmeticTextFormField(
@@ -90,6 +91,26 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                         return null;
                       },
                     ),
+                    const SizedBox(height: cosmeticFormHeight - 20),
+                    CosmeticTextFormField(
+                      controller: _commentsController,
+                      textInputAction: TextInputAction.next,
+                      borderRadius: 10,
+                      keyboardType: TextInputType.text,
+                      readOnly: false,
+                      inputText: 'Observações',
+                      icon: const Icon(
+                        Icons.comment_outlined,
+                        color: cosmeticSecondaryColor,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          _commentsController.text = '';
+                        }
+                        return null;
+                      },
+                    ),
+                    const Divider(height: 60),
                     const SizedBox(height: cosmeticFormHeight - 10),
                     SizedBox(
                       width: double.infinity,
@@ -100,10 +121,11 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                               order: CosmeticOrder(
                                 // products: [],
                                 cicle: cicle,
+                                comments: _commentsController.text,
                               ),
                             );
-                            _dropdownController.clear();
                             _cicleController.clear();
+                            _commentsController.clear();
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                               CosmeticSnackBar.showSnackBar(
@@ -113,7 +135,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             );
                           }
                         },
-                        buttonName: 'SALVAR',
+                        buttonName: 'IR PARA PAGAMENTOS',
                       ),
                     ),
                   ],

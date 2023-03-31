@@ -86,11 +86,11 @@ class _VerifyEmailWidgetState extends State<VerifyEmailWidget> {
                 children: [
                   Text(
                     'E-Mail enviado!',
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(
                     'Verifique sua Caixa de entrada, Spam ou Lixeira.',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: cosmeticFormHeight),
@@ -99,7 +99,8 @@ class _VerifyEmailWidgetState extends State<VerifyEmailWidget> {
                     child: CosmeticElevatedButton(
                       onPressed: () {
                         firebaseAuthentication.sendVerificationEmail(
-                            context: context);
+                          context: context,
+                        );
                       },
                       buttonName: 'REENVIAR E-MAIL',
                     ),
