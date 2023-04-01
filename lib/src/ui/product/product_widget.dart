@@ -3,9 +3,9 @@ import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_brand_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
@@ -219,11 +219,8 @@ class _ProductWidgetState extends State<ProductWidget> {
                               },
                             ),
                             const SizedBox(height: cosmeticFormHeight - 20),
-                            CosmeticDropdown(
-                              hintText: 'Selecione uma Marca',
-                              items: list,
-                              controller: _dropdownController,
-                            ),
+                            const SizedBox(height: cosmeticFormHeight - 20),
+                            CosmeticBrandDropdown(brands: brands),
                             const SizedBox(height: cosmeticFormHeight - 10),
                             SizedBox(
                               width: double.infinity,
