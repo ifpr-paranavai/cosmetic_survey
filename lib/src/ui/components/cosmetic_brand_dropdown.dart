@@ -5,8 +5,13 @@ import '../../core/constants/colors.dart';
 
 class CosmeticBrandDropdown extends StatefulWidget {
   var brands = <Brand>[];
+  ValueChanged<Brand> onBrandChanged;
 
-  CosmeticBrandDropdown({Key? key, required this.brands}) : super(key: key);
+  CosmeticBrandDropdown({
+    Key? key,
+    required this.brands,
+    required this.onBrandChanged,
+  }) : super(key: key);
 
   @override
   State<CosmeticBrandDropdown> createState() => _CosmeticBrandDropdownState();
@@ -15,10 +20,10 @@ class CosmeticBrandDropdown extends StatefulWidget {
 class _CosmeticBrandDropdownState extends State<CosmeticBrandDropdown> {
   @override
   Widget build(BuildContext context) {
-    var selectedBrand = widget.brands.first;
+    Brand selectedBrand;
 
     return DropdownButtonFormField<Brand>(
-      value: selectedBrand,
+      value: null,
       decoration: InputDecoration(
         labelText: 'Selecione uma Marca',
         border: OutlineInputBorder(
@@ -45,6 +50,7 @@ class _CosmeticBrandDropdownState extends State<CosmeticBrandDropdown> {
         setState(() {
           selectedBrand = brand!;
         });
+        widget.onBrandChanged(brand!);
       },
     );
   }

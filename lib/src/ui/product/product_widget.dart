@@ -220,7 +220,11 @@ class _ProductWidgetState extends State<ProductWidget> {
                             ),
                             const SizedBox(height: cosmeticFormHeight - 20),
                             const SizedBox(height: cosmeticFormHeight - 20),
-                            CosmeticBrandDropdown(brands: brands),
+                            CosmeticBrandDropdown(
+                                brands: brands,
+                                onBrandChanged: (value) {
+                                  _dropdownController.text = value.id;
+                                }),
                             const SizedBox(height: cosmeticFormHeight - 10),
                             SizedBox(
                               width: double.infinity,
@@ -233,10 +237,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                                           name: name,
                                           price: price,
                                           code: code,
-                                          brandId: brandDetails.getBrandId(
-                                            brands: brands,
-                                            brandName: _dropdownController.text,
-                                          ),
+                                          brandId: _dropdownController.text,
                                         ),
                                       ),
                                       _nameController.clear(),
