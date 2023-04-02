@@ -17,7 +17,7 @@ class OrderWidget extends StatefulWidget {
 }
 
 class _OrderWidgetState extends State<OrderWidget> {
-  OrderDetails orderDetails = OrderDetails();
+  var orderDetails = OrderDetails();
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +58,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                   CosmeticOrder order = CosmeticOrder(
                     id: currentOrder.id,
                     // products: currentOrder.products,
+                    customerId: currentOrder.customerId,
                     cicle: currentOrder.cicle,
                   );
 

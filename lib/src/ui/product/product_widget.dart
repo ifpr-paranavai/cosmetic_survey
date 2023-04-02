@@ -3,7 +3,7 @@ import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_brand_dropdown.dart';
+import 'package:cosmetic_survey/src/ui/brand/cosmetic_brand_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
@@ -40,7 +40,6 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var list = brandDetails.readBrandNames();
     var brands = brandDetails.readBrands();
 
     return SafeArea(

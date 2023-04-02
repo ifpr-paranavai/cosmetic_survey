@@ -1,6 +1,7 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
+@Deprecated('Não utilizar! Use o dropdown dos seus respectivos tipos')
 class CosmeticDropdown extends StatefulWidget {
   String hintText = '';
   List<String> items = [];

@@ -10,6 +10,7 @@ class OrderDetails {
     final doc = CosmeticOrder(
       id: docOrder.id,
       // products: order.products,
+      customerId: order.customerId,
       cicle: order.cicle,
       saleDate: DateTime.now(),
       comments: order.comments?.trim(),
