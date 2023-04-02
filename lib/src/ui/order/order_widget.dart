@@ -1,6 +1,8 @@
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
 import 'package:cosmetic_survey/src/ui/order/create_order_widget.dart';
@@ -18,9 +20,14 @@ class OrderWidget extends StatefulWidget {
 
 class _OrderWidgetState extends State<OrderWidget> {
   var orderDetails = OrderDetails();
+  var customerDetails = CustomerDetails();
+  var productDetails = ProductDetails();
 
   @override
   Widget build(BuildContext context) {
+    var customers = customerDetails.searchAndConvertCustomers();
+    var products = productDetails.searchAndConvertProducts();
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -85,7 +92,10 @@ class _OrderWidgetState extends State<OrderWidget> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const CreateOrderWidget(),
+                builder: (context) => CreateOrderWidget(
+                  customers: customers,
+                  products: products,
+                ),
               ),
             ),
           },

@@ -47,4 +47,18 @@ class CustomerDetails {
         .doc(id)
         .delete();
   }
+
+  List<Customer> searchAndConvertCustomers() {
+    List<Customer> customers = [];
+
+    readCustomerDetails().forEach(
+      (element) {
+        for (var customer in element) {
+          customers.add(customer);
+        }
+      },
+    );
+
+    return customers;
+  }
 }

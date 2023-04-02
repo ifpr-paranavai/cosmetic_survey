@@ -48,4 +48,18 @@ class ProductDetails {
         .doc(id)
         .delete();
   }
+
+  List<Product> searchAndConvertProducts() {
+    List<Product> products = [];
+
+    readProductDetails().forEach(
+          (element) {
+        for (var product in element) {
+          products.add(product);
+        }
+      },
+    );
+
+    return products;
+  }
 }

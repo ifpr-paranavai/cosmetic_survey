@@ -40,7 +40,7 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var brands = brandDetails.readBrands();
+    var brands = brandDetails.searchAndConvertBrands();
 
     return SafeArea(
       child: Scaffold(
@@ -220,10 +220,17 @@ class _ProductWidgetState extends State<ProductWidget> {
                             const SizedBox(height: cosmeticFormHeight - 20),
                             const SizedBox(height: cosmeticFormHeight - 20),
                             CosmeticBrandDropdown(
-                                brands: brands,
-                                onBrandChanged: (value) {
-                                  _dropdownController.text = value.id;
-                                }),
+                              brands: brands,
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Selecione uma opção!';
+                                }
+                                return null;
+                              },
+                              onBrandChanged: (value) {
+                                _dropdownController.text = value.id;
+                              },
+                            ),
                             const SizedBox(height: cosmeticFormHeight - 10),
                             SizedBox(
                               width: double.infinity,

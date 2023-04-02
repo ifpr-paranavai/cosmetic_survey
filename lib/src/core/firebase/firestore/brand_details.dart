@@ -5,7 +5,8 @@ import '../../constants/firebase_collection.dart';
 
 class BrandDetails {
   Future addBrandDetails({required String name}) async {
-    final docBrand = FirebaseFirestore.instance.collection(FirebaseColletion.BRAND).doc();
+    final docBrand =
+        FirebaseFirestore.instance.collection(FirebaseColletion.BRAND).doc();
 
     final brand = Brand(
       id: docBrand.id,
@@ -30,29 +31,20 @@ class BrandDetails {
     await docBrand.update(brand);
   }
 
-  Stream<List<Brand>> readBrandDetails() => FirebaseFirestore
-      .instance.collection(FirebaseColletion.BRAND).snapshots().map((snapshot) =>
-      snapshot.docs.map((doc) => Brand.fromJson(doc.data())).toList());
+  Stream<List<Brand>> readBrandDetails() => FirebaseFirestore.instance
+      .collection(FirebaseColletion.BRAND)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Brand.fromJson(doc.data())).toList());
 
   void deleteBrandDetails({required dynamic id}) {
-    FirebaseFirestore.instance.collection(FirebaseColletion.BRAND).doc(id).delete();
+    FirebaseFirestore.instance
+        .collection(FirebaseColletion.BRAND)
+        .doc(id)
+        .delete();
   }
 
-  List<String> readBrandNames() {
-    List<String> brands = [];
-
-    readBrandDetails().forEach(
-      (element) {
-        for (var i in element) {
-          brands.add(i.name);
-        }
-      },
-    );
-
-    return brands;
-  }
-
-  List<Brand> readBrands() {
+  List<Brand> searchAndConvertBrands() {
     List<Brand> brands = [];
 
     readBrandDetails().forEach(
@@ -61,6 +53,7 @@ class BrandDetails {
           var brand = Brand(
             id: i.id,
             name: i.name,
+            creationTime: i.creationTime,
           );
 
           brands.add(brand);
@@ -71,14 +64,7 @@ class BrandDetails {
     return brands;
   }
 
-  dynamic getBrandId({required List<Brand> brands, required String brandName}) {
-    for (var i in brands) {
-      if (i.name == brandName) {
-        return i.id;
-      }
-    }
-  }
-
+  //TODO refatorar para não passar a lista como parâmetro e buscar no firebase pelo id
   dynamic getBrandName(
       {required List<Brand> brands, required dynamic brandId}) {
     for (var i in brands) {

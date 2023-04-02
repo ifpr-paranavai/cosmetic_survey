@@ -154,6 +154,7 @@ class ProductActions {
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
                   CosmeticTextFormField(
+                    //TODO fazer essa busca de outra forma
                     initialValue: brandDetails.getBrandName(
                       brands: brands,
                       brandId: product.brandId,
@@ -205,6 +206,7 @@ class ProductActions {
       required List<Brand> brands}) {
     BrandDetails brandDetails = BrandDetails();
 
+    //TODO fazer essa busca de outra forma
     var brand = brandDetails.getBrandName(
       brands: brands,
       brandId: product.brandId,

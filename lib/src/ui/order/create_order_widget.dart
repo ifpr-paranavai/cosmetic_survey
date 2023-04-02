@@ -1,16 +1,27 @@
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
+import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
+import 'package:cosmetic_survey/src/ui/customer/cosmetic_customer_dropdown.dart';
+import 'package:cosmetic_survey/src/ui/product/cosmetic_product_dropdown.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/constants/colors.dart';
+import '../../core/entity/customer.dart';
 
 class CreateOrderWidget extends StatefulWidget {
-  const CreateOrderWidget({Key? key}) : super(key: key);
+  List<Customer> customers;
+  List<Product> products;
+
+  CreateOrderWidget({
+    Key? key,
+    required this.customers,
+    required this.products,
+  }) : super(key: key);
 
   @override
   State<CreateOrderWidget> createState() => _CreateOrderWidgetState();
@@ -20,6 +31,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _cicleController = TextEditingController();
   final _commentsController = TextEditingController();
+  final _customerDropdownController = TextEditingController();
 
   OrderDetails orderDetails = OrderDetails();
   Utils utils = Utils();
@@ -71,6 +83,19 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                       ],
                     ),
                     const SizedBox(height: cosmeticFormHeight - 20),
+                    CosmeticCustomerDropdown(
+                      customers: widget.customers,
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Selecione uma opção!';
+                        }
+                        return null;
+                      },
+                      onCustomerChanged: (value) {
+                        _customerDropdownController.text = value.id;
+                      },
+                    ),
+                    const SizedBox(height: cosmeticFormHeight - 20),
                     CosmeticTextFormField(
                       controller: _cicleController,
                       textInputAction: TextInputAction.next,
@@ -111,6 +136,18 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                       },
                     ),
                     const Divider(height: 60),
+                    CosmeticProductDropdown(
+                      products: widget.products,
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Selecione uma opção!';
+                        }
+                        return null;
+                      },
+                      onProductChanged: (value) {
+                        //TODO decidir como vai ser salvo esse valor no banco
+                      },
+                    ),
                     const SizedBox(height: cosmeticFormHeight - 10),
                     SizedBox(
                       width: double.infinity,
@@ -120,6 +157,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             orderDetails.addOrderDetails(
                               order: CosmeticOrder(
                                 // products: [],
+                                customerId: _customerDropdownController.text,
                                 cicle: cicle,
                                 comments: _commentsController.text,
                               ),

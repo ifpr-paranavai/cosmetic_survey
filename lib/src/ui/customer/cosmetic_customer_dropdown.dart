@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class CosmeticCustomerDropdown extends StatefulWidget {
   var customers = <Customer>[];
   ValueChanged<Customer> onCustomerChanged;
+  FormFieldValidator validator;
 
   CosmeticCustomerDropdown({
     Key? key,
     required this.customers,
     required this.onCustomerChanged,
+    required this.validator,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class _CosmeticCustomerDropdownState extends State<CosmeticCustomerDropdown> {
     return DropdownButtonFormField<Customer>(
       value: null,
       decoration: uiUtil.dropdownStyle(label: 'Selecione um Cliente'),
+      validator: widget.validator,
       items: widget.customers.map((Customer customer) {
         return DropdownMenuItem<Customer>(
           value: customer,
