@@ -4,9 +4,9 @@ import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/ui/customer/cosmetic_customer_dropdown.dart';
+import 'package:cosmetic_survey/src/ui/order/payment_order_widget.dart';
 import 'package:cosmetic_survey/src/ui/product/cosmetic_product_dropdown.dart';
 import 'package:flutter/material.dart';
 
@@ -109,7 +109,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Informe o Ciclo do Pedido!';
+                          return 'Informe o ciclo do pedido!';
                         } else {
                           cicle = int.parse(value);
                         }
@@ -154,21 +154,18 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                       child: CosmeticElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            orderDetails.addOrderDetails(
-                              order: CosmeticOrder(
-                                // products: [],
-                                customerId: _customerDropdownController.text,
-                                cicle: cicle,
-                                comments: _commentsController.text,
-                              ),
+                            var order = CosmeticOrder(
+                              // products: [],
+                              customerId: _customerDropdownController.text,
+                              cicle: cicle,
+                              comments: _commentsController.text,
+                              installments: 0,
                             );
-                            _cicleController.clear();
-                            _commentsController.clear();
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              CosmeticSnackBar.showSnackBar(
-                                context: context,
-                                message: 'Pedido criado.',
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PaymentOrderWidget(order: order),
                               ),
                             );
                           }

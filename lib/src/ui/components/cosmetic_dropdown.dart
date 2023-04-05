@@ -1,17 +1,18 @@
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:cosmetic_survey/src/ui/utils/dropdown_style.dart';
 import 'package:flutter/material.dart';
 
-@Deprecated('Não utilizar! Use o dropdown dos seus respectivos tipos')
 class CosmeticDropdown extends StatefulWidget {
   String hintText = '';
   List<String> items = [];
-  TextEditingController controller;
+  ValueChanged<String> onItemChanged;
+  FormFieldValidator validator;
 
   CosmeticDropdown({
     Key? key,
     required this.items,
     required this.hintText,
-    required this.controller,
+    required this.onItemChanged,
+    required this.validator,
   }) : super(key: key);
 
   @override
@@ -19,15 +20,28 @@ class CosmeticDropdown extends StatefulWidget {
 }
 
 class _CosmeticDropdownState extends State<CosmeticDropdown> {
+  var uiUtil = UiUtil();
+
   @override
   Widget build(BuildContext context) {
-    return CustomDropdown.search(
-      hintText: widget.hintText,
-      items: widget.items,
-      controller: widget.controller,
-      borderSide: const BorderSide(
-        width: 0.6,
-      ),
+    String selectedItem;
+
+    return DropdownButtonFormField<String>(
+      value: null,
+      decoration: uiUtil.dropdownStyle(label: widget.hintText),
+      validator: widget.validator,
+      items: widget.items.map((String item) {
+        return DropdownMenuItem<String>(
+          value: item,
+          child: Text(item),
+        );
+      }).toList(),
+      onChanged: (String? item) {
+        setState(() {
+          selectedItem = item!;
+        });
+        widget.onItemChanged(item!);
+      },
     );
   }
 }

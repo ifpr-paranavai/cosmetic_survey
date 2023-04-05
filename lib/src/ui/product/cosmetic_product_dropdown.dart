@@ -33,7 +33,7 @@ class _CosmeticProductDropdownState extends State<CosmeticProductDropdown> {
       items: widget.products.map((Product product) {
         return DropdownMenuItem<Product>(
           value: product,
-          child: Text(product.name),
+          child: Text('${product.code} - ${product.name}'),
         );
       }).toList(),
       onChanged: (Product? product) {

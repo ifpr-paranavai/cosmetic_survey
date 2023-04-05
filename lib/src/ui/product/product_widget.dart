@@ -160,7 +160,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               maxLengh: 55,
                               readOnly: false,
                               icon: const Icon(
-                                Icons.edit,
+                                Icons.drive_file_rename_outline,
                                 color: cosmeticSecondaryColor,
                               ),
                               validator: (value) {

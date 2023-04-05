@@ -14,6 +14,7 @@ class OrderDetails {
       cicle: order.cicle,
       saleDate: DateTime.now(),
       comments: order.comments?.trim(),
+      installments: order.installments,
     ).toJson();
 
     await docOrder.set(doc);

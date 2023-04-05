@@ -6,6 +6,7 @@ class CosmeticOrder {
   late int cicle;
   late DateTime? saleDate;
   late String? comments;
+  late int? installments;
 
   CosmeticOrder({
     this.id,
@@ -14,6 +15,7 @@ class CosmeticOrder {
     required this.cicle,
     this.saleDate,
     this.comments,
+    this.installments
   });
 
   Map<String, dynamic> toJson() {
@@ -24,6 +26,7 @@ class CosmeticOrder {
       'saleDate': saleDate,
       'comments': comments,
       'customerId': customerId,
+      'installments': installments,
     };
   }
 
@@ -33,5 +36,6 @@ class CosmeticOrder {
         customerId: json['customerId'],
         cicle: json['cicle'],
         comments: json['comments'],
+        installments: json['installments'],
       );
 }
