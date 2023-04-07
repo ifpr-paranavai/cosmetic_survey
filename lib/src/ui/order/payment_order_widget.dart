@@ -2,9 +2,11 @@ import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/installments.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/entity/payment.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +24,7 @@ class PaymentOrderWidget extends StatefulWidget {
 
 class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var orderDetails = OrderDetails();
   var utils = Utils();
 
   var installments = [
@@ -36,7 +39,8 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
   var paymentType = [
     PaymentType.PAYMENT_CASH,
     PaymentType.PAYMENT_PIX,
-    PaymentType.PAYMENT_CARD
+    PaymentType.PAYMENT_CARD,
+    PaymentType.PAYMENT_TRANSFER
   ];
 
   var paymentTypeSelected = '';
@@ -116,18 +120,26 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                       borderRadius: 10.0,
                       readOnly: true,
                     ),
+                    //TODO fazer um FormField contendo a informação do valor total do pedido (não editável)
                     const SizedBox(height: cosmeticFormHeight - 10),
                     SizedBox(
                       width: double.infinity,
                       child: CosmeticElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            var order = widget.order;
-
-                            var payment = Payment(
-                              installmentValue: 0,
-                              installmentNumber: 1,
-                              paymentType: paymentTypeSelected,
+                            orderDetails.addOrderDetails(
+                              order: widget.order,
+                              payment: Payment(
+                                paymentType: paymentTypeSelected,
+                              ),
+                            );
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              CosmeticSnackBar.showSnackBar(
+                                context: context,
+                                message: 'Pedido criado.',
+                              ),
                             );
                           }
                         },

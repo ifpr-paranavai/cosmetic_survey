@@ -1,22 +1,25 @@
 class Payment {
   dynamic id;
-  late double installmentValue;
+  dynamic orderId;
+  late double? installmentValue;
   late DateTime? paymentDate;
-  late int installmentNumber;
+  late int? installmentNumber;
   late String paymentType;
 
   Payment({
     this.id,
-    required this.installmentValue,
+    this.orderId,
+    this.installmentValue,
     this.paymentDate,
-    required this.installmentNumber,
+    this.installmentNumber,
     required this.paymentType,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'amountReceivable': installmentValue,
+      'orderId': orderId,
+      'installmentValue': installmentValue,
       'paymentDate': paymentDate,
       'installments': installmentNumber,
       'paymentType': paymentType,
@@ -25,6 +28,7 @@ class Payment {
 
   static Payment fromJson(Map<String, dynamic> json) => Payment(
         id: json['id'],
+        orderId: json['orderId'],
         installmentValue: json['installmentValue'],
         paymentDate: json['paymentDate'],
         installmentNumber: json['installments'],
