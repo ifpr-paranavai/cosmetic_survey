@@ -3,7 +3,9 @@ import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/ui/customer/cosmetic_customer_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/order/payment_order_widget.dart';
@@ -40,6 +42,10 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> dropdowns = [
+      createDropdownItem(),
+    ];
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -67,119 +73,153 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
           padding: const EdgeInsets.all(cosmeticDefaultSize),
           child: Form(
             key: _formKey,
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                child: Column(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Data atual: ${utils.getCurrentDateYearNumMonthDay()}',
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    CosmeticCustomerDropdown(
-                      customers: widget.customers,
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Selecione uma opção!';
-                        }
-                        return null;
-                      },
-                      onCustomerChanged: (value) {
-                        _customerDropdownController.text = value.id;
-                      },
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    CosmeticTextFormField(
-                      controller: _cicleController,
-                      textInputAction: TextInputAction.next,
-                      borderRadius: 10,
-                      keyboardType: TextInputType.number,
-                      readOnly: false,
-                      inputText: 'Ciclo',
-                      icon: const Icon(
-                        Icons.menu_open_outlined,
-                        color: cosmeticSecondaryColor,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Informe o ciclo do pedido!';
-                        } else {
-                          cicle = int.parse(value);
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    CosmeticTextFormField(
-                      controller: _commentsController,
-                      textInputAction: TextInputAction.next,
-                      borderRadius: 10,
-                      keyboardType: TextInputType.text,
-                      readOnly: false,
-                      inputText: 'Observações',
-                      icon: const Icon(
-                        Icons.comment_outlined,
-                        color: cosmeticSecondaryColor,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          _commentsController.text = '';
-                        }
-                        return null;
-                      },
-                    ),
-                    const Divider(height: 60),
-                    CosmeticProductDropdown(
-                      products: widget.products,
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Selecione uma opção!';
-                        }
-                        return null;
-                      },
-                      onProductChanged: (value) {
-                        //TODO decidir como vai ser salvo esse valor no banco
-                      },
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CosmeticElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            var order = CosmeticOrder(
-                              // products: [],
-                              customerId: _customerDropdownController.text,
-                              cicle: cicle,
-                              comments: _commentsController.text,
-                              installments: 0,
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    PaymentOrderWidget(order: order),
-                              ),
-                            );
-                          }
-                        },
-                        buttonName: 'IR PARA PAGAMENTOS',
-                      ),
+                    Text(
+                      'Data atual: ${utils.getCurrentDateYearNumMonthDay()}',
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: cosmeticFormHeight - 20),
+                CosmeticCustomerDropdown(
+                  customers: widget.customers,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Selecione uma opção!';
+                    }
+                    return null;
+                  },
+                  onCustomerChanged: (value) {
+                    _customerDropdownController.text = value.id;
+                  },
+                ),
+                const SizedBox(height: cosmeticFormHeight - 20),
+                CosmeticTextFormField(
+                  controller: _cicleController,
+                  textInputAction: TextInputAction.next,
+                  borderRadius: 10,
+                  keyboardType: TextInputType.number,
+                  readOnly: false,
+                  inputText: 'Ciclo',
+                  icon: const Icon(
+                    Icons.menu_open_outlined,
+                    color: cosmeticSecondaryColor,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Informe o ciclo do pedido!';
+                    } else {
+                      cicle = int.parse(value);
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: cosmeticFormHeight - 20),
+                CosmeticTextFormField(
+                  controller: _commentsController,
+                  textInputAction: TextInputAction.next,
+                  borderRadius: 10,
+                  keyboardType: TextInputType.text,
+                  readOnly: false,
+                  inputText: 'Observações',
+                  icon: const Icon(
+                    Icons.comment_outlined,
+                    color: cosmeticSecondaryColor,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      _commentsController.text = '';
+                    }
+                    return null;
+                  },
+                ),
+                const Divider(height: 50),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: dropdowns.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return dropdowns[index];
+                    },
+                  ),
+                ),
+                const Divider(height: 40),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: CosmeticElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (dropdowns.isEmpty) {
+                          CosmeticDialog.showAlertDialog(
+                            context: context,
+                            dialogTittle: 'Informação!',
+                            dialogDescription:
+                                'O pedido deve conter ao menos um produto!',
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            showCancelButton: false,
+                          );
+                        } else {
+                          var order = CosmeticOrder(
+                            // products: [],
+                            customerId: _customerDropdownController.text,
+                            cicle: cicle,
+                            comments: _commentsController.text,
+                            installments: 0,
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PaymentOrderWidget(order: order),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    buttonName: 'IR PARA PAGAMENTOS',
+                  ),
+                ),
+              ],
             ),
           ),
         ),
+        floatingActionButton: CosmeticFloatingActionButton(
+          onPressed: () {
+            setState(
+              () {
+                dropdowns.add(
+                  Column(
+                    children: [
+                      const SizedBox(height: cosmeticFormHeight - 20),
+                      createDropdownItem(),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          icon: Icons.add,
+        ),
       ),
+    );
+  }
+
+  CosmeticProductDropdown createDropdownItem() {
+    return CosmeticProductDropdown(
+      products: widget.products,
+      validator: (value) {
+        if (value == null) {
+          return 'Selecione uma opção!';
+        }
+        return null;
+      },
+      onProductChanged: (value) {
+        //TODO
+      },
     );
   }
 }

@@ -110,8 +110,34 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                     ),
                     const SizedBox(height: cosmeticFormHeight - 20),
                     CosmeticTextFormField(
+                      initialValue: '100,00',
+                      //TODO calcular valor
+                      inputText: 'Valor total do pedido',
+                      icon: const Icon(
+                        Icons.payments_outlined,
+                        color: cosmeticSecondaryColor,
+                      ),
+                      keyboardType: TextInputType.number,
+                      borderRadius: 10.0,
+                      readOnly: true,
+                    ),
+                    const SizedBox(height: cosmeticFormHeight - 20),
+                    CosmeticTextFormField(
+                      initialValue: '50,00',
+                      //TODO calcular valor
+                      inputText: 'Valor de cada parcela',
+                      icon: const Icon(
+                        Icons.price_change_outlined,
+                        color: cosmeticSecondaryColor,
+                      ),
+                      keyboardType: TextInputType.number,
+                      borderRadius: 10.0,
+                      readOnly: true,
+                    ),
+                    const SizedBox(height: cosmeticFormHeight - 20),
+                    CosmeticTextFormField(
                       initialValue: utils.getCurrentDateYearNumMonthDay(),
-                      inputText: 'Data de pagamento',
+                      inputText: 'Data de pagamento 1ª parcela',
                       icon: const Icon(
                         Icons.calendar_month_outlined,
                         color: cosmeticSecondaryColor,
@@ -120,7 +146,6 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                       borderRadius: 10.0,
                       readOnly: true,
                     ),
-                    //TODO fazer um FormField contendo a informação do valor total do pedido (não editável)
                     const SizedBox(height: cosmeticFormHeight - 10),
                     SizedBox(
                       width: double.infinity,
