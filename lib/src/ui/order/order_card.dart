@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cosmetic_survey/src/core/entity/order.dart';
+import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class OrderCard extends StatelessWidget {
@@ -14,7 +15,6 @@ class OrderCard extends StatelessWidget {
   }) : super(key: key);
 
   final _random = Random();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +28,14 @@ class OrderCard extends StatelessWidget {
                   [_random.nextInt(9) * 100],
           child: const Text('TEST'), //TODO ver qual informação colocar aqui
         ),
-        title: Text(order.cicle.toString()),
-        // subtitle: Text(
-        //     //TODO formatar valor
-        //     'Valor total: R\$ ${order.totalValue} | Qtd. de Itens: ${order.products.length}'),
+        title: const Text('Nome cliente'),
+        subtitle: Text(
+            'Valor total: R\$ ${order.totalValue}\nData da venda: ${Utils.formatDate(date: order.saleDate!)}'),
+        onTap: () {},
         trailing: SizedBox(
-          width: 100,
+          width: 50,
           child: Row(
             children: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.remove_red_eye_outlined),
-                onPressed: () => {
-                  //TODO tela para visualizar pedido (não deve dar a possibilidade de alterar nada)
-                },
-              ),
               IconButton(
                 icon:
                     const Icon(Icons.delete_forever_rounded, color: Colors.red),

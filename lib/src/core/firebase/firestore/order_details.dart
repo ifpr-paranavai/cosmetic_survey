@@ -33,7 +33,7 @@ class OrderDetails {
     required int installments,
     required dynamic orderId,
   }) async {
-    for (var i = 1; i <= installments; i++) {
+    for (var i = 0; i <= installments; i++) {
       final docPayment = FirebaseFirestore.instance
           .collection(FirebaseColletion.PAYMENT)
           .doc();
@@ -43,9 +43,9 @@ class OrderDetails {
         orderId: orderId,
         installmentValue: 0,
         //TODO fazer o cálculo
-        paymentDate: i > 1 ? null : DateTime.now(),
+        paymentDate: i == 0 ? DateTime.now() : null,
         installmentNumber: i,
-        paymentType: i > 1 ? '' : payment.paymentType,
+        paymentType: i == 0 ? payment.paymentType : '',
       ).toJson();
 
       await docPayment.set(doc);

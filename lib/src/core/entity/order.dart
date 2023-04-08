@@ -38,6 +38,7 @@ class CosmeticOrder {
         // products: json['products'], //TODO fazer a conversão corretamente
         customerId: json['customerId'],
         cicle: json['cicle'],
+        saleDate: json['saleDate'].toDate(),
         comments: json['comments'],
         installments: json['installments'],
         totalValue: json['totalValue'],

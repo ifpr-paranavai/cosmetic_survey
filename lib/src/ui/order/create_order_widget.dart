@@ -39,13 +39,10 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
   Utils utils = Utils();
 
   var cicle = 0;
+  List<Widget> dropdowns = [];
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> dropdowns = [
-      createDropdownItem(),
-    ];
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -196,6 +193,23 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                     children: [
                       const SizedBox(height: cosmeticFormHeight - 20),
                       createDropdownItem(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text('Quantidade: '),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.minimize_outlined),
+                          ),
+                          const SizedBox(width: 12.0),
+                          const Text('0'),
+                          const SizedBox(width: 12.0),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 );

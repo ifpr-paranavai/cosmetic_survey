@@ -29,6 +29,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
 
   var installments = [
     Installments.CASH_PAYMENT,
+    Installments.INSTALLMENTS_IN_1,
     Installments.INSTALLMENTS_IN_2,
     Installments.INSTALLMENTS_IN_3,
     Installments.INSTALLMENTS_IN_4,
@@ -185,6 +186,8 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
 getInstallments(String value) {
   switch (value) {
     case Installments.CASH_PAYMENT:
+      return 0;
+    case Installments.INSTALLMENTS_IN_1:
       return 1;
     case Installments.INSTALLMENTS_IN_2:
       return 2;
