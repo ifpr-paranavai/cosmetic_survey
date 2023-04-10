@@ -79,11 +79,11 @@ class ProductActions {
                   const CosmeticSlideBar(),
                   Text(
                     'Atualizar Produto',
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(
                     'Para atualizar as informações preencha os campos à baixo e clique em "ATUALIZAR".',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),
                   CosmeticTextFormField(
