@@ -42,7 +42,8 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
   Utils utils = Utils();
 
   var cicle = 0;
-  List<Card> cards = [];
+  List<Product> selectedProdutcs = [];
+  var orderTotalValue = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -137,11 +138,82 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                   },
                 ),
                 const Divider(height: 50),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Produtos: ',
+                          ),
+                          TextSpan(
+                            text: '${selectedProdutcs.length}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: ' | Valor total: ',
+                          ),
+                          TextSpan(
+                            text: 'R\$ $orderTotalValue',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: cards.length,
+                    itemCount: selectedProdutcs.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return cards[index];
+                      var product = selectedProdutcs[index];
+
+                      return Card(
+                        elevation: 2,
+                        margin: const EdgeInsets.all(8),
+                        child: ListTile(
+                          title: Text(
+                              '${product.code} - ${product.name}\nQuantidade: ${product.quantity}\nPreço: ${product.price}'),
+                          trailing: SizedBox(
+                            width: 50,
+                            child: Row(
+                              children: <Widget>[
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete_forever_rounded,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedProdutcs.removeAt(index);
+                                      updateOrderTotalValue();
+                                    });
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      CosmeticSnackBar.showSnackBar(
+                                        context: context,
+                                        message: 'Produto removido.',
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -151,7 +223,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                   child: CosmeticElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        if (cards.isEmpty) {
+                        if (selectedProdutcs.isEmpty) {
                           CosmeticDialog.showAlertDialog(
                             context: context,
                             dialogTittle: 'Informação!',
@@ -173,8 +245,10 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  PaymentOrderWidget(order: order),
+                              builder: (context) => PaymentOrderWidget(
+                                order: order,
+                                totalValue: orderTotalValue,
+                              ),
                             ),
                           );
                         }
@@ -190,16 +264,14 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
         floatingActionButton: CosmeticFloatingActionButton(
           onPressed: () {
             final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-            var quantity = 1;
             var productSelected = Product(
               name: '',
               price: 0.0,
               code: 0,
               brandId: '',
+              quantity: 1,
             );
-            final valueController = MoneyMaskedTextController(
-              initialValue: productSelected.price,
-            );
+            var valueController = MoneyMaskedTextController();
 
             showModalBottomSheet(
               isScrollControlled: true,
@@ -243,12 +315,17 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                               return null;
                             },
                             onProductChanged: (value) {
-                              productSelected = Product(
-                                name: value.name,
-                                price: value.price,
-                                code: value.code,
-                                brandId: value.brandId,
-                              );
+                              setState(() {
+                                productSelected = Product(
+                                  name: value.name,
+                                  price: value.price,
+                                  code: value.code,
+                                  brandId: value.brandId,
+                                );
+
+                                //TODO corrigir casas decimais
+                                valueController.text = value.price.toString();
+                              });
                             },
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
@@ -267,17 +344,16 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                               if (value == null || value.isEmpty) {
                                 return 'Informe o Valor!';
                               } else {
-                                productSelected.price = double.parse(value
-                                    .toString()
-                                    .replaceAll(',', '')
-                                    .replaceAll('.', ''));
+                                productSelected.price = double.parse(
+                                  value.toString().replaceAll(",", "."),
+                                );
                               }
                               return null;
                             },
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),
                           CosmeticTextFormField(
-                            initialValue: quantity.toString(),
+                            initialValue: productSelected.quantity.toString(),
                             textInputAction: TextInputAction.done,
                             borderRadius: 10,
                             keyboardType: TextInputType.number,
@@ -291,8 +367,10 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Informe a Quantidade!';
+                              } else if (int.parse(value) <= 0) {
+                                return 'A quantidade deve ser maior que 0!';
                               } else {
-                                quantity = int.parse(value);
+                                productSelected.quantity = int.parse(value);
                               }
                               return null;
                             },
@@ -306,20 +384,15 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                   {
                                     setState(
                                       () {
-                                        cards.add(
-                                          createProductCard(
-                                            product: productSelected,
-                                            quantity: quantity,
-                                          ),
-                                        );
+                                        selectedProdutcs.add(productSelected);
+                                        updateOrderTotalValue();
                                       },
                                     ),
                                     Navigator.pop(context),
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       CosmeticSnackBar.showSnackBar(
                                         context: context,
-                                        message:
-                                            'Produto adicionado ao pedido.',
+                                        message: 'Produto adicionado.',
                                       ),
                                     ),
                                   },
@@ -341,26 +414,14 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
     );
   }
 
-  Card createProductCard({required Product product, required int quantity}) {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.all(8),
-      child: ListTile(
-        title: Text(
-            '${product.code} - ${product.name}\nQuantidade: $quantity\nPreço: ${product.price}'),
-        trailing: SizedBox(
-          width: 50,
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                icon:
-                    const Icon(Icons.delete_forever_rounded, color: Colors.red),
-                onPressed: () {},
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  void updateOrderTotalValue() {
+    double newTotalValue = 0;
+
+    for (Product product in selectedProdutcs) {
+      newTotalValue += product.price * product.quantity!;
+    }
+    setState(() {
+      orderTotalValue = newTotalValue;
+    });
   }
 }

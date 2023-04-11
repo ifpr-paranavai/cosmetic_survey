@@ -9,14 +9,20 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart'
 import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 import '../../core/constants/payment_type.dart';
 import '../../core/constants/sizes.dart';
 
 class PaymentOrderWidget extends StatefulWidget {
   CosmeticOrder order;
+  double totalValue;
 
-  PaymentOrderWidget({Key? key, required this.order}) : super(key: key);
+  PaymentOrderWidget({
+    Key? key,
+    required this.order,
+    required this.totalValue,
+  }) : super(key: key);
 
   @override
   State<PaymentOrderWidget> createState() => _PaymentOrderWidgetState();
@@ -26,6 +32,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var orderDetails = OrderDetails();
   var utils = Utils();
+  final _installmentValueController = MoneyMaskedTextController();
 
   var installments = [
     Installments.CASH_PAYMENT,
@@ -92,7 +99,14 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                         return null;
                       },
                       onItemChanged: (value) {
-                        widget.order.installments = getInstallments(value);
+                        setState(() {
+                          widget.order.installments = getInstallments(value);
+
+                          //TODO corrigir cálculo
+                          // _installmentValueController.text =
+                          //     (widget.totalValue / widget.order.installments!)
+                          //         .toString();
+                        });
                       },
                     ),
                     const SizedBox(height: cosmeticFormHeight - 20),
@@ -111,8 +125,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                     ),
                     const SizedBox(height: cosmeticFormHeight - 20),
                     CosmeticTextFormField(
-                      initialValue: '100,00',
-                      //TODO calcular valor
+                      initialValue: widget.totalValue.toString(),
                       inputText: 'Valor total do pedido',
                       icon: const Icon(
                         Icons.payments_outlined,
@@ -124,8 +137,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                     ),
                     const SizedBox(height: cosmeticFormHeight - 20),
                     CosmeticTextFormField(
-                      initialValue: '50,00',
-                      //TODO calcular valor
+                      controller: _installmentValueController,
                       inputText: 'Valor de cada parcela',
                       icon: const Icon(
                         Icons.price_change_outlined,
