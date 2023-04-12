@@ -16,7 +16,7 @@ import '../../core/constants/sizes.dart';
 
 class PaymentOrderWidget extends StatefulWidget {
   CosmeticOrder order;
-  double totalValue;
+  String totalValue;
 
   PaymentOrderWidget({
     Key? key,
@@ -125,7 +125,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                     ),
                     const SizedBox(height: cosmeticFormHeight - 20),
                     CosmeticTextFormField(
-                      initialValue: widget.totalValue.toString(),
+                      initialValue: widget.totalValue,
                       inputText: 'Valor total do pedido',
                       icon: const Icon(
                         Icons.payments_outlined,

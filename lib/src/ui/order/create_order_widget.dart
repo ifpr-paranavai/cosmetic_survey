@@ -12,8 +12,10 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart'
 import 'package:cosmetic_survey/src/ui/customer/cosmetic_customer_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/order/payment_order_widget.dart';
 import 'package:cosmetic_survey/src/ui/product/cosmetic_product_dropdown.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/constants/colors.dart';
 import '../../core/entity/customer.dart';
@@ -43,10 +45,13 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
 
   var cicle = 0;
   List<Product> selectedProdutcs = [];
-  var orderTotalValue = 0.0;
+  var orderTotalValue = Decimal.zero;
+  final fomatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
 
   @override
   Widget build(BuildContext context) {
+    final formattedValue = fomatter.format(orderTotalValue.toDouble());
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -163,7 +168,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             text: ' | Valor total: ',
                           ),
                           TextSpan(
-                            text: 'R\$ $orderTotalValue',
+                            text: 'R\$ $formattedValue',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -247,7 +252,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             MaterialPageRoute(
                               builder: (context) => PaymentOrderWidget(
                                 order: order,
-                                totalValue: orderTotalValue,
+                                totalValue: formattedValue,
                               ),
                             ),
                           );
@@ -271,7 +276,11 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
               brandId: '',
               quantity: 1,
             );
-            var valueController = MoneyMaskedTextController();
+            var valueController = MoneyMaskedTextController(
+              decimalSeparator: ',',
+              thousandSeparator: '.',
+              precision: 2,
+            );
 
             showModalBottomSheet(
               isScrollControlled: true,
@@ -317,13 +326,15 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             onProductChanged: (value) {
                               setState(() {
                                 productSelected = Product(
+                                  id: value.id,
                                   name: value.name,
                                   price: value.price,
                                   code: value.code,
                                   brandId: value.brandId,
+                                  creationTime: value.creationTime,
+                                  quantity: 1,
                                 );
 
-                                //TODO corrigir casas decimais
                                 valueController.text = value.price.toString();
                               });
                             },
@@ -344,9 +355,19 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                               if (value == null || value.isEmpty) {
                                 return 'Informe o Valor!';
                               } else {
-                                productSelected.price = double.parse(
-                                  value.toString().replaceAll(",", "."),
-                                );
+                                if (!value.toString().contains('.')) {
+                                  productSelected.price = double.parse(
+                                    value.toString().replaceAll(",", "."),
+                                  );
+                                } else {
+                                  var formattedValue = value
+                                      .toString()
+                                      .replaceAll(",", ".")
+                                      .replaceAll(".", "");
+
+                                  productSelected.price =
+                                      double.parse(formattedValue) / 100;
+                                }
                               }
                               return null;
                             },
@@ -384,7 +405,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                   {
                                     setState(
                                       () {
-                                        selectedProdutcs.add(productSelected);
+                                        addProduct(product: productSelected);
                                         updateOrderTotalValue();
                                       },
                                     ),
@@ -414,11 +435,29 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
     );
   }
 
+  addProduct({required Product product}) {
+    var productExists = false;
+
+    for (var prodct in selectedProdutcs) {
+      if (prodct.id == product.id) {
+        prodct.quantity = prodct.quantity! + product.quantity!;
+
+        productExists = true;
+        break;
+      }
+    }
+
+    if (!productExists) {
+      selectedProdutcs.add(product);
+    }
+  }
+
   void updateOrderTotalValue() {
-    double newTotalValue = 0;
+    var newTotalValue = Decimal.zero;
 
     for (Product product in selectedProdutcs) {
-      newTotalValue += product.price * product.quantity!;
+      newTotalValue += Decimal.parse(product.price.toString()) *
+          Decimal.parse(product.quantity!.toString());
     }
     setState(() {
       orderTotalValue = newTotalValue;
