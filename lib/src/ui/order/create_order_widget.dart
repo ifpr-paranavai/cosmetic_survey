@@ -46,11 +46,11 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
   var cicle = 0;
   List<Product> selectedProdutcs = [];
   var orderTotalValue = Decimal.zero;
-  final fomatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
+  final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
 
   @override
   Widget build(BuildContext context) {
-    final formattedValue = fomatter.format(orderTotalValue.toDouble());
+    final formattedValue = formatter.format(orderTotalValue.toDouble()).trim();
 
     return SafeArea(
       child: Scaffold(
@@ -355,19 +355,8 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                               if (value == null || value.isEmpty) {
                                 return 'Informe o Valor!';
                               } else {
-                                if (!value.toString().contains('.')) {
-                                  productSelected.price = double.parse(
-                                    value.toString().replaceAll(",", "."),
-                                  );
-                                } else {
-                                  var formattedValue = value
-                                      .toString()
-                                      .replaceAll(",", ".")
-                                      .replaceAll(".", "");
-
-                                  productSelected.price =
-                                      double.parse(formattedValue) / 100;
-                                }
+                                productSelected.price =
+                                    formatProductPrice(productSelected.price);
                               }
                               return null;
                             },
@@ -462,5 +451,16 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
     setState(() {
       orderTotalValue = newTotalValue;
     });
+  }
+
+  double formatProductPrice(double price) {
+    if (!price.toString().contains('.')) {
+      return double.parse(price.toString().replaceAll(",", "."));
+    } else {
+      var formattedValue =
+          price.toString().replaceAll(",", ".").replaceAll(".", "");
+
+      return double.parse(formattedValue) / 100;
+    }
   }
 }

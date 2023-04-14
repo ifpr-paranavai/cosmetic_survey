@@ -10,6 +10,7 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/constants/payment_type.dart';
 import '../../core/constants/sizes.dart';
@@ -101,11 +102,15 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                       onItemChanged: (value) {
                         setState(() {
                           widget.order.installments = getInstallments(value);
+                          var installments = widget.order.installments;
 
-                          //TODO corrigir cálculo
-                          // _installmentValueController.text =
-                          //     (widget.totalValue / widget.order.installments!)
-                          //         .toString();
+                          if (installments == 0) {
+                            _installmentValueController.text = '-----';
+                          } else {
+                            _installmentValueController.text =
+                                getOrderInstallmentValue(
+                                    widget.totalValue, installments!);
+                          }
                         });
                       },
                     ),
@@ -192,6 +197,27 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
         ),
       ),
     );
+  }
+
+  String getOrderInstallmentValue(String totalValue, int installments) {
+    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
+    var orderValue = 0.0;
+    var installmentValue = 0.0;
+
+    if (!totalValue.contains('.')) {
+      orderValue = double.parse(totalValue.replaceAll(",", "."));
+
+      installmentValue = orderValue / installments;
+    } else {
+      var formattedValue =
+          widget.totalValue.replaceAll(",", ".").replaceAll(".", "");
+
+      orderValue = double.parse(formattedValue) / 100;
+
+      installmentValue = orderValue / installments;
+    }
+
+    return formatter.format(installmentValue);
   }
 }
 
