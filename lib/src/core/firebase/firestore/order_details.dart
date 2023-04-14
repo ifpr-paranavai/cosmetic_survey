@@ -33,22 +33,40 @@ class OrderDetails {
     required int installments,
     required dynamic orderId,
   }) async {
-    for (var i = 0; i <= installments; i++) {
-      final docPayment = FirebaseFirestore.instance
-          .collection(FirebaseColletion.PAYMENT)
-          .doc();
+    if (installments == 0) {
+      for (var i = 0; i <= installments; i++) {
+        final docPayment = FirebaseFirestore.instance
+            .collection(FirebaseColletion.PAYMENT)
+            .doc();
 
-      final doc = Payment(
-        id: docPayment.id,
-        orderId: orderId,
-        installmentValue: 0,
-        //TODO fazer o cálculo
-        paymentDate: i == 0 ? DateTime.now() : null,
-        installmentNumber: i,
-        paymentType: i == 0 ? payment.paymentType : '',
-      ).toJson();
+        final doc = Payment(
+          id: docPayment.id,
+          orderId: orderId,
+          installmentValue: payment.installmentValue,
+          paymentDate: DateTime.now(),
+          installmentNumber: 0,
+          paymentType: payment.paymentType,
+        ).toJson();
 
-      await docPayment.set(doc);
+        await docPayment.set(doc);
+      }
+    } else {
+      for (var i = 1; i <= installments; i++) {
+        final docPayment = FirebaseFirestore.instance
+            .collection(FirebaseColletion.PAYMENT)
+            .doc();
+
+        final doc = Payment(
+          id: docPayment.id,
+          orderId: orderId,
+          installmentValue: payment.installmentValue,
+          paymentDate: i == 1 ? DateTime.now() : null,
+          installmentNumber: i,
+          paymentType: i == 1 ? payment.paymentType : '',
+        ).toJson();
+
+        await docPayment.set(doc);
+      }
     }
   }
 

@@ -105,7 +105,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                 const SizedBox(height: cosmeticFormHeight - 20),
                 CosmeticTextFormField(
                   controller: _cicleController,
-                  textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.done,
                   borderRadius: 10,
                   keyboardType: TextInputType.number,
                   readOnly: false,

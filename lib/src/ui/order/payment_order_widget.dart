@@ -53,6 +53,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
   ];
 
   var paymentTypeSelected = '';
+  var paymentInstallmentValue = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -173,6 +174,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                             orderDetails.addOrderDetails(
                               order: widget.order,
                               payment: Payment(
+                                installmentValue: paymentInstallmentValue,
                                 paymentType: paymentTypeSelected,
                               ),
                             );
@@ -209,13 +211,13 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
 
       installmentValue = orderValue / installments;
     } else {
-      var formattedValue =
-          widget.totalValue.replaceAll(",", ".").replaceAll(".", "");
+      var formattedValue = totalValue.replaceAll(",", ".").replaceAll(".", "");
 
       orderValue = double.parse(formattedValue) / 100;
 
       installmentValue = orderValue / installments;
     }
+    paymentInstallmentValue = installmentValue;
 
     return formatter.format(installmentValue);
   }
