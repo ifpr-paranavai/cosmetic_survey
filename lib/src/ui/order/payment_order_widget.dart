@@ -171,6 +171,8 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                       child: CosmeticElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            widget.order.totalValue =
+                                formatOrderPrice(widget.totalValue);
                             orderDetails.addOrderDetails(
                               order: widget.order,
                               payment: Payment(
@@ -199,6 +201,16 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
         ),
       ),
     );
+  }
+
+  double formatOrderPrice(String price) {
+    if (!price.contains('.')) {
+      return double.parse(price.replaceAll(",", "."));
+    } else {
+      var formattedValue = price.replaceAll(",", ".").replaceAll(".", "");
+
+      return double.parse(formattedValue) / 100;
+    }
   }
 
   String getOrderInstallmentValue(String totalValue, int installments) {

@@ -241,7 +241,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                           );
                         } else {
                           var order = CosmeticOrder(
-                            // products: [],
+                            products: selectedProdutcs,
                             customerId: _customerDropdownController.text,
                             cicle: cicle,
                             comments: _commentsController.text,

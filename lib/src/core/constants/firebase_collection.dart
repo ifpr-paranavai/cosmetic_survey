@@ -6,4 +6,5 @@ class FirebaseColletion {
   static const String CUSTOMER = 'customer';
   static const String PAYMENT = 'payment';
   static const String PROFILE_IMAGE = 'profile_image';
+  static const String ORDER_PRODUCTS = 'order_products';
 }
