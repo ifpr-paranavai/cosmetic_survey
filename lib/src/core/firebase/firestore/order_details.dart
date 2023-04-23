@@ -97,10 +97,23 @@ class OrderDetails {
           .map((doc) => CosmeticOrder.fromJson(doc.data()))
           .toList());
 
-  void deleteOrderDetails({required dynamic id}) {
-    FirebaseFirestore.instance
-        .collection(FirebaseColletion.ORDER)
-        .doc(id)
-        .delete();
+  void deleteOrderDetails({required dynamic id}) async {
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final orderProductsRef =
+        orderRef.doc(id).collection(FirebaseColletion.ORDER_PRODUCTS);
+    final paymentRef = orderRef.doc(id).collection(FirebaseColletion.PAYMENT);
+
+    var orderProductsSnapshots = await orderProductsRef.get();
+    orderProductsSnapshots.docs.forEach((doc) async {
+      await doc.reference.delete();
+    });
+
+    var paymentSnapshots = await paymentRef.get();
+    paymentSnapshots.docs.forEach((doc) async {
+      await doc.reference.delete();
+    });
+
+    await orderRef.doc(id).delete();
   }
 }
