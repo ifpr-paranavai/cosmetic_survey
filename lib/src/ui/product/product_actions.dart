@@ -10,6 +10,7 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/entity/brand.dart';
 import '../../core/utils/utils.dart';
@@ -203,21 +204,16 @@ class ProductActions {
   static Future showInfoDialog(
       {required BuildContext context,
       required Product product,
-      required List<Brand> brands}) {
-    BrandDetails brandDetails = BrandDetails();
-
-    //TODO fazer essa busca de outra forma
-    var brand = brandDetails.getBrandName(
-      brands: brands,
-      brandId: product.brandId,
-    );
+      required String brand}) {
+    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
+    final price = formatter.format(product.price);
 
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Informações detalhadas'),
         content: Text(
-            'Nome: ${product.name}\nPreço: R\$ ${product.price}\nCódigo: ${product.code}\nMarca: $brand\nData de criação: ${Utils.formatDate(date: product.creationTime!)}'),
+            'Nome: ${product.name}\nPreço: R\$$price\nCódigo: ${product.code}\nMarca: $brand\nData de criação: ${Utils.formatDate(date: product.creationTime!)}'),
         actions: <Widget>[
           TextButton(
             onPressed: () {

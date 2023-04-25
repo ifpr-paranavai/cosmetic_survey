@@ -75,6 +75,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
                   return OrderCard(
                     order: order,
+                    customers: customers,
                     onPressedDelete: () {
                       HapticFeedback.vibrate();
 

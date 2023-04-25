@@ -61,4 +61,14 @@ class CustomerDetails {
 
     return customers;
   }
+
+  //TODO refatorar para não passar a lista como parâmetro e buscar no firebase pelo id
+  dynamic getCustomerName(
+      {required List<Customer> customers, required dynamic customerId}) {
+    for (var i in customers) {
+      if (i.id == customerId) {
+        return i.name;
+      }
+    }
+  }
 }

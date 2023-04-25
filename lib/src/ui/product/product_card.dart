@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cosmetic_survey/src/core/entity/product.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/ui/product/product_actions.dart';
 import 'package:flutter/material.dart';
 
@@ -20,9 +21,15 @@ class ProductCard extends StatelessWidget {
 
   final _random = Random();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  BrandDetails brandDetails = BrandDetails();
 
   @override
   Widget build(BuildContext context) {
+    var brand = brandDetails.getBrandName(
+      brands: brands,
+      brandId: product.brandId,
+    );
+
     return Card(
       elevation: 2,
       margin: const EdgeInsets.all(8),
@@ -37,10 +44,10 @@ class ProductCard extends StatelessWidget {
         ),
         onTap: () {
           ProductActions.showInfoDialog(
-              context: context, product: product, brands: brands);
+              context: context, product: product, brand: brand);
         },
         title: Text(product.name),
-        subtitle: Text('Código: ${product.code}'),
+        subtitle: Text('Código: ${product.code}\nMarca: $brand'),
         trailing: SizedBox(
           width: 100,
           child: Row(
