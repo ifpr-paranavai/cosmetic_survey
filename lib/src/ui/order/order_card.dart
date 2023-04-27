@@ -5,7 +5,6 @@ import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class OrderCard extends StatelessWidget {
   CosmeticOrder order;
@@ -20,13 +19,11 @@ class OrderCard extends StatelessWidget {
   }) : super(key: key);
 
   final _random = Random();
-  final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
   var customerDetails = CustomerDetails();
+  var utils = Utils();
 
   @override
   Widget build(BuildContext context) {
-    final formattedValue = formatter.format(order.totalValue);
-
     var customerName = customerDetails.getCustomerName(
       customers: customers,
       customerId: order.customerId,
@@ -44,7 +41,7 @@ class OrderCard extends StatelessWidget {
         ),
         title: Text('Cliente: $customerName'),
         subtitle: Text(
-            'Valor total: R\$$formattedValue\nCiclo: ${order.cicle}\nData da venda: ${Utils.formatDate(date: order.saleDate!)}'),
+            'Valor total: R\$ ${utils.formatToBrazilianCurrency(order.totalValue!)}\nCiclo: ${order.cicle}\nData da venda: ${Utils.formatDate(date: order.saleDate!)}'),
         onTap: () {},
         trailing: SizedBox(
           width: 50,

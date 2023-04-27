@@ -30,7 +30,7 @@ class Payment {
         id: json['id'],
         orderId: json['orderId'],
         installmentValue: json['installmentValue'],
-        paymentDate: json['paymentDate'],
+        paymentDate: json['paymentDate']?.toDate(),
         installmentNumber: json['installments'],
         paymentType: json['paymentType'],
       );

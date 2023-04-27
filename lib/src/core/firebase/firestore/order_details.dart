@@ -116,4 +116,52 @@ class OrderDetails {
 
     await orderRef.doc(id).delete();
   }
+
+  Future<int> getOrderQuantity() async {
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+
+    final docs = await orderRef.get();
+    return docs.size;
+  }
+
+  Future<double> getOrdersTotalValue() async {
+    var ordersTotalValue = 0.0;
+
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+
+    final orders = await orderRef.get();
+
+    for (var order in orders.docs) {
+      var currentOrder = CosmeticOrder.fromJson(order.data());
+
+      ordersTotalValue += currentOrder.totalValue!;
+    }
+
+    return ordersTotalValue;
+  }
+
+  Future<List<Payment>> readPaymentDetails() async {
+    var payments = <Payment>[];
+
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+
+    // recupero todos os pedidos
+    var ordersCollection = await orderRef.get();
+
+    for (var orderDoc in ordersCollection.docs) {
+      final paymentRef =
+          orderDoc.reference.collection(FirebaseColletion.PAYMENT);
+
+      // recupero os pagamentos do pedido
+      var paymentsCollection = await paymentRef.get();
+
+      for (var paymentDoc in paymentsCollection.docs) {
+        payments.add(Payment.fromJson(paymentDoc.data()));
+      }
+    }
+    return payments;
+  }
 }

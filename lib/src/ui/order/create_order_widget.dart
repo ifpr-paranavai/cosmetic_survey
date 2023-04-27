@@ -15,7 +15,6 @@ import 'package:cosmetic_survey/src/ui/product/cosmetic_product_dropdown.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:intl/intl.dart';
 
 import '../../core/constants/colors.dart';
 import '../../core/entity/customer.dart';
@@ -46,12 +45,9 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
   var cicle = 0;
   List<Product> selectedProdutcs = [];
   var orderTotalValue = Decimal.zero;
-  final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
 
   @override
   Widget build(BuildContext context) {
-    final formattedValue = formatter.format(orderTotalValue.toDouble()).trim();
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -168,7 +164,8 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             text: ' | Valor total: ',
                           ),
                           TextSpan(
-                            text: 'R\$ $formattedValue',
+                            text:
+                                'R\$ ${utils.formatToBrazilianCurrency(orderTotalValue.toDouble())}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -189,7 +186,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                         margin: const EdgeInsets.all(8),
                         child: ListTile(
                           title: Text(
-                              '${product.code} - ${product.name}\nQuantidade: ${product.quantity}\nPreço: ${product.price}'),
+                              '${product.code} - ${product.name}\nQuantidade: ${product.quantity}\nPreço: R\$ ${utils.formatToBrazilianCurrency(product.price)}'),
                           trailing: SizedBox(
                             width: 50,
                             child: Row(
@@ -252,7 +249,9 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             MaterialPageRoute(
                               builder: (context) => PaymentOrderWidget(
                                 order: order,
-                                totalValue: formattedValue,
+                                totalValue: utils.formatToBrazilianCurrency(
+                                  orderTotalValue.toDouble(),
+                                ),
                               ),
                             ),
                           );

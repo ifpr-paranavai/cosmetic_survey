@@ -63,4 +63,10 @@ class Utils {
         .format(DateTime.now().toLocal())
         .toString();
   }
+
+  String formatToBrazilianCurrency(double value) {
+    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
+
+    return formatter.format(value).trim();
+  }
 }

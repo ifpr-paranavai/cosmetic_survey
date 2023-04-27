@@ -10,7 +10,6 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:intl/intl.dart';
 
 import '../../core/constants/payment_type.dart';
 import '../../core/constants/sizes.dart';
@@ -214,7 +213,6 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
   }
 
   String getOrderInstallmentValue(String totalValue, int installments) {
-    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
     var orderValue = 0.0;
     var installmentValue = 0.0;
 
@@ -231,7 +229,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
     }
     paymentInstallmentValue = installmentValue;
 
-    return formatter.format(installmentValue);
+    return utils.formatToBrazilianCurrency(installmentValue);
   }
 }
 

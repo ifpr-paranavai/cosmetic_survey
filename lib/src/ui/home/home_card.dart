@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomeCard extends StatelessWidget {
-  double? value;
+  String? value;
   int? quantity;
   String description;
   bool amountValue;
