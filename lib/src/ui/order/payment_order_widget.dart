@@ -88,117 +88,121 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-                child: Column(
-                  children: [
-                    CosmeticDropdown(
-                      items: installments,
-                      hintText: 'Quantidade de parcelas',
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Selecione uma opção!';
-                        }
-                        return null;
-                      },
-                      onItemChanged: (value) {
-                        setState(() {
-                          widget.order.installments = getInstallments(value);
-                          var installments = widget.order.installments;
-
-                          if (installments == 0) {
-                            _installmentValueController.text = '-----';
-                          } else {
-                            _installmentValueController.text =
-                                getOrderInstallmentValue(
-                                    widget.totalValue, installments!);
-                          }
-                        });
-                      },
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    CosmeticDropdown(
-                      items: paymentType,
-                      hintText: 'Forma de pagamento',
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Selecione uma opção!';
-                        }
-                        return null;
-                      },
-                      onItemChanged: (value) {
-                        paymentTypeSelected = value;
-                      },
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    CosmeticTextFormField(
-                      initialValue: widget.totalValue,
-                      inputText: 'Valor total do pedido',
-                      icon: const Icon(
-                        Icons.payments_outlined,
-                        color: cosmeticSecondaryColor,
-                      ),
-                      keyboardType: TextInputType.number,
-                      borderRadius: 10.0,
-                      readOnly: true,
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    CosmeticTextFormField(
-                      controller: _installmentValueController,
-                      inputText: 'Valor de cada parcela',
-                      icon: const Icon(
-                        Icons.price_change_outlined,
-                        color: cosmeticSecondaryColor,
-                      ),
-                      keyboardType: TextInputType.number,
-                      borderRadius: 10.0,
-                      readOnly: true,
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 20),
-                    CosmeticTextFormField(
-                      initialValue: utils.getCurrentDateYearNumMonthDay(),
-                      inputText: 'Data de pagamento 1ª parcela',
-                      icon: const Icon(
-                        Icons.calendar_month_outlined,
-                        color: cosmeticSecondaryColor,
-                      ),
-                      keyboardType: TextInputType.number,
-                      borderRadius: 10.0,
-                      readOnly: true,
-                    ),
-                    const SizedBox(height: cosmeticFormHeight - 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CosmeticElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            widget.order.totalValue =
-                                formatOrderPrice(widget.totalValue);
-                            orderDetails.addOrderDetails(
-                              order: widget.order,
-                              payment: Payment(
-                                installmentValue: paymentInstallmentValue,
-                                paymentType: paymentTypeSelected,
-                              ),
-                            );
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              CosmeticSnackBar.showSnackBar(
-                                context: context,
-                                message: 'Pedido criado.',
-                              ),
-                            );
-                          }
-                        },
-                        buttonName: 'FINALIZAR PEDIDO',
-                      ),
-                    ),
-                  ],
-                ),
+                child: buildPyamentOrderFields(context),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Column buildPyamentOrderFields(BuildContext context) {
+    return Column(
+      children: [
+        CosmeticDropdown(
+          items: installments,
+          hintText: 'Quantidade de parcelas',
+          validator: (value) {
+            if (value == null) {
+              return 'Selecione uma opção!';
+            }
+            return null;
+          },
+          onItemChanged: (value) {
+            setState(
+              () {
+                widget.order.installments = getInstallments(value);
+                var installments = widget.order.installments;
+
+                if (installments == 0) {
+                  _installmentValueController.text = '-----';
+                } else {
+                  _installmentValueController.text = getOrderInstallmentValue(
+                      widget.totalValue, installments!);
+                }
+              },
+            );
+          },
+        ),
+        const SizedBox(height: cosmeticFormHeight - 20),
+        CosmeticDropdown(
+          items: paymentType,
+          hintText: 'Forma de pagamento',
+          validator: (value) {
+            if (value == null) {
+              return 'Selecione uma opção!';
+            }
+            return null;
+          },
+          onItemChanged: (value) {
+            paymentTypeSelected = value;
+          },
+        ),
+        const SizedBox(height: cosmeticFormHeight - 20),
+        CosmeticTextFormField(
+          initialValue: widget.totalValue,
+          inputText: 'Valor total do pedido',
+          icon: const Icon(
+            Icons.payments_outlined,
+            color: cosmeticSecondaryColor,
+          ),
+          keyboardType: TextInputType.number,
+          borderRadius: 10.0,
+          readOnly: true,
+        ),
+        const SizedBox(height: cosmeticFormHeight - 20),
+        CosmeticTextFormField(
+          controller: _installmentValueController,
+          inputText: 'Valor de cada parcela',
+          icon: const Icon(
+            Icons.price_change_outlined,
+            color: cosmeticSecondaryColor,
+          ),
+          keyboardType: TextInputType.number,
+          borderRadius: 10.0,
+          readOnly: true,
+        ),
+        const SizedBox(height: cosmeticFormHeight - 20),
+        CosmeticTextFormField(
+          initialValue: utils.getCurrentDateYearNumMonthDay(),
+          inputText: 'Data de pagamento 1ª parcela',
+          icon: const Icon(
+            Icons.calendar_month_outlined,
+            color: cosmeticSecondaryColor,
+          ),
+          keyboardType: TextInputType.number,
+          borderRadius: 10.0,
+          readOnly: true,
+        ),
+        const SizedBox(height: cosmeticFormHeight - 10),
+        SizedBox(
+          width: double.infinity,
+          child: CosmeticElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                widget.order.totalValue = formatOrderPrice(widget.totalValue);
+                orderDetails.addOrderDetails(
+                  order: widget.order,
+                  payment: Payment(
+                    installmentValue: paymentInstallmentValue,
+                    paymentType: paymentTypeSelected,
+                  ),
+                );
+                Navigator.pop(context);
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  CosmeticSnackBar.showSnackBar(
+                    context: context,
+                    message: 'Pedido criado.',
+                  ),
+                );
+              }
+            },
+            buttonName: 'FINALIZAR PEDIDO',
+          ),
+        ),
+      ],
     );
   }
 

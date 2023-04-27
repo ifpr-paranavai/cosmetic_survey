@@ -175,50 +175,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                     ),
                   ],
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: selectedProdutcs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var product = selectedProdutcs[index];
-
-                      return Card(
-                        elevation: 2,
-                        margin: const EdgeInsets.all(8),
-                        child: ListTile(
-                          title: Text(
-                              '${product.code} - ${product.name}\nQuantidade: ${product.quantity}\nPreço: R\$ ${utils.formatToBrazilianCurrency(product.price)}'),
-                          trailing: SizedBox(
-                            width: 50,
-                            child: Row(
-                              children: <Widget>[
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.delete_forever_rounded,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      selectedProdutcs.removeAt(index);
-                                      updateOrderTotalValue();
-                                    });
-
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      CosmeticSnackBar.showSnackBar(
-                                        context: context,
-                                        message: 'Produto removido.',
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                buildSelectedProductsListView(),
                 const Divider(height: 40),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
@@ -265,161 +222,217 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
             ),
           ),
         ),
-        floatingActionButton: CosmeticFloatingActionButton(
-          onPressed: () {
-            final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-            var productSelected = Product(
-              name: '',
-              price: 0.0,
-              code: 0,
-              brandId: '',
-              quantity: 1,
-            );
-            var valueController = MoneyMaskedTextController(
-              decimalSeparator: ',',
-              thousandSeparator: '.',
-              precision: 2,
-            );
+        floatingActionButton: buildCosmeticFloatingActionButton(context),
+      ),
+    );
+  }
 
-            showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              builder: (context) => Container(
-                padding: const EdgeInsets.only(
-                  top: 4.0,
-                  left: cosmeticDefaultSize,
-                  right: cosmeticDefaultSize,
-                  bottom: cosmeticDefaultSize,
-                ),
-                child: Form(
-                  key: formKey,
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CosmeticSlideBar(),
-                          Text(
-                            'Cadastro de Pedido',
-                            style: Theme.of(context).textTheme.headlineMedium,
-                          ),
-                          Text(
-                            'Para inserir um Produto preencha os campos à baixo e clique em "ADICIONAR PRODUTO".',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticProductDropdown(
-                            products: widget.products,
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Selecione uma opção!';
-                              }
-                              return null;
-                            },
-                            onProductChanged: (value) {
-                              setState(() {
-                                productSelected = Product(
-                                  id: value.id,
-                                  name: value.name,
-                                  price: value.price,
-                                  code: value.code,
-                                  brandId: value.brandId,
-                                  creationTime: value.creationTime,
-                                  quantity: 1,
-                                );
+  Expanded buildSelectedProductsListView() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: selectedProdutcs.length,
+        itemBuilder: (BuildContext context, int index) {
+          var product = selectedProdutcs[index];
 
-                                valueController.text = value.price.toString();
-                              });
-                            },
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticTextFormField(
-                            controller: valueController,
-                            textInputAction: TextInputAction.next,
-                            borderRadius: 10,
-                            keyboardType: TextInputType.number,
-                            inputText: 'Valor',
-                            readOnly: false,
-                            icon: const Icon(
-                              Icons.attach_money,
-                              color: cosmeticSecondaryColor,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Informe o Valor!';
-                              } else {
-                                productSelected.price =
-                                    formatProductPrice(productSelected.price);
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 20),
-                          CosmeticTextFormField(
-                            initialValue: productSelected.quantity.toString(),
-                            textInputAction: TextInputAction.done,
-                            borderRadius: 10,
-                            keyboardType: TextInputType.number,
-                            inputText: 'Quantidade',
-                            readOnly: false,
-                            maxLengh: 5,
-                            icon: const Icon(
-                              Icons.add_shopping_cart_outlined,
-                              color: cosmeticSecondaryColor,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Informe a Quantidade!';
-                              } else if (int.parse(value) <= 0) {
-                                return 'A quantidade deve ser maior que 0!';
-                              } else {
-                                productSelected.quantity = int.parse(value);
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: cosmeticFormHeight - 10),
-                          SizedBox(
-                            width: double.infinity,
-                            child: CosmeticElevatedButton(
-                              onPressed: () => {
-                                if (formKey.currentState!.validate())
-                                  {
-                                    setState(
-                                      () {
-                                        addProduct(product: productSelected);
-                                        updateOrderTotalValue();
-                                      },
-                                    ),
-                                    Navigator.pop(context),
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      CosmeticSnackBar.showSnackBar(
-                                        context: context,
-                                        message: 'Produto adicionado.',
-                                      ),
-                                    ),
-                                  },
-                              },
-                              buttonName: 'ADICIONAR PRODUTO',
-                            ),
-                          )
-                        ],
+          return Card(
+            elevation: 2,
+            margin: const EdgeInsets.all(8),
+            child: ListTile(
+              title: Text(
+                  '${product.code} - ${product.name}\nQuantidade: ${product.quantity}\nPreço: R\$ ${utils.formatToBrazilianCurrency(product.price)}'),
+              trailing: SizedBox(
+                width: 50,
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: const Icon(
+                        Icons.delete_forever_rounded,
+                        color: Colors.red,
                       ),
+                      onPressed: () {
+                        setState(
+                          () {
+                            selectedProdutcs.removeAt(index);
+                            updateOrderTotalValue();
+                          },
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          CosmeticSnackBar.showSnackBar(
+                            context: context,
+                            message: 'Produto removido.',
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      },
                     ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  CosmeticFloatingActionButton buildCosmeticFloatingActionButton(
+      BuildContext context) {
+    return CosmeticFloatingActionButton(
+      onPressed: () {
+        final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+        var productSelected = Product(
+          name: '',
+          price: 0.0,
+          code: 0,
+          brandId: '',
+          quantity: 1,
+        );
+        var valueController = MoneyMaskedTextController(
+          decimalSeparator: ',',
+          thousandSeparator: '.',
+          precision: 2,
+        );
+
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          builder: (context) => Container(
+            padding: const EdgeInsets.only(
+              top: 4.0,
+              left: cosmeticDefaultSize,
+              right: cosmeticDefaultSize,
+              bottom: cosmeticDefaultSize,
+            ),
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CosmeticSlideBar(),
+                      Text(
+                        'Cadastro de Pedido',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      Text(
+                        'Para inserir um Produto preencha os campos à baixo e clique em "ADICIONAR PRODUTO".',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: cosmeticFormHeight - 20),
+                      CosmeticProductDropdown(
+                        products: widget.products,
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Selecione uma opção!';
+                          }
+                          return null;
+                        },
+                        onProductChanged: (value) {
+                          setState(
+                            () {
+                              productSelected = Product(
+                                id: value.id,
+                                name: value.name,
+                                price: value.price,
+                                code: value.code,
+                                brandId: value.brandId,
+                                creationTime: value.creationTime,
+                                quantity: 1,
+                              );
+
+                              valueController.text = value.price.toString();
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: cosmeticFormHeight - 20),
+                      CosmeticTextFormField(
+                        controller: valueController,
+                        textInputAction: TextInputAction.next,
+                        borderRadius: 10,
+                        keyboardType: TextInputType.number,
+                        inputText: 'Valor',
+                        readOnly: false,
+                        icon: const Icon(
+                          Icons.attach_money,
+                          color: cosmeticSecondaryColor,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informe o Valor!';
+                          } else {
+                            productSelected.price =
+                                formatProductPrice(productSelected.price);
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: cosmeticFormHeight - 20),
+                      CosmeticTextFormField(
+                        initialValue: productSelected.quantity.toString(),
+                        textInputAction: TextInputAction.done,
+                        borderRadius: 10,
+                        keyboardType: TextInputType.number,
+                        inputText: 'Quantidade',
+                        readOnly: false,
+                        maxLengh: 5,
+                        icon: const Icon(
+                          Icons.add_shopping_cart_outlined,
+                          color: cosmeticSecondaryColor,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informe a Quantidade!';
+                          } else if (int.parse(value) <= 0) {
+                            return 'A quantidade deve ser maior que 0!';
+                          } else {
+                            productSelected.quantity = int.parse(value);
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: cosmeticFormHeight - 10),
+                      SizedBox(
+                        width: double.infinity,
+                        child: CosmeticElevatedButton(
+                          onPressed: () => {
+                            if (formKey.currentState!.validate())
+                              {
+                                setState(
+                                  () {
+                                    addProduct(product: productSelected);
+                                    updateOrderTotalValue();
+                                  },
+                                ),
+                                Navigator.pop(context),
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  CosmeticSnackBar.showSnackBar(
+                                    context: context,
+                                    message: 'Produto adicionado.',
+                                  ),
+                                ),
+                              },
+                          },
+                          buttonName: 'ADICIONAR PRODUTO',
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
-            );
-          },
-          icon: Icons.add,
-        ),
-      ),
+            ),
+          ),
+        );
+      },
+      icon: Icons.add,
     );
   }
 
