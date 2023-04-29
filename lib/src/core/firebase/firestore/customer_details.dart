@@ -71,4 +71,20 @@ class CustomerDetails {
       }
     }
   }
+
+  Future<Customer> getOrderCustomer(dynamic orderId) async {
+    final orderRef = FirebaseFirestore.instance
+        .collection(FirebaseColletion.ORDER)
+        .doc(orderId);
+
+    var orderSnapshot = await orderRef.get();
+    var customerId = orderSnapshot['customerId'];
+
+    final customerRef = FirebaseFirestore.instance
+        .collection(FirebaseColletion.CUSTOMER)
+        .doc(customerId);
+
+    var customerSnapshot = await customerRef.get();
+    return Customer.fromJson(customerSnapshot.data()!);
+  }
 }

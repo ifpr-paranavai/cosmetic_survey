@@ -164,4 +164,24 @@ class OrderDetails {
     }
     return payments;
   }
+
+  Future<CosmeticOrder> readOrderDetailsById(dynamic id) async {
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER).doc(id);
+
+    var order = await orderRef.get();
+
+    return CosmeticOrder.fromJson(order.data()!);
+  }
+
+  Future<int> getOrderProductQuantity(dynamic id) async {
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final orderProductsRef =
+        orderRef.doc(id).collection(FirebaseColletion.ORDER_PRODUCTS);
+
+    var orderProductsSnapshots = await orderProductsRef.get();
+
+    return orderProductsSnapshots.size;
+  }
 }

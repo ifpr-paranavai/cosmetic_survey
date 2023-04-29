@@ -4,6 +4,7 @@ import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
+import 'package:cosmetic_survey/src/ui/order/view_update_order_details.dart';
 import 'package:flutter/material.dart';
 
 class OrderCard extends StatelessWidget {
@@ -42,7 +43,14 @@ class OrderCard extends StatelessWidget {
         title: Text('Cliente: $customerName'),
         subtitle: Text(
             'Valor total: R\$ ${utils.formatToBrazilianCurrency(order.totalValue!)}\nCiclo: ${order.cicle}\nData da venda: ${Utils.formatDate(date: order.saleDate!)}'),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewUpdateOrderDetails(orderId: order.id),
+            ),
+          );
+        },
         trailing: SizedBox(
           width: 50,
           child: Row(
