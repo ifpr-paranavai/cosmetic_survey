@@ -369,8 +369,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                           if (value == null || value.isEmpty) {
                             return 'Informe o Valor!';
                           } else {
-                            productSelected.price =
-                                formatProductPrice(productSelected.price);
+                            productSelected.price = formatProductPrice(value);
                           }
                           return null;
                         },
@@ -465,12 +464,11 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
     });
   }
 
-  double formatProductPrice(double price) {
-    if (!price.toString().contains('.')) {
-      return double.parse(price.toString().replaceAll(",", "."));
+  double formatProductPrice(String price) {
+    if (!price.contains('.')) {
+      return double.parse(price.replaceAll(",", "."));
     } else {
-      var formattedValue =
-          price.toString().replaceAll(",", ".").replaceAll(".", "");
+      var formattedValue = price.replaceAll(",", ".").replaceAll(".", "");
 
       return double.parse(formattedValue) / 100;
     }

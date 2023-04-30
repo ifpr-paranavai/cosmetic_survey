@@ -2,6 +2,7 @@ import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
+import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
@@ -73,6 +74,7 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
           orderDetails.readOrderDetailsById(widget.orderId),
           orderDetails.getOrderProductQuantity(widget.orderId),
           customerDetails.getOrderCustomer(widget.orderId),
+          orderDetails.getOrderProducts(widget.orderId),
         ],
       ),
       builder: (context, snapshot) {
@@ -86,6 +88,7 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
           final order = snapshot.data![0] as CosmeticOrder;
           final orderProductQuantity = snapshot.data![1] as int;
           final orderCustomer = snapshot.data![2] as Customer;
+          final products = snapshot.data![3] as List<Product>;
 
           _commentsController.text = order.comments!;
 
@@ -183,7 +186,7 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
                     ),
                   ],
                 ),
-                // buildSelectedProductsListView(),
+                buildSelectedProductsListView(products),
                 const Divider(height: 40),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
@@ -201,6 +204,28 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
           return const CosmeticCircularIndicator();
         }
       },
+    );
+  }
+
+  SizedBox buildSelectedProductsListView(List<Product> products) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.width * 0.9,
+      child: ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (BuildContext context, int index) {
+          var product = products[index];
+
+          return Card(
+            elevation: 2,
+            margin: const EdgeInsets.all(8),
+            child: ListTile(
+              title: Text(
+                '${product.code} - ${product.name}\nQuantidade: ${product.quantity}\nPreço: R\$ ${utils.formatToBrazilianCurrency(product.price)}',
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

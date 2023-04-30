@@ -3,6 +3,7 @@ import 'package:cosmetic_survey/src/core/constants/firebase_collection.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/entity/order_products.dart';
 import 'package:cosmetic_survey/src/core/entity/payment.dart';
+import 'package:cosmetic_survey/src/core/entity/product.dart';
 
 class OrderDetails {
   Future addOrderDetails(
@@ -183,5 +184,34 @@ class OrderDetails {
     var orderProductsSnapshots = await orderProductsRef.get();
 
     return orderProductsSnapshots.size;
+  }
+
+  Future<List<Product>> getOrderProducts(dynamic orderId) async {
+    var products = <Product>[];
+
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final orderProductsRef =
+        orderRef.doc(orderId).collection(FirebaseColletion.ORDER_PRODUCTS);
+
+    var orderProductsSnapshots = await orderProductsRef.get();
+    for (var doc in orderProductsSnapshots.docs) {
+      var productId = doc['productId'];
+      var quantitySold = doc['quantity'];
+      var price = doc['price'];
+
+      final productRef = FirebaseFirestore.instance
+          .collection(FirebaseColletion.PRODUCT)
+          .doc(productId);
+
+      var productSnapshot = await productRef.get();
+      var product = Product.fromJson(productSnapshot.data()!);
+      product.quantity = quantitySold;
+      product.price = price;
+
+      products.add(product);
+    }
+
+    return products;
   }
 }
