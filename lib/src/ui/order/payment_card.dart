@@ -6,7 +6,7 @@ import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/order/view_update_payment_details.dart';
 import 'package:flutter/material.dart';
 
-class PaymentCard extends StatelessWidget {
+class PaymentCard extends StatefulWidget {
   CosmeticOrder order;
   Payment payment;
 
@@ -16,6 +16,11 @@ class PaymentCard extends StatelessWidget {
     required this.payment,
   }) : super(key: key);
 
+  @override
+  State<PaymentCard> createState() => _PaymentCardState();
+}
+
+class _PaymentCardState extends State<PaymentCard> {
   final _random = Random();
 
   @override
@@ -28,26 +33,32 @@ class PaymentCard extends StatelessWidget {
           backgroundColor:
               Colors.primaries[_random.nextInt(Colors.primaries.length)]
                   [_random.nextInt(9) * 100],
-          child: Text('${payment.installmentNumber}'),
+          child: Text('${widget.payment.installmentNumber}'),
         ),
-        title:
-            Text('Pagamento referente à ${payment.installmentNumber}ª parcela'),
-        subtitle: payment.paymentDate != null
+        title: Text(
+            'Pagamento referente à ${widget.payment.installmentNumber}ª parcela'),
+        subtitle: widget.payment.paymentDate != null
             ? Text(
-                'Data de pagamento: ${Utils.formatDate(date: payment.paymentDate!)}')
+                'Data de pagamento: ${Utils.formatDate(date: widget.payment.paymentDate!)}')
             : const Text(
                 'Pagamento pendente.',
               ),
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          var result = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ViewUpdatePaymentDetails(
-                order: order,
-                payment: payment,
+                order: widget.order,
+                payment: widget.payment,
               ),
             ),
           );
+
+          if (result != null) {
+            setState(() {
+              widget.payment.paymentDate = result;
+            });
+          }
         },
       ),
     );

@@ -23,7 +23,6 @@ class ViewUpdateOrderDetails extends StatefulWidget {
 
 class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _commentsController = TextEditingController();
 
   var utils = Utils();
   var orderDetails = OrderDetails();
@@ -91,7 +90,7 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
           final orderCustomer = snapshot.data![2] as Customer;
           final products = snapshot.data![3] as List<Product>;
 
-          _commentsController.text = order.comments!;
+          var comments = order.comments!;
 
           return Form(
             key: _formKey,
@@ -133,7 +132,7 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
                 ),
                 const SizedBox(height: cosmeticFormHeight - 20),
                 CosmeticTextFormField(
-                  controller: _commentsController,
+                  initialValue: comments,
                   textInputAction: TextInputAction.done,
                   borderRadius: 10,
                   keyboardType: TextInputType.text,
@@ -145,7 +144,9 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      _commentsController.text = '';
+                      comments = '';
+                    } else {
+                      comments = value;
                     }
                     return null;
                   },
@@ -194,7 +195,7 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
                   child: CosmeticElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        order.comments = _commentsController.text;
+                        order.comments = comments;
 
                         Navigator.push(
                           context,

@@ -37,6 +37,7 @@ class CustomerDetails {
 
   Stream<List<Customer>> readCustomerDetails() => FirebaseFirestore.instance
       .collection(FirebaseColletion.CUSTOMER)
+      .orderBy('creationTime', descending: true)
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => Customer.fromJson(doc.data())).toList());

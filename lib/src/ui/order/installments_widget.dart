@@ -3,6 +3,8 @@ import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/entity/payment.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
+import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/order/payment_card.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +26,35 @@ class _InstallmentsWidgetState extends State<InstallmentsWidget> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: buildAppBar(),
-        body: buildPaymentData(),
+        body: Column(
+          children: [
+            buildPaymentData(),
+            const Divider(height: 40),
+            buildFooterButton(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox buildFooterButton(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.5,
+      child: CosmeticElevatedButton(
+        onPressed: () {
+          Navigator.pop(context);
+          Navigator.pop(context);
+
+          orderDetails.updateOrderDetails(widget.order);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            CosmeticSnackBar.showSnackBar(
+              context: context,
+              message: 'Pedido atualizado.',
+            ),
+          );
+        },
+        buttonName: 'SALVAR ALTERAÇÕES',
       ),
     );
   }
@@ -52,11 +82,9 @@ class _InstallmentsWidgetState extends State<InstallmentsWidget> {
     );
   }
 
-  FutureBuilder<List<dynamic>> buildPaymentData() {
-    return FutureBuilder<List<dynamic>>(
-      future: Future.wait([
-        orderDetails.readPaymentDetailsByOrderId(widget.order.id),
-      ]),
+  FutureBuilder buildPaymentData() {
+    return FutureBuilder(
+      future: orderDetails.readPaymentDetailsByOrderId(widget.order.id),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Center(
@@ -65,15 +93,27 @@ class _InstallmentsWidgetState extends State<InstallmentsWidget> {
             ),
           );
         } else if (snapshot.hasData) {
-          final payments = snapshot.data![0] as List<Payment>;
+          final payments = snapshot.data!;
 
-          return ListView.builder(
-            itemCount: payments.length,
-            itemBuilder: (context, index) {
-              var payment = payments[index];
+          return SizedBox(
+            height: MediaQuery.of(context).size.width * 1.7,
+            child: ListView.builder(
+              itemCount: payments.length,
+              itemBuilder: (context, index) {
+                var currentPayment = payments[index];
 
-              return PaymentCard(order: widget.order, payment: payment);
-            },
+                var payment = Payment(
+                  id: currentPayment.id,
+                  orderId: currentPayment.orderId,
+                  installmentValue: currentPayment.installmentValue,
+                  paymentDate: currentPayment.paymentDate,
+                  installmentNumber: currentPayment.installmentNumber,
+                  paymentType: currentPayment.paymentType,
+                );
+
+                return PaymentCard(order: widget.order, payment: payment);
+              },
+            ),
           );
         } else {
           return const CosmeticCircularIndicator();

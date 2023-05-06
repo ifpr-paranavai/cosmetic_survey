@@ -10,7 +10,6 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
-import 'package:cosmetic_survey/src/ui/order/installments_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
@@ -18,9 +17,11 @@ class ViewUpdatePaymentDetails extends StatefulWidget {
   CosmeticOrder order;
   Payment payment;
 
-  ViewUpdatePaymentDetails(
-      {Key? key, required this.order, required this.payment})
-      : super(key: key);
+  ViewUpdatePaymentDetails({
+    Key? key,
+    required this.order,
+    required this.payment,
+  }) : super(key: key);
 
   @override
   State<ViewUpdatePaymentDetails> createState() =>
@@ -48,37 +49,18 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
 
   @override
   Widget build(BuildContext context) {
-    _orderTotalValueController.text = widget.order.totalValue!.toString();
+    _orderTotalValueController.text =
+        utils.formatToBrazilianCurrency(widget.order.totalValue!);
 
-    // TODO corrigir valor e casas decimais
     _installmentValueController.text =
-        widget.payment.installmentValue!.toString();
+        utils.formatToBrazilianCurrency(widget.payment.installmentValue!);
 
     paid = widget.payment.paymentDate != null;
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => {
-              Navigator.pop(context),
-            },
-            icon: const Icon(Icons.arrow_back_outlined),
-            color: cosmeticSecondaryColor,
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Pagamento',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: cosmeticSecondaryColor,
-              fontSize: 25,
-            ),
-          ),
-        ),
+        appBar: buildAppBar(context),
         body: Container(
           padding: const EdgeInsets.all(cosmeticDefaultSize),
           child: Form(
@@ -92,6 +74,29 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        onPressed: () => {
+          Navigator.pop(context),
+        },
+        icon: const Icon(Icons.arrow_back_outlined),
+        color: cosmeticSecondaryColor,
+      ),
+      backgroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: true,
+      title: const Text(
+        'Pagamento',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: cosmeticSecondaryColor,
+          fontSize: 25,
         ),
       ),
     );
@@ -159,7 +164,7 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
           borderRadius: 10,
           keyboardType: TextInputType.number,
           readOnly: true,
-          inputText: 'Valor da parcela',
+          inputText: 'Valor da ${widget.payment.installmentNumber}ª parcela',
           icon: const Icon(
             Icons.price_change_outlined,
             color: cosmeticSecondaryColor,
@@ -193,15 +198,12 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
               : CosmeticElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      var now = DateTime.now();
+                      widget.payment.paymentDate = now;
+
                       orderDetails.updatePaymentDetails(widget.payment);
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              InstallmentsWidget(order: widget.order),
-                        ),
-                      );
+                      Navigator.pop(context, now);
                       ScaffoldMessenger.of(context).showSnackBar(
                         CosmeticSnackBar.showSnackBar(
                           context: context,

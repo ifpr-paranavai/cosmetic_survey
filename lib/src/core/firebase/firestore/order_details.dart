@@ -93,10 +93,19 @@ class OrderDetails {
 
   Stream<List<CosmeticOrder>> readOrderDetails() => FirebaseFirestore.instance
       .collection(FirebaseColletion.ORDER)
+      .orderBy('saleDate', descending: true)
       .snapshots()
       .map((snapshot) => snapshot.docs
           .map((doc) => CosmeticOrder.fromJson(doc.data()))
           .toList());
+
+  Future updateOrderDetails(CosmeticOrder order) async {
+    final orderDoc = FirebaseFirestore.instance
+        .collection(FirebaseColletion.ORDER)
+        .doc(order.id);
+
+    await orderDoc.update({'comments': order.comments});
+  }
 
   void deleteOrderDetails({required dynamic id}) async {
     final orderRef =
@@ -192,7 +201,7 @@ class OrderDetails {
       id: payment.id,
       orderId: payment.orderId,
       installmentValue: payment.installmentValue,
-      paymentDate: DateTime.now(),
+      paymentDate: payment.paymentDate,
       installmentNumber: payment.installmentNumber,
       paymentType: payment.paymentType,
     ).toJson();

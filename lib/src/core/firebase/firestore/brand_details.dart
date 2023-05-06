@@ -33,6 +33,7 @@ class BrandDetails {
 
   Stream<List<Brand>> readBrandDetails() => FirebaseFirestore.instance
       .collection(FirebaseColletion.BRAND)
+      .orderBy('creationTime', descending: true)
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => Brand.fromJson(doc.data())).toList());
