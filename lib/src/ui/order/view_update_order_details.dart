@@ -9,6 +9,7 @@ import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
+import 'package:cosmetic_survey/src/ui/order/installments_widget.dart';
 import 'package:flutter/material.dart';
 
 class ViewUpdateOrderDetails extends StatefulWidget {
@@ -192,9 +193,19 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: CosmeticElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
+                      if (_formKey.currentState!.validate()) {
+                        order.comments = _commentsController.text;
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                InstallmentsWidget(order: order),
+                          ),
+                        );
+                      }
                     },
-                    buttonName: 'SALVAR',
+                    buttonName: 'VISUALIZAR PAGAMENTOS',
                   ),
                 ),
               ],

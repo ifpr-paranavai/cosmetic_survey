@@ -21,7 +21,7 @@ class Payment {
       'orderId': orderId,
       'installmentValue': installmentValue,
       'paymentDate': paymentDate,
-      'installments': installmentNumber,
+      'installmentNumber': installmentNumber,
       'paymentType': paymentType,
     };
   }
@@ -31,7 +31,7 @@ class Payment {
         orderId: json['orderId'],
         installmentValue: json['installmentValue'],
         paymentDate: json['paymentDate']?.toDate(),
-        installmentNumber: json['installments'],
+        installmentNumber: json['installmentNumber'],
         paymentType: json['paymentType'],
       );
 }

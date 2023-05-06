@@ -143,7 +143,7 @@ class OrderDetails {
     return ordersTotalValue;
   }
 
-  Future<List<Payment>> readPaymentDetails() async {
+  Future<List<Payment>> readAllPaymentDetails() async {
     var payments = <Payment>[];
 
     final orderRef =
@@ -164,6 +164,40 @@ class OrderDetails {
       }
     }
     return payments;
+  }
+
+  Future<List<Payment>> readPaymentDetailsByOrderId(dynamic id) async {
+    var payments = <Payment>[];
+
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final paymentRef = orderRef.doc(id).collection(FirebaseColletion.PAYMENT);
+
+    var paymentSnapshots = await paymentRef.orderBy('installmentNumber').get();
+
+    for (var payment in paymentSnapshots.docs) {
+      payments.add(Payment.fromJson(payment.data()));
+    }
+
+    return payments;
+  }
+
+  Future updatePaymentDetails(Payment payment) async {
+    final orderRef =
+        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final paymentRef =
+        orderRef.doc(payment.orderId).collection(FirebaseColletion.PAYMENT);
+
+    final doc = Payment(
+      id: payment.id,
+      orderId: payment.orderId,
+      installmentValue: payment.installmentValue,
+      paymentDate: DateTime.now(),
+      installmentNumber: payment.installmentNumber,
+      paymentType: payment.paymentType,
+    ).toJson();
+
+    await paymentRef.doc(payment.id).update(doc);
   }
 
   Future<CosmeticOrder> readOrderDetailsById(dynamic id) async {

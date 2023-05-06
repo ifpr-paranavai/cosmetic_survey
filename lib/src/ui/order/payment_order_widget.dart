@@ -32,7 +32,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var orderDetails = OrderDetails();
   var utils = Utils();
-  final _installmentValueController = MoneyMaskedTextController();
+  final _installmentValueController = MoneyMaskedTextController(leftSymbol: 'R\$ ');
 
   var installments = [
     Installments.CASH_PAYMENT,
@@ -141,7 +141,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
         ),
         const SizedBox(height: cosmeticFormHeight - 20),
         CosmeticTextFormField(
-          initialValue: widget.totalValue,
+          initialValue: 'R\$ ${widget.totalValue}',
           inputText: 'Valor total do pedido',
           icon: const Icon(
             Icons.payments_outlined,

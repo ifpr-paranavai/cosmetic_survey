@@ -116,7 +116,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       future: Future.wait(
         [
           orderDetails.getOrderQuantity(),
-          orderDetails.readPaymentDetails(),
+          orderDetails.readAllPaymentDetails(),
           orderDetails.getOrdersTotalValue(),
         ],
       ),

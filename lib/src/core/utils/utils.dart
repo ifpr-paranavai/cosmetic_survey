@@ -52,6 +52,12 @@ class Utils {
         .toString();
   }
 
+  static String formatDateDDMMYYYY({required DateTime date}) {
+    return DateFormat(DateFormat.YEAR_NUM_MONTH_DAY, 'pt_Br')
+        .format(date)
+        .toString();
+  }
+
   String getCurrentDateMonthWeekdayDay() {
     return DateFormat(DateFormat.MONTH_WEEKDAY_DAY, 'pt_Br')
         .format(DateTime.now().toLocal())

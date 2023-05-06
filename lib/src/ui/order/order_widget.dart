@@ -64,7 +64,6 @@ class _OrderWidgetState extends State<OrderWidget> {
 
                   CosmeticOrder order = CosmeticOrder(
                     id: currentOrder.id,
-                    // products: currentOrder.products,
                     customerId: currentOrder.customerId,
                     cicle: currentOrder.cicle,
                     saleDate: currentOrder.saleDate,
