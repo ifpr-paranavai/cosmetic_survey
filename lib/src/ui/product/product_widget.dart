@@ -218,7 +218,6 @@ class _ProductWidgetState extends State<ProductWidget> {
                               },
                             ),
                             const SizedBox(height: cosmeticFormHeight - 20),
-                            const SizedBox(height: cosmeticFormHeight - 20),
                             CosmeticBrandDropdown(
                               brands: brands,
                               validator: (value) {

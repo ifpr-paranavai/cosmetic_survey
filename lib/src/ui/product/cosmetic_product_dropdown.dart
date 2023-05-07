@@ -30,10 +30,11 @@ class _CosmeticProductDropdownState extends State<CosmeticProductDropdown> {
       value: null,
       decoration: uiUtil.dropdownStyle(label: 'Selecione um Produto'),
       validator: widget.validator,
+      isExpanded: true,
       items: widget.products.map((Product product) {
         return DropdownMenuItem<Product>(
           value: product,
-          child: Text('${product.code} - ${product.name}'),
+          child: Text('${product.code} - ${product.name}', overflow: TextOverflow.ellipsis),
         );
       }).toList(),
       onChanged: (Product? product) {

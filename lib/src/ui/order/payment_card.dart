@@ -41,7 +41,7 @@ class _PaymentCardState extends State<PaymentCard> {
             ? Text(
                 'Data de pagamento: ${Utils.formatDate(date: widget.payment.paymentDate!)}')
             : const Text(
-                'Pagamento pendente.',
+                'Pagamento pendente...',
               ),
         onTap: () async {
           var result = await Navigator.push(

@@ -72,7 +72,7 @@ class _InstallmentsWidgetState extends State<InstallmentsWidget> {
       elevation: 0,
       centerTitle: true,
       title: const Text(
-        'Pagamento',
+        'Pagamentos',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: cosmeticSecondaryColor,

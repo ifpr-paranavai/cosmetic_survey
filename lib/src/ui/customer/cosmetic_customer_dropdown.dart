@@ -30,10 +30,11 @@ class _CosmeticCustomerDropdownState extends State<CosmeticCustomerDropdown> {
       value: null,
       decoration: uiUtil.dropdownStyle(label: 'Selecione um Cliente'),
       validator: widget.validator,
+      isExpanded: true,
       items: widget.customers.map((Customer customer) {
         return DropdownMenuItem<Customer>(
           value: customer,
-          child: Text(customer.name),
+          child: Text(customer.name, overflow: TextOverflow.ellipsis),
         );
       }).toList(),
       onChanged: (Customer? customer) {

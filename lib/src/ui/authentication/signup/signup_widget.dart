@@ -32,7 +32,7 @@ class SignUpWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CosmeticFormHeaderWidget(
-                image: cosmeticFSignUpImage,
+                image: cosmeticSignUp,
                 tittle: 'Boas vindas!',
                 textStyleTittle: Theme.of(context).textTheme.headlineSmall,
                 subtittle: 'Crie seu perfil para começar sua jornada.',

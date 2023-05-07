@@ -36,7 +36,7 @@ class ForgetPasswordWidget extends StatelessWidget {
             children: [
               const SizedBox(height: cosmeticDefaultSize),
               CosmeticFormHeaderWidget(
-                image: cosmeticForgetPasswordImage,
+                image: cosmeticResetPassword,
                 tittle: 'Esqueceu a senha?',
                 subtittle: 'Informe o email para recuperá-la!',
                 crossAxisAlignment: CrossAxisAlignment.center,

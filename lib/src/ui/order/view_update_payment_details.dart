@@ -92,7 +92,7 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
       elevation: 0,
       centerTitle: true,
       title: const Text(
-        'Pagamento',
+        'Parcela',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: cosmeticSecondaryColor,

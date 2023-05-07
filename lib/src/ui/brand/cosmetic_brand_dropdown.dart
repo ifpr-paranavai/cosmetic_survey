@@ -29,10 +29,11 @@ class _CosmeticBrandDropdownState extends State<CosmeticBrandDropdown> {
       value: null,
       decoration: uiUtil.dropdownStyle(label: 'Selecione uma Marca'),
       validator: widget.validator,
+      isExpanded: true,
       items: widget.brands.map((Brand brand) {
         return DropdownMenuItem<Brand>(
           value: brand,
-          child: Text(brand.name),
+          child: Text(brand.name, overflow: TextOverflow.ellipsis),
         );
       }).toList(),
       onChanged: (Brand? brand) {
