@@ -4,12 +4,18 @@ import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/entity/order_products.dart';
 import 'package:cosmetic_survey/src/core/entity/payment.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
 
 class OrderDetails {
-  Future addOrderDetails(
-      {required CosmeticOrder order, required Payment payment}) async {
-    final docOrder =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER).doc();
+  var user = CurrentUserDetails();
+  final root = FirebaseFirestore.instance.collection(FirebaseCollection.AUTH);
+
+  Future addOrderDetails({
+    required CosmeticOrder order,
+    required Payment payment,
+  }) async {
+    final userRef = root.doc(user.getCurrentUserUid());
+    final docOrder = userRef.collection(FirebaseCollection.ORDER).doc();
 
     final doc = CosmeticOrder(
       id: docOrder.id,
@@ -33,12 +39,13 @@ class OrderDetails {
     );
   }
 
-  Future addOrderProductsDetails(
-      {required CosmeticOrder order,
-      required DocumentReference docOrder}) async {
+  Future addOrderProductsDetails({
+    required CosmeticOrder order,
+    required DocumentReference docOrder,
+  }) async {
     for (var product in order.products!) {
       final docOrderProducts =
-          docOrder.collection(FirebaseColletion.ORDER_PRODUCTS).doc();
+          docOrder.collection(FirebaseCollection.ORDER_PRODUCTS).doc();
 
       final doc = OrderProducts(
         id: docOrderProducts.id,
@@ -60,7 +67,8 @@ class OrderDetails {
   }) async {
     if (installments == 0) {
       for (var i = 0; i <= installments; i++) {
-        final docPayment = docOrder.collection(FirebaseColletion.PAYMENT).doc();
+        final docPayment =
+            docOrder.collection(FirebaseCollection.PAYMENT).doc();
 
         final doc = Payment(
           id: docPayment.id,
@@ -75,7 +83,8 @@ class OrderDetails {
       }
     } else {
       for (var i = 1; i <= installments; i++) {
-        final docPayment = docOrder.collection(FirebaseColletion.PAYMENT).doc();
+        final docPayment =
+            docOrder.collection(FirebaseCollection.PAYMENT).doc();
 
         final doc = Payment(
           id: docPayment.id,
@@ -91,28 +100,31 @@ class OrderDetails {
     }
   }
 
-  Stream<List<CosmeticOrder>> readOrderDetails() => FirebaseFirestore.instance
-      .collection(FirebaseColletion.ORDER)
-      .orderBy('saleDate', descending: true)
-      .snapshots()
-      .map((snapshot) => snapshot.docs
-          .map((doc) => CosmeticOrder.fromJson(doc.data()))
-          .toList());
+  Stream<List<CosmeticOrder>> readOrderDetails() {
+    final userRef = root.doc(user.getCurrentUserUid());
+
+    return userRef
+        .collection(FirebaseCollection.ORDER)
+        .orderBy('saleDate', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => CosmeticOrder.fromJson(doc.data()))
+            .toList());
+  }
 
   Future updateOrderDetails(CosmeticOrder order) async {
-    final orderDoc = FirebaseFirestore.instance
-        .collection(FirebaseColletion.ORDER)
-        .doc(order.id);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderDoc = userRef.collection(FirebaseCollection.ORDER).doc(order.id);
 
     await orderDoc.update({'comments': order.comments});
   }
 
   void deleteOrderDetails({required dynamic id}) async {
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
     final orderProductsRef =
-        orderRef.doc(id).collection(FirebaseColletion.ORDER_PRODUCTS);
-    final paymentRef = orderRef.doc(id).collection(FirebaseColletion.PAYMENT);
+        orderRef.doc(id).collection(FirebaseCollection.ORDER_PRODUCTS);
+    final paymentRef = orderRef.doc(id).collection(FirebaseCollection.PAYMENT);
 
     var orderProductsSnapshots = await orderProductsRef.get();
     orderProductsSnapshots.docs.forEach((doc) async {
@@ -128,18 +140,18 @@ class OrderDetails {
   }
 
   Future<int> getOrderQuantity() async {
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
 
     final docs = await orderRef.get();
     return docs.size;
   }
 
   Future<double> getOrdersTotalValue() async {
-    var ordersTotalValue = 0.0;
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
 
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    var ordersTotalValue = 0.0;
 
     final orders = await orderRef.get();
 
@@ -153,17 +165,17 @@ class OrderDetails {
   }
 
   Future<List<Payment>> readAllPaymentDetails() async {
-    var payments = <Payment>[];
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
 
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    var payments = <Payment>[];
 
     // recupero todos os pedidos
     var ordersCollection = await orderRef.get();
 
     for (var orderDoc in ordersCollection.docs) {
       final paymentRef =
-          orderDoc.reference.collection(FirebaseColletion.PAYMENT);
+          orderDoc.reference.collection(FirebaseCollection.PAYMENT);
 
       // recupero os pagamentos do pedido
       var paymentsCollection = await paymentRef.get();
@@ -176,11 +188,11 @@ class OrderDetails {
   }
 
   Future<List<Payment>> readPaymentDetailsByOrderId(dynamic id) async {
-    var payments = <Payment>[];
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
+    final paymentRef = orderRef.doc(id).collection(FirebaseCollection.PAYMENT);
 
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
-    final paymentRef = orderRef.doc(id).collection(FirebaseColletion.PAYMENT);
+    var payments = <Payment>[];
 
     var paymentSnapshots = await paymentRef.orderBy('installmentNumber').get();
 
@@ -192,10 +204,10 @@ class OrderDetails {
   }
 
   Future updatePaymentDetails(Payment payment) async {
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
     final paymentRef =
-        orderRef.doc(payment.orderId).collection(FirebaseColletion.PAYMENT);
+        orderRef.doc(payment.orderId).collection(FirebaseCollection.PAYMENT);
 
     final doc = Payment(
       id: payment.id,
@@ -210,8 +222,8 @@ class OrderDetails {
   }
 
   Future<CosmeticOrder> readOrderDetailsById(dynamic id) async {
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER).doc(id);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER).doc(id);
 
     var order = await orderRef.get();
 
@@ -219,10 +231,10 @@ class OrderDetails {
   }
 
   Future<int> getOrderProductQuantity(dynamic id) async {
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
     final orderProductsRef =
-        orderRef.doc(id).collection(FirebaseColletion.ORDER_PRODUCTS);
+        orderRef.doc(id).collection(FirebaseCollection.ORDER_PRODUCTS);
 
     var orderProductsSnapshots = await orderProductsRef.get();
 
@@ -230,12 +242,12 @@ class OrderDetails {
   }
 
   Future<List<Product>> getOrderProducts(dynamic orderId) async {
-    var products = <Product>[];
-
-    final orderRef =
-        FirebaseFirestore.instance.collection(FirebaseColletion.ORDER);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
     final orderProductsRef =
-        orderRef.doc(orderId).collection(FirebaseColletion.ORDER_PRODUCTS);
+        orderRef.doc(orderId).collection(FirebaseCollection.ORDER_PRODUCTS);
+
+    var products = <Product>[];
 
     var orderProductsSnapshots = await orderProductsRef.get();
     for (var doc in orderProductsSnapshots.docs) {
@@ -243,9 +255,8 @@ class OrderDetails {
       var quantitySold = doc['quantity'];
       var price = doc['price'];
 
-      final productRef = FirebaseFirestore.instance
-          .collection(FirebaseColletion.PRODUCT)
-          .doc(productId);
+      final productRef =
+          userRef.collection(FirebaseCollection.PRODUCT).doc(productId);
 
       var productSnapshot = await productRef.get();
       var product = Product.fromJson(productSnapshot.data()!);

@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
 
 import '../../constants/firebase_collection.dart';
 
 class CustomerDetails {
+  var user = CurrentUserDetails();
+  final root = FirebaseFirestore.instance.collection(FirebaseCollection.AUTH);
+
   Future addCustomerDetails({required Customer cCustomer}) async {
-    final docCustomer =
-        FirebaseFirestore.instance.collection(FirebaseColletion.CUSTOMER).doc();
+    final userRef = root.doc(user.getCurrentUserUid());
+    final docCustomer = userRef.collection(FirebaseCollection.CUSTOMER).doc();
 
     final customer = Customer(
       id: docCustomer.id,
@@ -20,9 +24,9 @@ class CustomerDetails {
   }
 
   Future updateCustomerDetails({required Customer cCustomer}) async {
-    final docCustomer = FirebaseFirestore.instance
-        .collection(FirebaseColletion.CUSTOMER)
-        .doc(cCustomer.id);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final docCustomer =
+        userRef.collection(FirebaseCollection.CUSTOMER).doc(cCustomer.id);
 
     final customer = Customer(
       id: docCustomer.id,
@@ -35,18 +39,21 @@ class CustomerDetails {
     await docCustomer.update(customer);
   }
 
-  Stream<List<Customer>> readCustomerDetails() => FirebaseFirestore.instance
-      .collection(FirebaseColletion.CUSTOMER)
-      .orderBy('creationTime', descending: true)
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Customer.fromJson(doc.data())).toList());
+  Stream<List<Customer>> readCustomerDetails() {
+    final userRef = root.doc(user.getCurrentUserUid());
+
+    return userRef
+        .collection(FirebaseCollection.CUSTOMER)
+        .orderBy('creationTime', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Customer.fromJson(doc.data())).toList());
+  }
 
   void deleteCustomerDetails({required dynamic id}) {
-    FirebaseFirestore.instance
-        .collection(FirebaseColletion.CUSTOMER)
-        .doc(id)
-        .delete();
+    final userRef = root.doc(user.getCurrentUserUid());
+
+    userRef.collection(FirebaseCollection.CUSTOMER).doc(id).delete();
   }
 
   List<Customer> searchAndConvertCustomers() {
@@ -74,16 +81,14 @@ class CustomerDetails {
   }
 
   Future<Customer> getOrderCustomer(dynamic orderId) async {
-    final orderRef = FirebaseFirestore.instance
-        .collection(FirebaseColletion.ORDER)
-        .doc(orderId);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER).doc(orderId);
 
     var orderSnapshot = await orderRef.get();
     var customerId = orderSnapshot['customerId'];
 
-    final customerRef = FirebaseFirestore.instance
-        .collection(FirebaseColletion.CUSTOMER)
-        .doc(customerId);
+    final customerRef =
+        userRef.collection(FirebaseCollection.CUSTOMER).doc(customerId);
 
     var customerSnapshot = await customerRef.get();
     return Customer.fromJson(customerSnapshot.data()!);

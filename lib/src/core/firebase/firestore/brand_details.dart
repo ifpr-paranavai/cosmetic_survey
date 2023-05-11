@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cosmetic_survey/src/core/entity/brand.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
 
 import '../../constants/firebase_collection.dart';
 
 class BrandDetails {
+  var user = CurrentUserDetails();
+  final root = FirebaseFirestore.instance.collection(FirebaseCollection.AUTH);
+
   Future addBrandDetails({required String name}) async {
-    final docBrand =
-        FirebaseFirestore.instance.collection(FirebaseColletion.BRAND).doc();
+    final userRef = root.doc(user.getCurrentUserUid());
+    final docBrand = userRef.collection(FirebaseCollection.BRAND).doc();
 
     final brand = Brand(
       id: docBrand.id,
@@ -18,9 +22,9 @@ class BrandDetails {
   }
 
   Future updateBrandDetails({required Brand cBrand}) async {
-    final docBrand = FirebaseFirestore.instance
-        .collection(FirebaseColletion.BRAND)
-        .doc(cBrand.id);
+    final userRef = root.doc(user.getCurrentUserUid());
+    final docBrand =
+        userRef.collection(FirebaseCollection.BRAND).doc(cBrand.id);
 
     final brand = Brand(
       id: docBrand.id,
@@ -31,18 +35,21 @@ class BrandDetails {
     await docBrand.update(brand);
   }
 
-  Stream<List<Brand>> readBrandDetails() => FirebaseFirestore.instance
-      .collection(FirebaseColletion.BRAND)
-      .orderBy('creationTime', descending: true)
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Brand.fromJson(doc.data())).toList());
+  Stream<List<Brand>> readBrandDetails() {
+    final userRef = root.doc(user.getCurrentUserUid());
+
+    return userRef
+        .collection(FirebaseCollection.BRAND)
+        .orderBy('creationTime', descending: true)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Brand.fromJson(doc.data())).toList());
+  }
 
   void deleteBrandDetails({required dynamic id}) {
-    FirebaseFirestore.instance
-        .collection(FirebaseColletion.BRAND)
-        .doc(id)
-        .delete();
+    final userRef = root.doc(user.getCurrentUserUid());
+
+    userRef.collection(FirebaseCollection.BRAND).doc(id).delete();
   }
 
   List<Brand> searchAndConvertBrands() {

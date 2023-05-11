@@ -212,7 +212,7 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
                       );
                     }
                   },
-                  buttonName: 'SALVAR ALTERAÇÕES',
+                  buttonName: 'CONFIRMAR PAGAMENTO',
                 ),
         ),
       ],

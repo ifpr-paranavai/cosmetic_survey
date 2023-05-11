@@ -54,7 +54,7 @@ class _InstallmentsWidgetState extends State<InstallmentsWidget> {
             ),
           );
         },
-        buttonName: 'SALVAR ALTERAÇÕES',
+        buttonName: 'FECHAR E SALVAR',
       ),
     );
   }

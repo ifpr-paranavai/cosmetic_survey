@@ -53,12 +53,12 @@ class _CosmeticBottomNavigationBarState
           destinations: const [
             NavigationDestination(
               icon: Icon(
-                Icons.home_outlined,
+                Icons.spa_outlined,
                 color: Colors.black26,
               ),
               label: 'Início',
               selectedIcon: Icon(
-                Icons.home,
+                Icons.spa,
                 color: cosmeticPrimaryColor,
               ),
             ),

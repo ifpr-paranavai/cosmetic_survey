@@ -9,14 +9,14 @@ class UserDetails {
     CurrentUserDetails currentUserDetails = CurrentUserDetails();
 
     final docUser = FirebaseFirestore.instance
-        .collection(FirebaseColletion.USER)
+        .collection(FirebaseCollection.USER)
         .doc(currentUserDetails.getCurrentUserUid());
 
     final user = CurrentUser(
       id: docUser.id,
       name: name.trim(),
       email: email.trim(),
-      creationTime: DateTime.now().toUtc(),
+      creationTime: DateTime.now(),
       imagePath: '',
     ).toJson();
 
@@ -28,7 +28,7 @@ class UserDetails {
     CurrentUserDetails currentUserDetails = CurrentUserDetails();
 
     final docUser = FirebaseFirestore.instance
-        .collection(FirebaseColletion.USER)
+        .collection(FirebaseCollection.USER)
         .doc(currentUserDetails.getCurrentUserUid());
 
     await docUser.update({'imagePath': imagePath});

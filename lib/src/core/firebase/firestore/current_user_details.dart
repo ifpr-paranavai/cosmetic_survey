@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 class CurrentUserDetails {
   Stream<DocumentSnapshot> readUserData() {
     return FirebaseFirestore.instance
-        .collection(FirebaseColletion.USER)
+        .collection(FirebaseCollection.USER)
         .doc(getCurrentUserUid())
         .snapshots();
   }
@@ -55,7 +55,7 @@ class CurrentUserDetails {
     CurrentUserDetails currentUserDetails = CurrentUserDetails();
 
     return await FirebaseFirestore.instance
-        .collection(FirebaseColletion.USER)
+        .collection(FirebaseCollection.USER)
         .doc(currentUserDetails.getCurrentUserUid())
         .delete()
         .then(

@@ -18,7 +18,7 @@ class StorageDetails {
 
     final ref = FirebaseStorage.instance
         .ref()
-        .child(FirebaseColletion.PROFILE_IMAGE)
+        .child(FirebaseCollection.PROFILE_IMAGE)
         .child(fileName);
 
     final result = await ref.putFile(File(path));
