@@ -25,6 +25,7 @@ class OrderDetails {
       comments: order.comments?.trim(),
       installments: order.installments,
       totalValue: order.totalValue,
+      missingValue: order.missingValue,
     ).toJson();
 
     await docOrder.set(doc);
@@ -33,9 +34,8 @@ class OrderDetails {
 
     addPaymentDetails(
       payment: payment,
-      installments: order.installments!,
+      order: order,
       docOrder: docOrder,
-      totalValue: order.totalValue!,
     );
   }
 
@@ -61,19 +61,18 @@ class OrderDetails {
 
   Future addPaymentDetails({
     required Payment payment,
-    required int installments,
+    required CosmeticOrder order,
     required DocumentReference docOrder,
-    required double totalValue,
   }) async {
-    if (installments == 0) {
-      for (var i = 0; i <= installments; i++) {
+    if (order.installments == 0) {
+      for (var i = 0; i <= order.installments!; i++) {
         final docPayment =
             docOrder.collection(FirebaseCollection.PAYMENT).doc();
 
         final doc = Payment(
           id: docPayment.id,
           orderId: docOrder.id,
-          installmentValue: totalValue,
+          installmentValue: order.totalValue,
           paymentDate: DateTime.now(),
           installmentNumber: 0,
           paymentType: payment.paymentType,
@@ -82,14 +81,16 @@ class OrderDetails {
         await docPayment.set(doc);
       }
     } else {
-      for (var i = 1; i <= installments; i++) {
+      for (var i = 1; i <= order.installments!; i++) {
         final docPayment =
             docOrder.collection(FirebaseCollection.PAYMENT).doc();
 
         final doc = Payment(
           id: docPayment.id,
           orderId: docOrder.id,
-          installmentValue: payment.installmentValue,
+          installmentValue: i == 1
+              ? payment.installmentValue
+              : order.missingValue! / (order.installments! - 1),
           paymentDate: i == 1 ? DateTime.now() : null,
           installmentNumber: i,
           paymentType: i == 1 ? payment.paymentType : '',

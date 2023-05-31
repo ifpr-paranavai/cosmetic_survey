@@ -46,14 +46,20 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
   ];
 
   bool paid = false;
+  var paymentInstallmentValue = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _installmentValueController.text =
+        utils.formatToBrazilianCurrency(widget.payment.installmentValue!);
+  }
 
   @override
   Widget build(BuildContext context) {
     _orderTotalValueController.text =
         utils.formatToBrazilianCurrency(widget.order.totalValue!);
-
-    _installmentValueController.text =
-        utils.formatToBrazilianCurrency(widget.payment.installmentValue!);
 
     paid = widget.payment.paymentDate != null;
 
@@ -163,12 +169,24 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
           textInputAction: TextInputAction.done,
           borderRadius: 10,
           keyboardType: TextInputType.number,
-          readOnly: true,
+          readOnly: paid,
           inputText: 'Valor da ${widget.payment.installmentNumber}ª parcela',
           icon: const Icon(
             Icons.price_change_outlined,
             color: cosmeticSecondaryColor,
           ),
+          validator: (value) {
+            var formattedValue = utils.formatValue(value.substring(3));
+
+            if (value == null && value.isEmpty) {
+              return 'Informe o valor!';
+            } else if (formattedValue > widget.order.missingValue!) {
+              return "O valor máximo é: R\$ ${widget.order.missingValue}"; // TODO formatar valor
+            } else {
+              paymentInstallmentValue = formattedValue;
+            }
+            return null;
+          },
         ),
         const SizedBox(height: cosmeticFormHeight - 20),
         CosmeticTextFormField(
@@ -200,6 +218,7 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
                     if (_formKey.currentState!.validate()) {
                       var now = DateTime.now();
                       widget.payment.paymentDate = now;
+                      widget.payment.installmentValue = paymentInstallmentValue;
 
                       orderDetails.updatePaymentDetails(widget.payment);
 

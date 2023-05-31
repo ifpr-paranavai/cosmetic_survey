@@ -9,6 +9,7 @@ class CosmeticOrder {
   late String? comments;
   late int? installments;
   late double? totalValue;
+  late double? missingValue;
 
   CosmeticOrder({
     this.id,
@@ -19,30 +20,30 @@ class CosmeticOrder {
     this.comments,
     this.installments,
     this.totalValue,
+    this.missingValue,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      // 'products': products.map((product) => product.toJson()),
       'cicle': cicle,
       'saleDate': saleDate,
       'comments': comments,
       'customerId': customerId,
       'installments': installments,
       'totalValue': totalValue,
+      'missingValue': missingValue,
     };
   }
 
   static CosmeticOrder fromJson(Map<String, dynamic> json) => CosmeticOrder(
         id: json['id'],
-        // products: List<Product>.from(
-        //     json['products'].map((product) => Product.fromJson(product))),
         customerId: json['customerId'],
         cicle: json['cicle'],
         saleDate: json['saleDate'].toDate(),
         comments: json['comments'],
         installments: json['installments'],
         totalValue: json['totalValue'],
+        missingValue: json['missingValue'],
       );
 }

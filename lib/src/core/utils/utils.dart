@@ -75,4 +75,14 @@ class Utils {
 
     return formatter.format(value).trim();
   }
+
+  double formatValue(String price) {
+    if (!price.contains('.')) {
+      return double.parse(price.replaceAll(",", "."));
+    } else {
+      var formattedValue = price.replaceAll(",", ".").replaceAll(".", "");
+
+      return double.parse(formattedValue) / 100;
+    }
+  }
 }

@@ -32,7 +32,8 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var orderDetails = OrderDetails();
   var utils = Utils();
-  final _installmentValueController = MoneyMaskedTextController(leftSymbol: 'R\$ ');
+  final _installmentValueController =
+      MoneyMaskedTextController(leftSymbol: 'R\$ ');
 
   var installments = [
     Installments.CASH_PAYMENT,
@@ -119,7 +120,9 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                   _installmentValueController.text = '-----';
                 } else {
                   _installmentValueController.text = getOrderInstallmentValue(
-                      widget.totalValue, installments!);
+                    widget.totalValue,
+                    installments!,
+                  );
                 }
               },
             );
@@ -154,14 +157,27 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
         const SizedBox(height: cosmeticFormHeight - 20),
         CosmeticTextFormField(
           controller: _installmentValueController,
-          inputText: 'Valor de cada parcela',
+          inputText: 'Valor da 1ª parcela',
+          validator: (value) {
+            var orderTotalValue = formatOrderPrice(widget.totalValue);
+            var formattedValue = formatOrderPrice(value.substring(3));
+
+            if (value == null || value.isEmpty) {
+              return 'Informe o valor!';
+            } else if (formattedValue > orderTotalValue) {
+              return "O valor máximo é: R\$ $orderTotalValue";
+            } else {
+              paymentInstallmentValue = formattedValue;
+            }
+            return null;
+          },
           icon: const Icon(
             Icons.price_change_outlined,
             color: cosmeticSecondaryColor,
           ),
           keyboardType: TextInputType.number,
           borderRadius: 10.0,
-          readOnly: true,
+          readOnly: false,
         ),
         const SizedBox(height: cosmeticFormHeight - 20),
         CosmeticTextFormField(
@@ -182,6 +198,9 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 widget.order.totalValue = formatOrderPrice(widget.totalValue);
+                widget.order.missingValue =
+                    widget.order.totalValue! - paymentInstallmentValue;
+
                 orderDetails.addOrderDetails(
                   order: widget.order,
                   payment: Payment(
