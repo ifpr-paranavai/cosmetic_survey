@@ -90,6 +90,7 @@ class CustomerActions {
                     inputText: 'Nome',
                     readOnly: false,
                     maxLengh: 55,
+                    textCapitalization: TextCapitalization.words,
                     icon: const Icon(
                       Icons.person_outline_rounded,
                       color: cosmeticSecondaryColor,

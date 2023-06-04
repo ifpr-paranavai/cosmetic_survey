@@ -219,7 +219,22 @@ class OrderDetails {
       paymentType: payment.paymentType,
     ).toJson();
 
+    updateMissingValue(payment);
+
     await paymentRef.doc(payment.id).update(doc);
+  }
+
+  Future updateMissingValue(Payment payment) async {
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
+
+    var orderCollection = await orderRef.doc(payment.orderId).get();
+
+    var order = CosmeticOrder.fromJson(orderCollection.data()!);
+
+    await orderRef.doc(payment.orderId).update({
+      "missingValue": order.missingValue! - payment.installmentValue!,
+    });
   }
 
   Future<CosmeticOrder> readOrderDetailsById(dynamic id) async {

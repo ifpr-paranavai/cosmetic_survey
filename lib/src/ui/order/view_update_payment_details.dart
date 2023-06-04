@@ -10,6 +10,7 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
+import 'package:cosmetic_survey/src/ui/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
@@ -182,6 +183,11 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
               return 'Informe o valor!';
             } else if (formattedValue > widget.order.missingValue!) {
               return "O valor máximo é: R\$ ${widget.order.missingValue}"; // TODO formatar valor
+            } else if (widget.payment.installmentNumber ==
+                widget.order.installments) {
+              if (formattedValue < widget.order.missingValue!) {
+                return "O valor mínimo é: R\$ ${widget.order.missingValue}"; // TODO formatar valor
+              }
             } else {
               paymentInstallmentValue = formattedValue;
             }
@@ -222,7 +228,12 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
 
                       orderDetails.updatePaymentDetails(widget.payment);
 
-                      Navigator.pop(context, now);
+                      widget.order.missingValue =
+                          widget.order.missingValue! - paymentInstallmentValue;
+
+                      var result = Result(now: now, order: widget.order);
+
+                      Navigator.pop(context, result);
                       ScaffoldMessenger.of(context).showSnackBar(
                         CosmeticSnackBar.showSnackBar(
                           context: context,

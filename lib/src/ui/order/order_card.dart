@@ -40,7 +40,7 @@ class OrderCard extends StatelessWidget {
                   [_random.nextInt(9) * 100],
           child: Text(customerName.substring(0, 1).toUpperCase()),
         ),
-        title: Text('Cliente: $customerName'),
+        title: Text(customerName),
         subtitle: Text(
             'Valor total: R\$ ${utils.formatToBrazilianCurrency(order.totalValue!)}\nCiclo: ${order.cicle}\nData da venda: ${Utils.formatDate(date: order.saleDate!)}'),
         onTap: () {

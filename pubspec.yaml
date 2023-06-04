@@ -63,6 +63,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   decimal: ^2.3.2
   rxdart: ^0.27.7
+  flutter_statusbarcolor_ns: ^0.5.0
 
 flutter_icons:
   android: true

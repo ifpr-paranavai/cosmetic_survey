@@ -288,11 +288,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
           brandId: '',
           quantity: 1,
         );
-        var valueController = MoneyMaskedTextController(
-          decimalSeparator: ',',
-          thousandSeparator: '.',
-          precision: 2,
-        );
+        var valueController = MoneyMaskedTextController();
 
         showModalBottomSheet(
           isScrollControlled: true,
@@ -348,7 +344,8 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                 quantity: 1,
                               );
 
-                              valueController.text = value.price.toString();
+                              valueController.text =
+                                  utils.formatToBrazilianCurrency(value.price);
                             },
                           );
                         },

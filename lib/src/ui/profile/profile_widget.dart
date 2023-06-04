@@ -7,6 +7,7 @@ import 'package:cosmetic_survey/src/core/firebase/auth/firebase_auth.dart';
 import 'package:cosmetic_survey/src/core/firebase/auth/google_auth.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
+import 'package:cosmetic_survey/src/ui/about/about.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_profile_menu_widget.dart';
@@ -150,7 +151,13 @@ class ProfileWidget extends StatelessWidget {
                       CosmeticProfileMenuWidget(
                         title: 'Sobre o aplicativo',
                         icon: LineAwesomeIcons.info,
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AboutWidget()),
+                          );
+                        },
                       ),
                       CosmeticProfileMenuWidget(
                         title: 'Sair',

@@ -56,7 +56,8 @@ class _PaymentCardState extends State<PaymentCard> {
 
           if (result != null) {
             setState(() {
-              widget.payment.paymentDate = result;
+              widget.payment.paymentDate = result.now;
+              widget.order = result.order;
             });
           }
         },

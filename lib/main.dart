@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
             Locale('pt', 'BR'),
           ],
           theme: ThemeData(
+            useMaterial3: true,
             textSelectionTheme: const TextSelectionThemeData(
               cursorColor: cosmeticPrimaryColor,
               selectionHandleColor: cosmeticPrimaryColor,

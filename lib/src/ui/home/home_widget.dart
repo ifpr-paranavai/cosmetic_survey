@@ -7,6 +7,7 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.da
 import 'package:cosmetic_survey/src/ui/home/home_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 
 import '../../core/firebase/firestore/current_user_details.dart';
 
@@ -21,6 +22,12 @@ class _HomeWidgetState extends State<HomeWidget> {
   CurrentUserDetails currentUserDetails = CurrentUserDetails();
   Utils utils = Utils();
   var orderDetails = OrderDetails();
+
+  @override
+  void initState() {
+    super.initState();
+    FlutterStatusbarcolor.setStatusBarColor(Colors.white);
+  }
 
   @override
   Widget build(BuildContext context) {
