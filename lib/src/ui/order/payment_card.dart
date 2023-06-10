@@ -25,6 +25,8 @@ class _PaymentCardState extends State<PaymentCard> {
 
   @override
   Widget build(BuildContext context) {
+    var installmentNumber = widget.payment.installmentNumber;
+
     return Card(
       elevation: 2,
       margin: const EdgeInsets.all(8),
@@ -36,7 +38,10 @@ class _PaymentCardState extends State<PaymentCard> {
           child: Text('${widget.payment.installmentNumber}'),
         ),
         title: Text(
-            'Pagamento referente à ${widget.payment.installmentNumber}ª parcela'),
+          installmentNumber == 0
+              ? 'Pagamento à vista'
+              : 'Pagamento referente à $installmentNumberª parcela',
+        ),
         subtitle: widget.payment.paymentDate != null
             ? Text(
                 'Data de pagamento: ${Utils.formatDate(date: widget.payment.paymentDate!)}')

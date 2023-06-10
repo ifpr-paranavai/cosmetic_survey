@@ -238,8 +238,9 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
             elevation: 2,
             margin: const EdgeInsets.all(8),
             child: ListTile(
-              title: Text(
-                  '${product.code} - ${product.name}\nQuantidade: ${product.quantity}\nPreço: R\$ ${utils.formatToBrazilianCurrency(product.price)}'),
+              title: Text(product.name),
+              subtitle: Text(
+                  'Código: ${product.code}\nQuantidade: ${product.quantity}'),
               trailing: SizedBox(
                 width: 50,
                 child: Row(
@@ -366,7 +367,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                           if (value == null || value.isEmpty) {
                             return 'Informe o Valor!';
                           } else {
-                            productSelected.price = formatProductPrice(value);
+                            productSelected.price = utils.formatValue(value);
                           }
                           return null;
                         },
@@ -459,15 +460,5 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
     setState(() {
       orderTotalValue = newTotalValue;
     });
-  }
-
-  double formatProductPrice(String price) {
-    if (!price.contains('.')) {
-      return double.parse(price.replaceAll(",", "."));
-    } else {
-      var formattedValue = price.replaceAll(",", ".").replaceAll(".", "");
-
-      return double.parse(formattedValue) / 100;
-    }
   }
 }

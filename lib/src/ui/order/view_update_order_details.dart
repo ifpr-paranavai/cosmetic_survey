@@ -231,9 +231,9 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
             elevation: 2,
             margin: const EdgeInsets.all(8),
             child: ListTile(
-              title: Text(
-                '${product.code} - ${product.name}\nQuantidade: ${product.quantity}\nPreço: R\$ ${utils.formatToBrazilianCurrency(product.price)}',
-              ),
+              title: Text(product.name),
+              subtitle: Text(
+                  'Código: ${product.code}\nQuantidade: ${product.quantity}'),
             ),
           );
         },
