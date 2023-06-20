@@ -13,7 +13,7 @@ const String cosmeticResetPassword = 'assets/images/reset-password-bro.png';
 
 const String cosmeticSignUp = 'assets/images/sign-up-bro.png';
 
-const String cosmeticSentEmail = 'assets/images/sent-message-bro.png';
+const String cosmeticSentEmail = 'assets/images/new-message-bro.png';
 
 const String cosmeticFirestoreUrl =
     'https://firebasestorage.googleapis.com/v0/b/cosmeticsurvey-3f433.appspot.com/o/profile_image%2F';
