@@ -114,8 +114,14 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
             setState(
               () {
                 widget.order.installments = getInstallments(value);
+                var installments = widget.order.installments;
 
-                _installmentValueController.text = 'R\$ ${widget.totalValue}';
+                if (installments == 0) {
+                  _installmentValueController.text = 'R\$ ${widget.totalValue}';
+                } else {
+                  _installmentValueController.text = getOrderInstallmentValue(
+                      widget.totalValue, installments!);
+                }
               },
             );
           },
@@ -151,7 +157,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
           controller: _installmentValueController,
           inputText: widget.order.installments == 0
               ? 'Valor a receber'
-              : 'Data de pagamento 1ª parcela',
+              : 'Valor de pagamento 1ª parcela',
           validator: (value) {
             var orderTotalValue = formatOrderPrice(widget.totalValue);
             var formattedValue = formatOrderPrice(value.substring(3));
@@ -160,8 +166,10 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
               return 'Informe o valor!';
             } else if (formattedValue > orderTotalValue) {
               return "O valor máximo é: R\$ $orderTotalValue";
-            } else if (formattedValue < orderTotalValue) {
-              return "O valor mínimo é: R\$ $orderTotalValue";
+            } else if (widget.order.installments == 0) {
+              if (formattedValue < orderTotalValue) {
+                return "O valor mínimo é: R\$ $orderTotalValue";
+              }
             } else {
               paymentInstallmentValue = formattedValue;
             }
