@@ -85,4 +85,8 @@ class Utils {
       return double.parse(formattedValue) / 100;
     }
   }
+
+  double fixDecimalValue(double value) {
+    return (value * 100).floorToDouble() / 100;
+  }
 }

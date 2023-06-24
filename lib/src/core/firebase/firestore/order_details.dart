@@ -5,10 +5,12 @@ import 'package:cosmetic_survey/src/core/entity/order_products.dart';
 import 'package:cosmetic_survey/src/core/entity/payment.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
+import 'package:cosmetic_survey/src/core/utils/utils.dart';
 
 class OrderDetails {
   var user = CurrentUserDetails();
   final root = FirebaseFirestore.instance.collection(FirebaseCollection.AUTH);
+  var utils = Utils();
 
   Future addOrderDetails({
     required CosmeticOrder order,
@@ -233,8 +235,39 @@ class OrderDetails {
     var order = CosmeticOrder.fromJson(orderCollection.data()!);
 
     await orderRef.doc(payment.orderId).update({
-      "missingValue": order.missingValue! - payment.installmentValue!,
+      "missingValue": utils.fixDecimalValue(order.missingValue!) -
+          payment.installmentValue!,
     });
+
+    updateInstallmentValue(payment);
+  }
+
+  Future updateInstallmentValue(Payment payment) async {
+    final userRef = root.doc(user.getCurrentUserUid());
+    final orderRef = userRef.collection(FirebaseCollection.ORDER);
+    final paymentRef =
+        orderRef.doc(payment.orderId).collection(FirebaseCollection.PAYMENT);
+
+    var paymentsToPay = <Payment>[];
+    var paymentSnapshots = await paymentRef.get();
+
+    var orderSnapshot = await orderRef.doc(payment.orderId).get();
+    var order = CosmeticOrder.fromJson(orderSnapshot.data()!);
+
+    for (var payment in paymentSnapshots.docs) {
+      var paymnt = Payment.fromJson(payment.data());
+
+      if (paymnt.paymentDate == null) {
+        paymentsToPay.add(paymnt);
+      }
+    }
+
+    for (var it in paymentsToPay) {
+      await paymentRef.doc(it.id).update({
+        "installmentValue":
+            utils.fixDecimalValue(order.missingValue!) / paymentsToPay.length,
+      });
+    }
   }
 
   Future<CosmeticOrder> readOrderDetailsById(dynamic id) async {

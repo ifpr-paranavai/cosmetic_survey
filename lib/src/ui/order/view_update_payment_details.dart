@@ -179,14 +179,20 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
           validator: (value) {
             var formattedValue = utils.formatValue(value.substring(3));
 
+            var missingValue =
+                utils.formatToBrazilianCurrency(widget.order.missingValue!);
+            var formattedMissingvalue = utils.formatValue(missingValue);
+
             if (value == null && value.isEmpty) {
               return 'Informe o valor!';
-            } else if (formattedValue > widget.order.missingValue!) {
-              return "O valor máximo é: R\$ ${widget.order.missingValue}"; // TODO formatar valor
+            } else if (formattedValue > formattedMissingvalue) {
+              return 'O valor máximo é: R\$ $missingValue';
             } else if (widget.payment.installmentNumber ==
                 widget.order.installments) {
-              if (formattedValue < widget.order.missingValue!) {
-                return "O valor mínimo é: R\$ ${widget.order.missingValue}"; // TODO formatar valor
+              if (formattedValue < formattedMissingvalue) {
+                return 'O valor mínimo é: R\$ $missingValue';
+              } else {
+                paymentInstallmentValue = formattedValue;
               }
             } else {
               paymentInstallmentValue = formattedValue;

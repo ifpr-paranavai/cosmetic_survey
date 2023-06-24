@@ -159,16 +159,18 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
               ? 'Valor a receber'
               : 'Valor de pagamento 1ª parcela',
           validator: (value) {
-            var orderTotalValue = formatOrderPrice(widget.totalValue);
-            var formattedValue = formatOrderPrice(value.substring(3));
+            var orderTotalValue = utils.formatValue(widget.totalValue);
+            var formattedValue = utils.formatValue(value.substring(3));
+
+            var missingValue = utils.formatToBrazilianCurrency(orderTotalValue);
 
             if (value == null || value.isEmpty) {
               return 'Informe o valor!';
             } else if (formattedValue > orderTotalValue) {
-              return "O valor máximo é: R\$ $orderTotalValue";
+              return 'O valor máximo é: R\$ $missingValue';
             } else if (widget.order.installments == 0) {
               if (formattedValue < orderTotalValue) {
-                return "O valor mínimo é: R\$ $orderTotalValue";
+                return 'O valor mínimo é: R\$ $missingValue';
               }
             } else {
               paymentInstallmentValue = formattedValue;
@@ -201,7 +203,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
           child: CosmeticElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                widget.order.totalValue = formatOrderPrice(widget.totalValue);
+                widget.order.totalValue = utils.formatValue(widget.totalValue);
                 widget.order.missingValue =
                     widget.order.totalValue! - paymentInstallmentValue;
 
@@ -227,16 +229,6 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
         ),
       ],
     );
-  }
-
-  double formatOrderPrice(String price) {
-    if (!price.contains('.')) {
-      return double.parse(price.replaceAll(",", "."));
-    } else {
-      var formattedValue = price.replaceAll(",", ".").replaceAll(".", "");
-
-      return double.parse(formattedValue) / 100;
-    }
   }
 
   String getOrderInstallmentValue(String totalValue, int installments) {

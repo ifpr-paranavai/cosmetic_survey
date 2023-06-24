@@ -16,7 +16,7 @@ class CosmeticSnackBar {
     return SnackBar(
       content: Text(message),
       backgroundColor: backgroundColor ?? cosmeticPrimaryColor,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
       padding: const EdgeInsets.all(20.0),
     );
   }
