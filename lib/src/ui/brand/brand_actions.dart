@@ -86,6 +86,7 @@ class BrandActions {
                     inputText: 'Nome',
                     readOnly: false,
                     maxLengh: 55,
+                    textCapitalization: TextCapitalization.words,
                     icon: const Icon(
                       Icons.drive_file_rename_outline,
                       color: cosmeticSecondaryColor,

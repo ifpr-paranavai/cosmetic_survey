@@ -24,6 +24,9 @@ class CustomerWidget extends StatefulWidget {
   State<CustomerWidget> createState() => _CustomerWidgetState();
 }
 
+var suggestions = <Customer>[];
+var aux = <Customer>[];
+
 class _CustomerWidgetState extends State<CustomerWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -37,20 +40,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Clientes',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: cosmeticSecondaryColor,
-              fontSize: 25,
-            ),
-          ),
-        ),
+        appBar: buildAppBar(),
         body: StreamBuilder<List<Customer>>(
           stream: customerDetails.readCustomerDetails(),
           builder: (context, snapshot) {
@@ -62,33 +52,44 @@ class _CustomerWidgetState extends State<CustomerWidget> {
               );
             } else if (snapshot.hasData) {
               final customers = snapshot.data!;
+              aux.clear();
 
-              return ListView.builder(
-                itemCount: customers.length,
-                itemBuilder: (context, index) {
-                  var currentCustomer = customers[index];
+              if (customers.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Nenhum registro encontrado!',
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: customers.length,
+                  itemBuilder: (context, index) {
+                    var currentCustomer = customers[index];
 
-                  Customer customer = Customer(
-                    id: currentCustomer.id,
-                    name: currentCustomer.name,
-                    cpf: currentCustomer.cpf,
-                    cellNumber: currentCustomer.cellNumber,
-                    creationTime: currentCustomer.creationTime,
-                  );
+                    Customer customer = Customer(
+                      id: currentCustomer.id,
+                      name: currentCustomer.name,
+                      cpf: currentCustomer.cpf,
+                      cellNumber: currentCustomer.cellNumber,
+                      creationTime: currentCustomer.creationTime,
+                    );
 
-                  return CustomerCard(
-                    customer: customer,
-                    onPressedDelete: () {
-                      HapticFeedback.vibrate();
+                    aux.add(customer);
 
-                      CustomerActions.deleteCustomer(
-                        context: context,
-                        customer: customer,
-                      );
-                    },
-                  );
-                },
-              );
+                    return CustomerCard(
+                      customer: customer,
+                      onPressedDelete: () {
+                        HapticFeedback.vibrate();
+
+                        CustomerActions.deleteCustomer(
+                          context: context,
+                          customer: customer,
+                        );
+                      },
+                    );
+                  },
+                );
+              }
             } else {
               return const CosmeticCircularIndicator();
             }
@@ -240,6 +241,117 @@ class _CustomerWidgetState extends State<CustomerWidget> {
           icon: Icons.add,
         ),
       ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: true,
+      title: const Text(
+        'Clientes',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: cosmeticSecondaryColor,
+          fontSize: 25,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            suggestions.addAll(aux);
+
+            showSearch(
+              context: context,
+              delegate: CosmeticSearchDelegate(),
+            );
+          },
+          icon: const Icon(
+            Icons.search,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CosmeticSearchDelegate extends SearchDelegate {
+  var searchResults = suggestions;
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () {
+          suggestions.clear();
+
+          close(context, null);
+        },
+        icon: const Icon(
+          Icons.arrow_back,
+        ),
+      );
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            if (query.isEmpty) {
+              suggestions.clear();
+
+              close(context, null);
+            } else {
+              query = '';
+            }
+          },
+          icon: const Icon(
+            Icons.clear,
+          ),
+        ),
+      ];
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return const Center(
+      child: Text(
+          'Ops... Parece que algo inesperado aconteceu.\nTente novamente...'),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    var suggestions = searchResults.where((searchResult) {
+      final result = searchResult.name.toLowerCase();
+      final input = query.toLowerCase();
+
+      return result.contains(input);
+    }).toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        final suggestion = suggestions[index];
+
+        Customer customer = Customer(
+          id: suggestion.id,
+          name: suggestion.name,
+          cpf: suggestion.cpf,
+          cellNumber: suggestion.cellNumber,
+          creationTime: suggestion.creationTime,
+        );
+
+        return CustomerCard(
+          customer: customer,
+          onPressedDelete: () {
+            HapticFeedback.vibrate();
+
+            CustomerActions.deleteCustomer(
+              context: context,
+              customer: customer,
+            );
+          },
+        );
+      },
     );
   }
 }
