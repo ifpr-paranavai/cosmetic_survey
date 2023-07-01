@@ -35,7 +35,12 @@ class BrandCard extends StatelessWidget {
         onTap: () {
           BrandActions.showInfoDialog(context: context, brand: brand);
         },
-        title: Text(brand.name),
+        title: Text(
+          brand.name,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         trailing: SizedBox(
           width: 100,
           child: Row(

@@ -35,7 +35,12 @@ class CustomerCard extends StatelessWidget {
         onTap: () {
           CustomerActions.showInfoDialog(context: context, customer: customer);
         },
-        title: Text(customer.name),
+        title: Text(
+          customer.name,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         subtitle: Text('CPF: ${customer.cpf}'),
         trailing: SizedBox(
           width: 100,

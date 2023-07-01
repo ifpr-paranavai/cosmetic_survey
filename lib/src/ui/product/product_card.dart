@@ -46,7 +46,12 @@ class ProductCard extends StatelessWidget {
           ProductActions.showInfoDialog(
               context: context, product: product, brand: brand);
         },
-        title: Text(product.name),
+        title: Text(
+          product.name,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         subtitle: Text('Código: ${product.code}\nMarca: $brand'),
         trailing: SizedBox(
           width: 100,

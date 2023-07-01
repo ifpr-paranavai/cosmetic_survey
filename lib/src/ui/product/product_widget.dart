@@ -1,5 +1,6 @@
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
 import 'package:cosmetic_survey/src/core/constants/sizes.dart';
+import 'package:cosmetic_survey/src/core/entity/brand.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
@@ -24,6 +25,10 @@ class ProductWidget extends StatefulWidget {
   State<ProductWidget> createState() => _ProductWidgetState();
 }
 
+var suggestions = <Product>[];
+var aux = <Product>[];
+var brands = <Brand>[];
+
 class _ProductWidgetState extends State<ProductWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -31,8 +36,8 @@ class _ProductWidgetState extends State<ProductWidget> {
   final _valueController = MoneyMaskedTextController();
   final _dropdownController = TextEditingController();
 
-  BrandDetails brandDetails = BrandDetails();
-  ProductDetails productDetails = ProductDetails();
+  var brandDetails = BrandDetails();
+  var productDetails = ProductDetails();
 
   String name = '';
   int code = 0;
@@ -40,25 +45,12 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var brands = brandDetails.searchAndConvertBrands();
+    brands = brandDetails.searchAndConvertBrands();
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Produtos',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: cosmeticSecondaryColor,
-              fontSize: 25,
-            ),
-          ),
-        ),
+        appBar: buildAppBar(),
         body: StreamBuilder<List<Product>>(
           stream: productDetails.readProductDetails(),
           builder: (context, snapshot) {
@@ -70,35 +62,46 @@ class _ProductWidgetState extends State<ProductWidget> {
               );
             } else if (snapshot.hasData) {
               final products = snapshot.data!;
+              aux.clear();
 
-              return ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  var currentProduct = products[index];
+              if (products.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Nenhum registro encontrado!',
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    var currentProduct = products[index];
 
-                  Product product = Product(
-                    id: currentProduct.id,
-                    name: currentProduct.name,
-                    price: currentProduct.price,
-                    code: currentProduct.code,
-                    brandId: currentProduct.brandId,
-                    creationTime: currentProduct.creationTime,
-                  );
+                    Product product = Product(
+                      id: currentProduct.id,
+                      name: currentProduct.name,
+                      price: currentProduct.price,
+                      code: currentProduct.code,
+                      brandId: currentProduct.brandId,
+                      creationTime: currentProduct.creationTime,
+                    );
 
-                  return ProductCard(
-                    product: product,
-                    brands: brands,
-                    onPressedDelete: () {
-                      HapticFeedback.vibrate();
+                    aux.add(product);
 
-                      ProductActions.deleteProduct(
-                        context: context,
-                        product: product,
-                      );
-                    },
-                  );
-                },
-              );
+                    return ProductCard(
+                      product: product,
+                      brands: brands,
+                      onPressedDelete: () {
+                        HapticFeedback.vibrate();
+
+                        ProductActions.deleteProduct(
+                          context: context,
+                          product: product,
+                        );
+                      },
+                    );
+                  },
+                );
+              }
             } else {
               return const CosmeticCircularIndicator();
             }
@@ -274,6 +277,119 @@ class _ProductWidgetState extends State<ProductWidget> {
           icon: Icons.add,
         ),
       ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: true,
+      title: const Text(
+        'Produtos',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: cosmeticSecondaryColor,
+          fontSize: 25,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            suggestions.addAll(aux);
+
+            showSearch(
+              context: context,
+              delegate: CosmeticSearchDelegate(),
+            );
+          },
+          icon: const Icon(
+            Icons.search,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CosmeticSearchDelegate extends SearchDelegate {
+  var searchResults = suggestions;
+
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () {
+          suggestions.clear();
+
+          close(context, null);
+        },
+        icon: const Icon(
+          Icons.arrow_back,
+        ),
+      );
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            if (query.isEmpty) {
+              suggestions.clear();
+
+              close(context, null);
+            } else {
+              query = '';
+            }
+          },
+          icon: const Icon(
+            Icons.clear,
+          ),
+        ),
+      ];
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return const Center(
+      child: Text(
+          'Ops... Parece que algo inesperado aconteceu.\nTente novamente...'),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    var suggestions = searchResults.where((searchResult) {
+      final result = searchResult.name.toLowerCase();
+      final input = query.toLowerCase();
+
+      return result.contains(input);
+    }).toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        final suggestion = suggestions[index];
+
+        Product product = Product(
+          id: suggestion.id,
+          name: suggestion.name,
+          price: suggestion.price,
+          code: suggestion.code,
+          brandId: suggestion.brandId,
+          creationTime: suggestion.creationTime,
+        );
+
+        return ProductCard(
+          product: product,
+          brands: brands,
+          onPressedDelete: () {
+            HapticFeedback.vibrate();
+
+            ProductActions.deleteProduct(
+              context: context,
+              product: product,
+            );
+          },
+        );
+      },
     );
   }
 }

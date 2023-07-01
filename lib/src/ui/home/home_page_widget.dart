@@ -7,13 +7,6 @@ class HomePageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: const CosmeticBottomNavigationBar(),
-        body: SingleChildScrollView(
-          child: Container(),
-        ),
-      ),
-    );
+    return const CosmeticBottomNavigationBar();
   }
 }

@@ -31,20 +31,7 @@ class _OrderWidgetState extends State<OrderWidget> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Pedidos',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: cosmeticSecondaryColor,
-              fontSize: 25,
-            ),
-          ),
-        ),
+        appBar: buildAppBar(),
         body: StreamBuilder<List<CosmeticOrder>>(
           stream: orderDetails.readOrderDetails(),
           builder: (context, snapshot) {
@@ -57,35 +44,43 @@ class _OrderWidgetState extends State<OrderWidget> {
             } else if (snapshot.hasData) {
               final orders = snapshot.data!;
 
-              return ListView.builder(
-                itemCount: orders.length,
-                itemBuilder: (context, index) {
-                  var currentOrder = orders[index];
+              if (orders.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Nenhum registro encontrado!',
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                  itemCount: orders.length,
+                  itemBuilder: (context, index) {
+                    var currentOrder = orders[index];
 
-                  CosmeticOrder order = CosmeticOrder(
-                    id: currentOrder.id,
-                    customerId: currentOrder.customerId,
-                    cicle: currentOrder.cicle,
-                    saleDate: currentOrder.saleDate,
-                    comments: currentOrder.comments,
-                    installments: currentOrder.installments,
-                    totalValue: currentOrder.totalValue,
-                  );
+                    CosmeticOrder order = CosmeticOrder(
+                      id: currentOrder.id,
+                      customerId: currentOrder.customerId,
+                      cicle: currentOrder.cicle,
+                      saleDate: currentOrder.saleDate,
+                      comments: currentOrder.comments,
+                      installments: currentOrder.installments,
+                      totalValue: currentOrder.totalValue,
+                    );
 
-                  return OrderCard(
-                    order: order,
-                    customers: customers,
-                    onPressedDelete: () {
-                      HapticFeedback.vibrate();
+                    return OrderCard(
+                      order: order,
+                      customers: customers,
+                      onPressedDelete: () {
+                        HapticFeedback.vibrate();
 
-                      OrderActions.deleteOrder(
-                        context: context,
-                        orderId: order.id,
-                      );
-                    },
-                  );
-                },
-              );
+                        OrderActions.deleteOrder(
+                          context: context,
+                          orderId: order.id,
+                        );
+                      },
+                    );
+                  },
+                );
+              }
             } else {
               return const CosmeticCircularIndicator();
             }
@@ -104,6 +99,23 @@ class _OrderWidgetState extends State<OrderWidget> {
             ),
           },
           icon: Icons.add,
+        ),
+      ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: true,
+      title: const Text(
+        'Pedidos',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: cosmeticSecondaryColor,
+          fontSize: 25,
         ),
       ),
     );
