@@ -4,6 +4,7 @@ import 'package:cosmetic_survey/src/core/entity/brand.dart';
 import 'package:cosmetic_survey/src/core/entity/product.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/brand_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/product_details.dart';
+import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/brand/cosmetic_brand_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
@@ -38,6 +39,7 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   var brandDetails = BrandDetails();
   var productDetails = ProductDetails();
+  var utils = Utils();
 
   String name = '';
   int code = 0;
@@ -159,6 +161,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               textInputAction: TextInputAction.next,
                               borderRadius: 10,
                               keyboardType: TextInputType.name,
+                              textCapitalization: TextCapitalization.words,
                               inputText: 'Nome',
                               maxLengh: 55,
                               readOnly: false,
@@ -191,10 +194,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                                 if (value == null || value.isEmpty) {
                                   return 'Informe o Valor!';
                                 } else {
-                                  price = double.parse(value
-                                      .toString()
-                                      .replaceAll(',', '')
-                                      .replaceAll('.', ''));
+                                  price = utils.formatStringValue(value);
                                 }
                                 return null;
                               },

@@ -4,7 +4,6 @@ import 'package:cosmetic_survey/src/core/entity/payment.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/order/payment_card.dart';
 import 'package:flutter/material.dart';
 
@@ -22,17 +21,15 @@ class _InstallmentsWidgetState extends State<InstallmentsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: buildAppBar(),
-        body: Column(
-          children: [
-            buildPaymentData(),
-            const Divider(height: 40),
-            buildFooterButton(context),
-          ],
-        ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(),
+      body: Column(
+        children: [
+          buildPaymentData(),
+          const Divider(height: 60),
+          buildFooterButton(context),
+        ],
       ),
     );
   }
@@ -46,13 +43,6 @@ class _InstallmentsWidgetState extends State<InstallmentsWidget> {
           Navigator.pop(context);
 
           orderDetails.updateOrderDetails(widget.order);
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            CosmeticSnackBar.showSnackBar(
-              context: context,
-              message: 'Pedido atualizado.',
-            ),
-          );
         },
         buttonName: 'FECHAR E SALVAR',
       ),
@@ -96,7 +86,7 @@ class _InstallmentsWidgetState extends State<InstallmentsWidget> {
           final payments = snapshot.data!;
 
           return SizedBox(
-            height: MediaQuery.of(context).size.width * 1.7,
+            height: MediaQuery.of(context).size.width * 1.6,
             child: ListView.builder(
               itemCount: payments.length,
               itemBuilder: (context, index) {

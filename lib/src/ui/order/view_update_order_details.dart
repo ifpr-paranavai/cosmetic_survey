@@ -30,15 +30,13 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: buildAppBar(context),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(cosmeticDefaultSize),
-            child: buildBody(),
-          ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(context),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(cosmeticDefaultSize),
+          child: buildBody(),
         ),
       ),
     );
@@ -221,7 +219,7 @@ class _ViewUpdateOrderDetailsState extends State<ViewUpdateOrderDetails> {
 
   SizedBox buildSelectedProductsListView(List<Product> products) {
     return SizedBox(
-      height: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.width * 0.8,
       child: ListView.builder(
         itemCount: products.length,
         itemBuilder: (BuildContext context, int index) {

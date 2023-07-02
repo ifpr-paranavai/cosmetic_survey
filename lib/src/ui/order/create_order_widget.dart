@@ -7,7 +7,6 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_floating_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/ui/customer/cosmetic_customer_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/order/payment_order_widget.dart';
@@ -48,187 +47,196 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => {
-              Navigator.pop(context),
-            },
-            icon: const Icon(Icons.arrow_back_outlined),
-            color: cosmeticSecondaryColor,
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Cadastrar Pedido',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: cosmeticSecondaryColor,
-              fontSize: 25,
-            ),
-          ),
-        ),
-        body: Container(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(context),
+      body: SingleChildScrollView(
+        child: Container(
           padding: const EdgeInsets.all(cosmeticDefaultSize),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+          child: buildBody(context),
+        ),
+      ),
+      floatingActionButton: buildCosmeticFloatingActionButton(context),
+    );
+  }
+
+  Form buildBody(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                'Data atual: ${utils.getCurrentDateYearNumMonthDay()}',
+              ),
+            ],
+          ),
+          const SizedBox(height: cosmeticFormHeight - 20),
+          CosmeticCustomerDropdown(
+            customers: widget.customers,
+            validator: (value) {
+              if (value == null) {
+                return 'Selecione uma opção!';
+              }
+              return null;
+            },
+            onCustomerChanged: (value) {
+              _customerDropdownController.text = value.id;
+            },
+          ),
+          const SizedBox(height: cosmeticFormHeight - 20),
+          CosmeticTextFormField(
+            controller: _cicleController,
+            textInputAction: TextInputAction.done,
+            borderRadius: 10,
+            keyboardType: TextInputType.number,
+            readOnly: false,
+            inputText: 'Ciclo',
+            icon: const Icon(
+              Icons.menu_open_outlined,
+              color: cosmeticSecondaryColor,
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Informe o ciclo do pedido!';
+              } else {
+                cicle = int.parse(value);
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: cosmeticFormHeight - 20),
+          CosmeticTextFormField(
+            controller: _commentsController,
+            textInputAction: TextInputAction.done,
+            borderRadius: 10,
+            keyboardType: TextInputType.text,
+            readOnly: false,
+            inputText: 'Observações',
+            icon: const Icon(
+              Icons.comment_outlined,
+              color: cosmeticSecondaryColor,
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                _commentsController.text = '';
+              }
+              return null;
+            },
+          ),
+          const Divider(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text.rich(
+                TextSpan(
                   children: [
-                    Text(
-                      'Data atual: ${utils.getCurrentDateYearNumMonthDay()}',
+                    const TextSpan(
+                      text: 'Produtos: ',
                     ),
+                    TextSpan(
+                      text: '${selectedProdutcs.length}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                   ],
                 ),
-                const SizedBox(height: cosmeticFormHeight - 20),
-                CosmeticCustomerDropdown(
-                  customers: widget.customers,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Selecione uma opção!';
-                    }
-                    return null;
-                  },
-                  onCustomerChanged: (value) {
-                    _customerDropdownController.text = value.id;
-                  },
-                ),
-                const SizedBox(height: cosmeticFormHeight - 20),
-                CosmeticTextFormField(
-                  controller: _cicleController,
-                  textInputAction: TextInputAction.done,
-                  borderRadius: 10,
-                  keyboardType: TextInputType.number,
-                  readOnly: false,
-                  inputText: 'Ciclo',
-                  icon: const Icon(
-                    Icons.menu_open_outlined,
-                    color: cosmeticSecondaryColor,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe o ciclo do pedido!';
-                    } else {
-                      cicle = int.parse(value);
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: cosmeticFormHeight - 20),
-                CosmeticTextFormField(
-                  controller: _commentsController,
-                  textInputAction: TextInputAction.done,
-                  borderRadius: 10,
-                  keyboardType: TextInputType.text,
-                  readOnly: false,
-                  inputText: 'Observações',
-                  icon: const Icon(
-                    Icons.comment_outlined,
-                    color: cosmeticSecondaryColor,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      _commentsController.text = '';
-                    }
-                    return null;
-                  },
-                ),
-                const Divider(height: 50),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+              ),
+              Text.rich(
+                TextSpan(
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: 'Produtos: ',
-                          ),
-                          TextSpan(
-                            text: '${selectedProdutcs.length}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ],
-                      ),
+                    const TextSpan(
+                      text: ' | Valor total: ',
                     ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: ' | Valor total: ',
-                          ),
-                          TextSpan(
-                            text:
-                                'R\$ ${utils.formatToBrazilianCurrency(orderTotalValue.toDouble())}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ],
+                    TextSpan(
+                      text:
+                          'R\$ ${utils.formatToBrazilianCurrency(orderTotalValue.toDouble())}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
-                    ),
+                    )
                   ],
                 ),
-                buildSelectedProductsListView(),
-                const Divider(height: 40),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: CosmeticElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        if (selectedProdutcs.isEmpty) {
-                          CosmeticDialog.showAlertDialog(
-                            context: context,
-                            dialogTittle: 'Informação!',
-                            dialogDescription:
-                                'O pedido deve conter ao menos um produto!',
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            showCancelButton: false,
-                          );
-                        } else {
-                          var order = CosmeticOrder(
-                            products: selectedProdutcs,
-                            customerId: _customerDropdownController.text,
-                            cicle: cicle,
-                            comments: _commentsController.text,
-                            installments: 0,
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PaymentOrderWidget(
-                                order: order,
-                                totalValue: utils.formatToBrazilianCurrency(
-                                  orderTotalValue.toDouble(),
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                      }
-                    },
-                    buttonName: 'IR PARA PAGAMENTOS',
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+          buildSelectedProductsListView(),
+          const Divider(height: 40),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: CosmeticElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  if (selectedProdutcs.isEmpty) {
+                    CosmeticDialog.showAlertDialog(
+                      context: context,
+                      dialogTittle: 'Informação!',
+                      dialogDescription:
+                          'O pedido deve conter ao menos um produto!',
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      showCancelButton: false,
+                    );
+                  } else {
+                    var order = CosmeticOrder(
+                      products: selectedProdutcs,
+                      customerId: _customerDropdownController.text,
+                      cicle: cicle,
+                      comments: _commentsController.text,
+                      installments: 0,
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentOrderWidget(
+                          order: order,
+                          totalValue: utils.formatToBrazilianCurrency(
+                            orderTotalValue.toDouble(),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                }
+              },
+              buttonName: 'IR PARA PAGAMENTOS',
             ),
           ),
-        ),
-        floatingActionButton: buildCosmeticFloatingActionButton(context),
+        ],
       ),
     );
   }
 
-  Expanded buildSelectedProductsListView() {
-    return Expanded(
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      leading: IconButton(
+        onPressed: () => {
+          Navigator.pop(context),
+        },
+        icon: const Icon(Icons.arrow_back_outlined),
+        color: cosmeticSecondaryColor,
+      ),
+      backgroundColor: Colors.white,
+      elevation: 0,
+      centerTitle: true,
+      title: const Text(
+        'Cadastrar Pedido',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: cosmeticSecondaryColor,
+          fontSize: 25,
+        ),
+      ),
+    );
+  }
+
+  SizedBox buildSelectedProductsListView() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.width * 0.8,
       child: ListView.builder(
         itemCount: selectedProdutcs.length,
         itemBuilder: (BuildContext context, int index) {
@@ -256,14 +264,6 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                             selectedProdutcs.removeAt(index);
                             updateOrderTotalValue();
                           },
-                        );
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          CosmeticSnackBar.showSnackBar(
-                            context: context,
-                            message: 'Produto removido.',
-                            backgroundColor: Colors.red,
-                          ),
                         );
                       },
                     ),
@@ -410,12 +410,6 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                                   },
                                 ),
                                 Navigator.pop(context),
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  CosmeticSnackBar.showSnackBar(
-                                    context: context,
-                                    message: 'Produto adicionado.',
-                                  ),
-                                ),
                               },
                           },
                           buttonName: 'ADICIONAR PRODUTO',

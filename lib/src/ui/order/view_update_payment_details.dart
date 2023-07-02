@@ -8,7 +8,6 @@ import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
-import 'package:cosmetic_survey/src/ui/components/cosmetic_snackbar.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/ui/utils/result.dart';
 import 'package:flutter/material.dart';
@@ -64,21 +63,19 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
 
     paid = widget.payment.paymentDate != null;
 
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: buildAppBar(context),
-        body: Container(
-          padding: const EdgeInsets.all(cosmeticDefaultSize),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                child: buildPyamentOrderFields(context),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: buildAppBar(context),
+      body: Container(
+        padding: const EdgeInsets.all(cosmeticDefaultSize),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
+              child: buildPyamentOrderFields(context),
             ),
           ),
         ),
@@ -240,12 +237,6 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
                       var result = Result(now: now, order: widget.order);
 
                       Navigator.pop(context, result);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        CosmeticSnackBar.showSnackBar(
-                          context: context,
-                          message: 'Pagamento atualizado.',
-                        ),
-                      );
                     }
                   },
                   buttonName: 'CONFIRMAR PAGAMENTO',

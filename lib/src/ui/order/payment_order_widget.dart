@@ -57,40 +57,38 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => {
+            Navigator.pop(context),
+          },
+          icon: const Icon(Icons.arrow_back_outlined),
+          color: cosmeticSecondaryColor,
+        ),
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => {
-              Navigator.pop(context),
-            },
-            icon: const Icon(Icons.arrow_back_outlined),
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'Pagamento',
+          textAlign: TextAlign.center,
+          style: TextStyle(
             color: cosmeticSecondaryColor,
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: const Text(
-            'Pagamento',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: cosmeticSecondaryColor,
-              fontSize: 25,
-            ),
+            fontSize: 25,
           ),
         ),
-        body: Container(
-          padding: const EdgeInsets.all(cosmeticDefaultSize),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                child: buildPyamentOrderFields(context),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(cosmeticDefaultSize),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
+              child: buildPyamentOrderFields(context),
             ),
           ),
         ),
@@ -119,8 +117,11 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                 if (installments == 0) {
                   _installmentValueController.text = 'R\$ ${widget.totalValue}';
                 } else {
-                  _installmentValueController.text = getOrderInstallmentValue(
-                      widget.totalValue, installments!);
+                  _installmentValueController.text =
+                      utils.formatToBrazilianCurrency(utils
+                          .getOrderInstallmentValue(
+                              widget.totalValue, installments!)
+                          .first);
                 }
               },
             );
@@ -229,26 +230,6 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
         ),
       ],
     );
-  }
-
-  String getOrderInstallmentValue(String totalValue, int installments) {
-    var orderValue = 0.0;
-    var installmentValue = 0.0;
-
-    if (!totalValue.contains('.')) {
-      orderValue = double.parse(totalValue.replaceAll(",", "."));
-
-      installmentValue = orderValue / installments;
-    } else {
-      var formattedValue = totalValue.replaceAll(",", ".").replaceAll(".", "");
-
-      orderValue = double.parse(formattedValue) / 100;
-
-      installmentValue = orderValue / installments;
-    }
-    paymentInstallmentValue = installmentValue;
-
-    return utils.formatToBrazilianCurrency(installmentValue);
   }
 }
 

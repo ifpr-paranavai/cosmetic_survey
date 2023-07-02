@@ -47,8 +47,9 @@ class ProductActions {
     required GlobalKey<FormState> formKey,
     required List<Brand> brands,
   }) {
-    ProductDetails productDetails = ProductDetails();
-    BrandDetails brandDetails = BrandDetails();
+    var productDetails = ProductDetails();
+    var brandDetails = BrandDetails();
+    var utils = Utils();
 
     final valueController =
         MoneyMaskedTextController(initialValue: product.price);
@@ -91,6 +92,7 @@ class ProductActions {
                     textInputAction: TextInputAction.next,
                     borderRadius: 10,
                     keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
                     maxLengh: 55,
                     inputText: 'Nome',
                     readOnly: false,
@@ -123,10 +125,7 @@ class ProductActions {
                       if (value == null || value.isEmpty) {
                         return 'Informe o Valor!';
                       } else {
-                        product.price = double.parse(value
-                            .toString()
-                            .replaceAll(',', '')
-                            .replaceAll('.', ''));
+                        product.price = utils.formatStringValue(value);
                       }
                       return null;
                     },

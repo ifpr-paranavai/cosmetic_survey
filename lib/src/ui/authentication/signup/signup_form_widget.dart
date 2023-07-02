@@ -39,6 +39,7 @@ class CosmeticSignUpFormWidget extends StatelessWidget {
               textInputAction: TextInputAction.next,
               borderRadius: 10,
               keyboardType: TextInputType.name,
+              textCapitalization: TextCapitalization.words,
               inputText: 'Nome',
               readOnly: false,
               icon: const Icon(
