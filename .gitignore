@@ -42,3 +42,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Arquivos de conexão com o banco de dados de Produção
+/lib/firebase_options.dart
+
+/android/app/build.gradle
+/android/app/google-services.json
+/android/build.gradle
+
+/ios/firebase_app_id_file.json
