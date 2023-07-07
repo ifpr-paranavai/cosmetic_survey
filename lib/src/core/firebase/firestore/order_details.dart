@@ -27,7 +27,7 @@ class OrderDetails {
       comments: order.comments?.trim(),
       installments: order.installments,
       totalValue: order.totalValue,
-      missingValue: order.missingValue,
+      missingValue: utils.fixDecimalValue(order.missingValue!),
     ).toJson();
 
     await docOrder.set(doc);
@@ -66,6 +66,7 @@ class OrderDetails {
     required CosmeticOrder order,
     required DocumentReference docOrder,
   }) async {
+    // Pagamento à vista
     if (order.installments == 0) {
       for (var i = 0; i <= order.installments!; i++) {
         final docPayment =
@@ -83,22 +84,66 @@ class OrderDetails {
         await docPayment.set(doc);
       }
     } else {
+      // Pagamento parcelado
       for (var i = 1; i <= order.installments!; i++) {
         final docPayment =
             docOrder.collection(FirebaseCollection.PAYMENT).doc();
 
-        final doc = Payment(
-          id: docPayment.id,
-          orderId: docOrder.id,
-          installmentValue: i == 1
-              ? payment.installmentValue
-              : order.missingValue! / (order.installments! - 1),
-          paymentDate: i == 1 ? DateTime.now() : null,
-          installmentNumber: i,
-          paymentType: i == 1 ? payment.paymentType : '',
-        ).toJson();
+        //calculo os valores da parcela com base no VALOR TOTAL DO PEDIDO
+        var installmentTotalValue = utils.getOrderInstallmentValue(
+          utils.formatToBrazilianCurrency(order.totalValue!),
+          order.installments!,
+        );
 
-        await docPayment.set(doc);
+        //calculo os valores da parcela com base no VALOR FALTANTE
+        var installmentMissingValue = utils.getOrderInstallmentValue(
+          utils.formatToBrazilianCurrency(order.missingValue!),
+          order.installments! - 1,
+        );
+
+        var installments =
+            installmentTotalValue.first == payment.installmentValue
+                ? installmentTotalValue
+                : installmentMissingValue;
+
+        if (installmentTotalValue.first == payment.installmentValue) {
+          final doc = Payment(
+            id: docPayment.id,
+            orderId: docOrder.id,
+            installmentValue: i == 1
+                ? payment.installmentValue
+                : installments.elementAt(i - 1),
+            paymentDate: i == 1 ? DateTime.now() : null,
+            installmentNumber: i,
+            paymentType: i == 1 ? payment.paymentType : '',
+          ).toJson();
+
+          await docPayment.set(doc);
+        } else {
+          if (i == 1) {
+            final doc = Payment(
+              id: docPayment.id,
+              orderId: docOrder.id,
+              installmentValue: payment.installmentValue,
+              paymentDate: DateTime.now(),
+              installmentNumber: i,
+              paymentType: payment.paymentType,
+            ).toJson();
+
+            await docPayment.set(doc);
+          } else {
+            final doc = Payment(
+              id: docPayment.id,
+              orderId: docOrder.id,
+              installmentValue: installments.elementAt(i == 2 ? i - 1 : i - 2),
+              paymentDate: null,
+              installmentNumber: i,
+              paymentType: '',
+            ).toJson();
+
+            await docPayment.set(doc);
+          }
+        }
       }
     }
   }
@@ -235,8 +280,8 @@ class OrderDetails {
     var order = CosmeticOrder.fromJson(orderCollection.data()!);
 
     await orderRef.doc(payment.orderId).update({
-      "missingValue": utils.fixDecimalValue(order.missingValue!) -
-          payment.installmentValue!,
+      "missingValue": utils.roundToTwoDecimalPlaces(
+          order.missingValue! - payment.installmentValue!),
     });
 
     updateInstallmentValue(payment);
@@ -263,9 +308,15 @@ class OrderDetails {
     }
 
     for (var it in paymentsToPay) {
+      var installmentMissingValue = utils.getOrderInstallmentValue(
+        utils.formatToBrazilianCurrency(order.missingValue!),
+        paymentsToPay.length,
+      );
+
       await paymentRef.doc(it.id).update({
-        "installmentValue":
-            utils.fixDecimalValue(order.missingValue!) / paymentsToPay.length,
+        "installmentValue": installmentMissingValue.elementAt(
+          paymentsToPay.indexOf(it),
+        ),
       });
     }
   }

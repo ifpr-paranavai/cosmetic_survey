@@ -64,6 +64,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                       comments: currentOrder.comments,
                       installments: currentOrder.installments,
                       totalValue: currentOrder.totalValue,
+                      missingValue: currentOrder.missingValue,
                     );
 
                     return OrderCard(

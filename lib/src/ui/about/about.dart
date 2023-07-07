@@ -8,14 +8,12 @@ class AboutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: buildAppBar(context),
-        backgroundColor: Colors.white,
-        body: Container(
-          padding: const EdgeInsets.all(cosmeticDefaultSize),
-          child: writeDescription(context),
-        ),
+    return Scaffold(
+      appBar: buildAppBar(context),
+      backgroundColor: Colors.white,
+      body: Container(
+        padding: const EdgeInsets.all(cosmeticDefaultSize),
+        child: writeDescription(context),
       ),
     );
   }

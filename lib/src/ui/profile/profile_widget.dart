@@ -13,7 +13,6 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_dialog.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_profile_menu_widget.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_slidebar.dart';
 import 'package:cosmetic_survey/src/ui/profile/profile_actions.dart';
-import 'package:cosmetic_survey/src/ui/profile/update_profile_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -115,37 +114,37 @@ class ProfileWidget extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 20),
-                      SizedBox(
-                        width: 200,
-                        child: ElevatedButton(
-                          onPressed: () => {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UpdateProfileWidget(
-                                  user: user,
-                                ),
-                              ),
-                            )
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: cosmeticPrimaryColor,
-                            side: BorderSide.none,
-                            shape: const StadiumBorder(),
-                          ),
-                          child: const Text(
-                            'Editar Perfil',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: 200,
+                      //   child: ElevatedButton(
+                      //     onPressed: () => {
+                      //       Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => UpdateProfileWidget(
+                      //             user: user,
+                      //           ),
+                      //         ),
+                      //       )
+                      //     },
+                      //     style: ElevatedButton.styleFrom(
+                      //       backgroundColor: cosmeticPrimaryColor,
+                      //       side: BorderSide.none,
+                      //       shape: const StadiumBorder(),
+                      //     ),
+                      //     child: const Text(
+                      //       'Editar Perfil',
+                      //       style: TextStyle(color: Colors.black),
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(height: 30),
-                      const Divider(),
-                      CosmeticProfileMenuWidget(
-                        title: 'Configurações',
-                        icon: LineAwesomeIcons.cog,
-                        onPress: () {},
-                      ),
+                      // const Divider(),
+                      // CosmeticProfileMenuWidget(
+                      //   title: 'Configurações',
+                      //   icon: LineAwesomeIcons.cog,
+                      //   onPress: () {},
+                      // ),
                       const Divider(),
                       const SizedBox(height: 10),
                       CosmeticProfileMenuWidget(
@@ -155,7 +154,8 @@ class ProfileWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const AboutWidget()),
+                              builder: (context) => const AboutWidget(),
+                            ),
                           );
                         },
                       ),

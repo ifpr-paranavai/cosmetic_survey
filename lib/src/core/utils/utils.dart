@@ -86,7 +86,40 @@ class Utils {
     }
   }
 
+  double formatStringValue(String value) {
+    return double.parse(
+      value.toString().replaceAll(',', '').replaceAll('.', ''),
+    );
+  }
+
   double fixDecimalValue(double value) {
     return (value * 100).floorToDouble() / 100;
+  }
+
+  double roundToTwoDecimalPlaces(double value) {
+    return double.parse(value.toStringAsFixed(2));
+  }
+
+  List<double> getOrderInstallmentValue(String valueToPay, int installments) {
+    var formattedTotalValue = formatValue(valueToPay);
+
+    int totalValueInCents = (formattedTotalValue * 100).round();
+    int installmentValueInCents = totalValueInCents ~/ installments;
+
+    var installmentValues = <double>[];
+
+    for (int i = 1; i <= installments; i++) {
+      if (i == installments) {
+        int lastInstallmentValueInCents =
+            totalValueInCents - (installmentValueInCents * (installments - 1));
+        double lastInstallmentValue = lastInstallmentValueInCents / 100;
+        installmentValues.add(lastInstallmentValue);
+      } else {
+        double installmentValue = installmentValueInCents / 100;
+        installmentValues.add(installmentValue);
+      }
+    }
+
+    return installmentValues;
   }
 }

@@ -47,7 +47,11 @@ class OrderCard extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-            'Valor total: R\$ ${utils.formatToBrazilianCurrency(order.totalValue!)}\nCiclo: ${order.cicle}\nData da venda: ${Utils.formatDate(date: order.saleDate!)}'),
+          'Valor total: R\$ ${utils.formatToBrazilianCurrency(order.totalValue!)}'
+          '\nCiclo: ${order.cicle}'
+          '\nData da venda: ${Utils.formatDateDDMMYYYY(date: order.saleDate!)}'
+          '\nSituação: ${order.missingValue! > 0 ? 'Em andamento' : 'Pago'}',
+        ),
         onTap: () {
           Navigator.push(
             context,
