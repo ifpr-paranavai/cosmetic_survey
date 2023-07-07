@@ -27,7 +27,9 @@ class OrderDetails {
       comments: order.comments?.trim(),
       installments: order.installments,
       totalValue: order.totalValue,
-      missingValue: utils.fixDecimalValue(order.missingValue!),
+      missingValue: utils.fixDecimalValue(
+        order.installments != 0 ? order.missingValue! : 0,
+      ),
     ).toJson();
 
     await docOrder.set(doc);
