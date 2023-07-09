@@ -7,11 +7,26 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class CurrentUserDetails {
+  final root = FirebaseFirestore.instance.collection(FirebaseCollection.AUTH);
+
   Stream<DocumentSnapshot> readUserData() {
     return FirebaseFirestore.instance
         .collection(FirebaseCollection.USER)
         .doc(getCurrentUserUid())
         .snapshots();
+  }
+
+  Future updateShowValues(bool hideValues) async {
+    final userRef = root.doc(getCurrentUserUid());
+
+    await userRef.set({"showValues": hideValues});
+  }
+
+  Future readUserShowValues() async {
+    final userRef = root.doc(getCurrentUserUid());
+    var userSnapshots = await userRef.get();
+
+    return userSnapshots.data()!['showValues'];
   }
 
   User getCurrentUserFromGoogle() {

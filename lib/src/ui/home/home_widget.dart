@@ -21,6 +21,18 @@ class _HomeWidgetState extends State<HomeWidget> {
   CurrentUserDetails currentUserDetails = CurrentUserDetails();
   Utils utils = Utils();
   var orderDetails = OrderDetails();
+  bool hideValues = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    currentUserDetails.readUserShowValues().then((value) {
+      setState(() {
+        hideValues = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +101,19 @@ class _HomeWidgetState extends State<HomeWidget> {
                         style: Theme.of(context).textTheme.titleLarge,
                         textAlign: TextAlign.left,
                       ),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.37),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            hideValues = !hideValues;
+
+                            currentUserDetails.updateShowValues(hideValues);
+                          });
+                        },
+                        icon: Icon(
+                          hideValues ? Icons.visibility : Icons.visibility_off,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
@@ -142,21 +167,25 @@ class _HomeWidgetState extends State<HomeWidget> {
                 value: utils.formatToBrazilianCurrency(ordersTotalValue),
                 description: 'Valor total das vendas',
                 amountValue: true,
+                hideValue: hideValues,
               ),
               HomeCard(
                 quantity: orderCount,
                 description: 'Pedidos realizados',
                 amountValue: false,
+                hideValue: hideValues,
               ),
               HomeCard(
                 value: utils.formatToBrazilianCurrency(receivedValue),
                 description: 'Valor recebido',
                 amountValue: true,
+                hideValue: hideValues,
               ),
               HomeCard(
                 value: utils.formatToBrazilianCurrency(valueToReceive),
                 description: 'Valor a receber',
                 amountValue: true,
+                hideValue: hideValues,
               ),
             ],
           );

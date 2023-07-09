@@ -5,6 +5,7 @@ class HomeCard extends StatelessWidget {
   int? quantity;
   String description;
   bool amountValue;
+  bool hideValue;
 
   HomeCard({
     Key? key,
@@ -12,6 +13,7 @@ class HomeCard extends StatelessWidget {
     this.quantity,
     required this.description,
     required this.amountValue,
+    required this.hideValue,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,9 @@ class HomeCard extends StatelessWidget {
       margin: const EdgeInsets.all(7),
       child: ListTile(
         title: Text(
-          amountValue ? 'R\$ $value' : 'Qtd. $quantity',
+          amountValue
+              ? 'R\$ ${hideValue ? value : '***'}'
+              : 'Qtd. ${hideValue ? quantity : '***'}',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),

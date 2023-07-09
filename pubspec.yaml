@@ -67,14 +67,14 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/buddha-hand-bro.png"
+  image_path: "assets/images/robin-bird-bro.png"
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/images/buddha-hand-bro.png
+  image: assets/images/robin-bird-bro.png
 
   android_12:
-    image: assets/images/buddha-hand-bro.png
+    image: assets/images/robin-bird-bro.png
     icon_background_color: "#ffffff"
 
 dev_dependencies:
