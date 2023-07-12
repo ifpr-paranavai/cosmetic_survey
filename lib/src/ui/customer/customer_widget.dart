@@ -126,7 +126,7 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                           Text(
-                            'Para realizar o cadastro preencha os campos à baixo e clique em "SALVAR".',
+                            'Para realizar o cadastro preencha os campos abaixo e clique em "SALVAR".',
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           const SizedBox(height: cosmeticFormHeight - 20),

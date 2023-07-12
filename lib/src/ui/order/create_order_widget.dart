@@ -320,7 +320,7 @@ class _CreateOrderWidgetState extends State<CreateOrderWidget> {
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
-                        'Para inserir um Produto preencha os campos à baixo e clique em "ADICIONAR PRODUTO".',
+                        'Para inserir um Produto preencha os campos abaixo e clique em "ADICIONAR PRODUTO".',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       const SizedBox(height: cosmeticFormHeight - 20),

@@ -83,7 +83,7 @@ class ProductActions {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(
-                    'Para atualizar as informações preencha os campos à baixo e clique em "ATUALIZAR".',
+                    'Para atualizar as informações preencha os campos abaixo e clique em "ATUALIZAR".',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: cosmeticFormHeight - 20),

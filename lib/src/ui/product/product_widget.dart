@@ -149,11 +149,11 @@ class _ProductWidgetState extends State<ProductWidget> {
                             const CosmeticSlideBar(),
                             Text(
                               'Cadastro de Produto',
-                              style: Theme.of(context).textTheme.headline4,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                             Text(
-                              'Para realizar o cadastro preencha os campos à baixo e clique em "SALVAR".',
-                              style: Theme.of(context).textTheme.bodyText1,
+                              'Para realizar o cadastro preencha os campos abaixo e clique em "SALVAR".',
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             const SizedBox(height: cosmeticFormHeight - 20),
                             CosmeticTextFormField(
