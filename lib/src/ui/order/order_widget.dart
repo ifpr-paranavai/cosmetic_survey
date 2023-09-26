@@ -1,4 +1,5 @@
 import 'package:cosmetic_survey/src/core/constants/colors.dart';
+import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
@@ -32,61 +33,7 @@ class _OrderWidgetState extends State<OrderWidget> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: buildAppBar(),
-        body: StreamBuilder<List<CosmeticOrder>>(
-          stream: orderDetails.readOrderDetails(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text(
-                  'Ocorreu um erro ao listar registros...',
-                ),
-              );
-            } else if (snapshot.hasData) {
-              final orders = snapshot.data!;
-
-              if (orders.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'Nenhum registro encontrado!',
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                  itemCount: orders.length,
-                  itemBuilder: (context, index) {
-                    var currentOrder = orders[index];
-
-                    CosmeticOrder order = CosmeticOrder(
-                      id: currentOrder.id,
-                      customerId: currentOrder.customerId,
-                      cicle: currentOrder.cicle,
-                      saleDate: currentOrder.saleDate,
-                      comments: currentOrder.comments,
-                      installments: currentOrder.installments,
-                      totalValue: currentOrder.totalValue,
-                      missingValue: currentOrder.missingValue,
-                    );
-
-                    return OrderCard(
-                      order: order,
-                      customers: customers,
-                      onPressedDelete: () {
-                        HapticFeedback.vibrate();
-
-                        OrderActions.deleteOrder(
-                          context: context,
-                          orderId: order.id,
-                        );
-                      },
-                    );
-                  },
-                );
-              }
-            } else {
-              return const CosmeticCircularIndicator();
-            }
-          },
-        ),
+        body: buildStreamBuilder(customers),
         floatingActionButton: CosmeticFloatingActionButton(
           onPressed: () => {
             Navigator.push(
@@ -103,6 +50,64 @@ class _OrderWidgetState extends State<OrderWidget> {
         ),
       ),
     );
+  }
+
+  StreamBuilder<List<CosmeticOrder>> buildStreamBuilder(List<Customer> customers) {
+    return StreamBuilder<List<CosmeticOrder>>(
+        stream: orderDetails.readOrderDetails(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                'Ocorreu um erro ao listar registros...',
+              ),
+            );
+          } else if (snapshot.hasData) {
+            final orders = snapshot.data!;
+
+            if (orders.isEmpty) {
+              return const Center(
+                child: Text(
+                  'Nenhum registro encontrado!',
+                ),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: orders.length,
+                itemBuilder: (context, index) {
+                  var currentOrder = orders[index];
+
+                  CosmeticOrder order = CosmeticOrder(
+                    id: currentOrder.id,
+                    customerId: currentOrder.customerId,
+                    cicle: currentOrder.cicle,
+                    saleDate: currentOrder.saleDate,
+                    comments: currentOrder.comments,
+                    installments: currentOrder.installments,
+                    totalValue: currentOrder.totalValue,
+                    missingValue: currentOrder.missingValue,
+                  );
+
+                  return OrderCard(
+                    order: order,
+                    customers: customers,
+                    onPressedDelete: () {
+                      HapticFeedback.vibrate();
+
+                      OrderActions.deleteOrder(
+                        context: context,
+                        orderId: order.id,
+                      );
+                    },
+                  );
+                },
+              );
+            }
+          } else {
+            return const CosmeticCircularIndicator();
+          }
+        },
+      );
   }
 
   AppBar buildAppBar() {

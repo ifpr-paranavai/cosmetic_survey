@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cosmetic_survey/src/core/constants/order_status.dart';
 import 'package:cosmetic_survey/src/core/entity/customer.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/customer_details.dart';
@@ -9,13 +10,13 @@ import 'package:flutter/material.dart';
 
 class OrderCard extends StatelessWidget {
   CosmeticOrder order;
-  VoidCallback onPressedDelete;
+  VoidCallback? onPressedDelete;
   List<Customer> customers;
 
   OrderCard({
     Key? key,
     required this.order,
-    required this.onPressedDelete,
+    this.onPressedDelete,
     required this.customers,
   }) : super(key: key);
 
@@ -50,7 +51,7 @@ class OrderCard extends StatelessWidget {
           'Valor total: R\$ ${utils.formatToBrazilianCurrency(order.totalValue!)}'
           '\nCiclo: ${order.cicle}'
           '\nData da venda: ${Utils.formatDateDDMMYYYY(date: order.saleDate!)}'
-          '\nSituação: ${order.missingValue! > 0 ? 'Em andamento' : 'Pago'}',
+          '\nSituação: ${order.missingValue! > 0 ? OrderStatus.EM_ANDAMENTO : OrderStatus.PAGO}',
         ),
         onTap: () {
           Navigator.push(
