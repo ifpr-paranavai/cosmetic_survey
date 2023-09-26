@@ -117,13 +117,14 @@ class CustomerActions {
                       color: cosmeticSecondaryColor,
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Informe o CPF!';
-                      }
-                      if (CPFValidator.isValid(value)) {
-                        customer.cpf = value;
+                      if (value != null && value.isNotEmpty) {
+                        if (CPFValidator.isValid(value)) {
+                          customer.cpf = value;
+                        } else {
+                          return 'CPF inválido!';
+                        }
                       } else {
-                        return 'CPF inválido!';
+                        customer.cpf = '';
                       }
                       return null;
                     },

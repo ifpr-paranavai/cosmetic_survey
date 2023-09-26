@@ -165,13 +165,14 @@ class _CustomerWidgetState extends State<CustomerWidget> {
                               color: cosmeticSecondaryColor,
                             ),
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Informe o CPF!';
-                              }
-                              if (CPFValidator.isValid(value)) {
-                                _cpfController.text = value;
+                              if (value != null && value.isNotEmpty) {
+                                if (CPFValidator.isValid(value)) {
+                                  _cpfController.text = value;
+                                } else {
+                                  return 'CPF inválido!';
+                                }
                               } else {
-                                return 'CPF inválido!';
+                                _cpfController.text = '';
                               }
                               return null;
                             },

@@ -5,6 +5,8 @@ import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_circular_indicator.dart';
 import 'package:cosmetic_survey/src/ui/home/home_card.dart';
+import 'package:cosmetic_survey/src/ui/report/report_card.dart';
+import 'package:cosmetic_survey/src/ui/report/report_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -186,6 +188,16 @@ class _HomeWidgetState extends State<HomeWidget> {
                 description: 'Valor a receber',
                 amountValue: true,
                 hideValue: hideValues,
+              ),
+              ReportCard(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ReportWidget(),
+                    ),
+                  );
+                },
               ),
             ],
           );

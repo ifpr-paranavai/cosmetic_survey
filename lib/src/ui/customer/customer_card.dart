@@ -41,7 +41,7 @@ class CustomerCard extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text('CPF: ${customer.cpf}'),
+        subtitle: Text(customer.cpf.isNotEmpty ? 'CPF: ${customer.cpf}' : 'CPF: Não informado'),
         trailing: SizedBox(
           width: 100,
           child: Row(

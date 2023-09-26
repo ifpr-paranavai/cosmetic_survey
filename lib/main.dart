@@ -39,6 +39,9 @@ class MyApp extends StatelessWidget {
           ],
           theme: ThemeData(
             useMaterial3: true,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.white,
+            ),
             textSelectionTheme: const TextSelectionThemeData(
               cursorColor: cosmeticPrimaryColor,
               selectionHandleColor: cosmeticPrimaryColor,
