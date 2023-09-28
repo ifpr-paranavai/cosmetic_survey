@@ -55,9 +55,9 @@ class _ReportWidgetState extends State<ReportWidget> {
         child: Container(
           padding: const EdgeInsets.only(
             top: 4.0,
-            left: cosmeticDefaultSize,
-            right: cosmeticDefaultSize,
-            bottom: cosmeticDefaultSize,
+            left: cosmeticDefaultSize - 23,
+            right: cosmeticDefaultSize - 23,
+            bottom: cosmeticDefaultSize - 23,
           ),
           child: Form(
             key: _formKey,
@@ -216,10 +216,10 @@ class _ReportWidgetState extends State<ReportWidget> {
   FutureBuilder buildReportData() {
     return FutureBuilder(
       future: reportDetails.buildReport(
-        DateTime.now(),
-        DateTime(2023, 07, 07),
-        2,
-        "Em andamento",
+        startDate: DateTime(2023, 05, 05),
+        endDate: DateTime(2023, 10, 10),
+        cicle: 2,
+        orderStatus: "Pago",
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -229,29 +229,36 @@ class _ReportWidgetState extends State<ReportWidget> {
             ),
           );
         } else if (snapshot.hasData) {
-          final report = snapshot.data![0] as List<CosmeticOrder>;
+          var reportList = <CosmeticOrder>[];
 
-          return ListView.builder(
-            itemCount: report.length,
-            itemBuilder: (context, index) {
-              var currentOrder = report[index];
+          final report = snapshot.data![0] as CosmeticOrder;
+          reportList.add(report);
 
-              CosmeticOrder order = CosmeticOrder(
-                id: currentOrder.id,
-                customerId: currentOrder.customerId,
-                cicle: currentOrder.cicle,
-                saleDate: currentOrder.saleDate,
-                comments: currentOrder.comments,
-                installments: currentOrder.installments,
-                totalValue: currentOrder.totalValue,
-                missingValue: currentOrder.missingValue,
-              );
+          return SizedBox(
+            height: MediaQuery.of(context).size.width * 1,
+            child: ListView.builder(
+              itemCount: reportList.length,
+              itemBuilder: (context, index) {
+                var currentOrder = reportList[index];
 
-              return OrderCard(
-                order: order,
-                customers: customers,
-              );
-            },
+                CosmeticOrder order = CosmeticOrder(
+                  id: currentOrder.id,
+                  customerId: currentOrder.customerId,
+                  cicle: currentOrder.cicle,
+                  saleDate: currentOrder.saleDate,
+                  comments: currentOrder.comments,
+                  installments: currentOrder.installments,
+                  totalValue: currentOrder.totalValue,
+                  missingValue: currentOrder.missingValue,
+                );
+
+                return OrderCard(
+                  order: order,
+                  customers: customers,
+                  isReport: true,
+                );
+              },
+            ),
           );
         } else {
           return const CosmeticCircularIndicator();

@@ -10,30 +10,41 @@ class ReportDetails {
   final root = FirebaseFirestore.instance.collection(FirebaseCollection.AUTH);
   var utils = Utils();
 
-  Future buildReport(
-    DateTime initialDate,
-    DateTime finalDate,
-    int cicle,
-    String orderStatus,
-  ) async {
+  Future<List<CosmeticOrder>> buildReport({
+    DateTime? startDate,
+    DateTime? endDate,
+    int? cicle,
+    String? orderStatus,
+  }) async {
     final userRef = root.doc(user.getCurrentUserUid());
+    var orderRef = userRef.collection(FirebaseCollection.ORDER);
+    var orders = <CosmeticOrder>[];
 
-    var query = userRef
-        .collection(FirebaseCollection.ORDER)
-        .where("saleDate", isGreaterThanOrEqualTo: initialDate)
-        .where("saleDate", isLessThanOrEqualTo: finalDate)
-        .where("cicle", isEqualTo: cicle);
+    Query query = orderRef
+        .where('cicle', isEqualTo: cicle)
+        .orderBy('saleDate', descending: true);
 
-    if (orderStatus == OrderStatus.EM_ANDAMENTO) {
-      query = query.where("missingValue", isGreaterThan: 0);
-    } else {
-      query = query.where("missingValue", isEqualTo: 0);
+    if (startDate != null) {
+      query = query.where('saleDate', isGreaterThanOrEqualTo: startDate);
     }
 
-    query = query.orderBy('saleDate', descending: true);
+    if (endDate != null) {
+      query = query.where('saleDate', isLessThanOrEqualTo: endDate);
+    }
 
-    return query.get().then((snapshot) => snapshot.docs
-        .map((doc) => CosmeticOrder.fromJson(doc.data()))
-        .toList());
+    if (orderStatus == OrderStatus.EM_ANDAMENTO) {
+      query = query.where('missingValue', isGreaterThan: 0);
+    } else if (orderStatus == OrderStatus.PAGO) {
+      query = query.where('missingValue', isEqualTo: 0);
+    }
+
+    final querySnapshot = await query.get();
+
+    orders = querySnapshot.docs
+        .map(
+            (doc) => CosmeticOrder.fromJson(doc.data() as Map<String, dynamic>))
+        .toList();
+
+    return orders;
   }
 }
