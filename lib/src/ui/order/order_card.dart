@@ -50,7 +50,7 @@ class OrderCard extends StatelessWidget {
             ),
           ),
           title: Text(
-            customerName ?? 'Erro ao carregar Nome',
+            customerName ?? 'Nome',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -87,7 +87,7 @@ class OrderCard extends StatelessWidget {
             ),
           ),
           title: Text(
-            customerName ?? 'Erro ao carregar Nome',
+            customerName ?? 'Nome',
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -111,8 +111,10 @@ class OrderCard extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 IconButton(
-                  icon: const Icon(Icons.delete_forever_rounded,
-                      color: Colors.red),
+                  icon: const Icon(
+                    Icons.delete_forever_rounded,
+                    color: Colors.red,
+                  ),
                   onPressed: onPressedDelete,
                 ),
               ],

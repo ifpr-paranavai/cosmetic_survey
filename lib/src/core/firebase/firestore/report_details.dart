@@ -11,39 +11,42 @@ class ReportDetails {
   var utils = Utils();
 
   Future<List<CosmeticOrder>> buildReport({
-    DateTime? startDate,
-    DateTime? endDate,
+    required DateTime startDate,
+    required DateTime endDate,
     int? cicle,
     String? orderStatus,
   }) async {
     final userRef = root.doc(user.getCurrentUserUid());
-    var orderRef = userRef.collection(FirebaseCollection.ORDER);
+    Query query = userRef.collection(FirebaseCollection.ORDER);
     var orders = <CosmeticOrder>[];
 
-    Query query = orderRef
-        .where('cicle', isEqualTo: cicle)
-        .orderBy('saleDate', descending: true);
+    query = query.where('saleDate',
+        isGreaterThanOrEqualTo: utils.getBeginningOfTheDay(startDate));
 
-    if (startDate != null) {
-      query = query.where('saleDate', isGreaterThanOrEqualTo: startDate);
+    query = query.where('saleDate',
+        isLessThanOrEqualTo: utils.getEndOfTheDay(endDate));
+
+    if (cicle != null) {
+      query = query.where('cicle', isEqualTo: cicle);
     }
 
-    if (endDate != null) {
-      query = query.where('saleDate', isLessThanOrEqualTo: endDate);
+    if (orderStatus != null) {
+      if (orderStatus == OrderStatus.EM_ANDAMENTO) {
+        query = query.where('missingValue', isNotEqualTo: 0); //todo corrigir este filtro
+      } else if (orderStatus == OrderStatus.PAGO) {
+        query = query.where('missingValue', isEqualTo: 0);
+      }
     }
 
-    if (orderStatus == OrderStatus.EM_ANDAMENTO) {
-      query = query.where('missingValue', isGreaterThan: 0);
-    } else if (orderStatus == OrderStatus.PAGO) {
-      query = query.where('missingValue', isEqualTo: 0);
-    }
+    query = query.orderBy('saleDate', descending: true);
 
     final querySnapshot = await query.get();
 
-    orders = querySnapshot.docs
-        .map(
-            (doc) => CosmeticOrder.fromJson(doc.data() as Map<String, dynamic>))
-        .toList();
+    for (var doc in querySnapshot.docs) {
+      var order = CosmeticOrder.fromJson(doc.data() as Map<String, dynamic>);
+
+      orders.add(order);
+    }
 
     return orders;
   }

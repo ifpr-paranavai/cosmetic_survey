@@ -24,8 +24,8 @@ class ReportWidget extends StatefulWidget {
 }
 
 class _ReportWidgetState extends State<ReportWidget> {
-  final _initialDateController = TextEditingController();
-  final _finalDateController = TextEditingController();
+  final _startDateController = TextEditingController();
+  final _endDateController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _cicleController = TextEditingController();
   var customerDetails = CustomerDetails();
@@ -33,6 +33,8 @@ class _ReportWidgetState extends State<ReportWidget> {
   var reportDetails = ReportDetails();
   var selectedOrderStatus = '';
   var orderDetails = OrderDetails();
+  var utils = Utils();
+  late var callBuildReport;
 
   var orderStatus = [
     OrderStatus.EM_ANDAMENTO,
@@ -42,6 +44,10 @@ class _ReportWidgetState extends State<ReportWidget> {
   @override
   void initState() {
     customers = customerDetails.searchAndConvertCustomers();
+    callBuildReport = buildReportData(
+      startDate: DateTime(2023),
+      endDate: DateTime.now(),
+    );
 
     super.initState();
   }
@@ -67,7 +73,7 @@ class _ReportWidgetState extends State<ReportWidget> {
                   children: [
                     Expanded(
                       child: CosmeticDatePicker(
-                        controller: _initialDateController,
+                        controller: _startDateController,
                         inputText: 'Data Início',
                         icon: const Icon(Icons.calendar_month_outlined),
                         borderRadius: 10,
@@ -90,7 +96,7 @@ class _ReportWidgetState extends State<ReportWidget> {
 
                           if (selectedDate != null) {
                             setState(() {
-                              _initialDateController.text =
+                              _startDateController.text =
                                   Utils.formatDateDDMMYYYY(date: selectedDate);
                             });
                           }
@@ -100,7 +106,7 @@ class _ReportWidgetState extends State<ReportWidget> {
                     const SizedBox(width: cosmeticFormHeight - 20),
                     Expanded(
                       child: CosmeticDatePicker(
-                        controller: _finalDateController,
+                        controller: _endDateController,
                         inputText: 'Data Fim',
                         icon: const Icon(Icons.calendar_month_outlined),
                         borderRadius: 10,
@@ -123,7 +129,7 @@ class _ReportWidgetState extends State<ReportWidget> {
 
                           if (selectedDate != null) {
                             setState(() {
-                              _finalDateController.text =
+                              _endDateController.text =
                                   Utils.formatDateDDMMYYYY(date: selectedDate);
                             });
                           }
@@ -175,8 +181,20 @@ class _ReportWidgetState extends State<ReportWidget> {
                     buttonName: 'GERAR',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        //TODO gerar relatório
+                        setState(() {
+                          callBuildReport = buildReportData(
+                            startDate: utils
+                                .parseTextFromDate(_startDateController.text),
+                            endDate: utils
+                                .parseTextFromDate(_endDateController.text),
+                            cicle: _cicleController.text.isNotEmpty
+                                ? int.parse(_cicleController.text)
+                                : null,
+                            orderStatus: selectedOrderStatus,
+                          );
+                        });
                       }
+                      FocusScope.of(context).unfocus();
                     },
                   ),
                 ),
@@ -203,7 +221,7 @@ class _ReportWidgetState extends State<ReportWidget> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: buildReportData(),
+                  child: callBuildReport,
                 ),
               ],
             ),
@@ -213,13 +231,18 @@ class _ReportWidgetState extends State<ReportWidget> {
     );
   }
 
-  FutureBuilder buildReportData() {
+  FutureBuilder buildReportData({
+    required DateTime startDate,
+    required DateTime endDate,
+    int? cicle,
+    String? orderStatus,
+  }) {
     return FutureBuilder(
       future: reportDetails.buildReport(
-        startDate: DateTime(2023, 05, 05),
-        endDate: DateTime(2023, 10, 10),
-        cicle: 2,
-        orderStatus: "Pago",
+        startDate: startDate,
+        endDate: endDate,
+        cicle: cicle,
+        orderStatus: orderStatus,
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -229,37 +252,42 @@ class _ReportWidgetState extends State<ReportWidget> {
             ),
           );
         } else if (snapshot.hasData) {
-          var reportList = <CosmeticOrder>[];
+          if (snapshot.data.length != 0) {
+            final report = snapshot.data! as List<CosmeticOrder>;
 
-          final report = snapshot.data![0] as CosmeticOrder;
-          reportList.add(report);
+            return SizedBox(
+              height: MediaQuery.of(context).size.width * 1,
+              child: ListView.builder(
+                itemCount: report.length,
+                itemBuilder: (context, index) {
+                  var currentOrder = report[index];
 
-          return SizedBox(
-            height: MediaQuery.of(context).size.width * 1,
-            child: ListView.builder(
-              itemCount: reportList.length,
-              itemBuilder: (context, index) {
-                var currentOrder = reportList[index];
+                  CosmeticOrder order = CosmeticOrder(
+                    id: currentOrder.id,
+                    customerId: currentOrder.customerId,
+                    cicle: currentOrder.cicle,
+                    saleDate: currentOrder.saleDate,
+                    comments: currentOrder.comments,
+                    installments: currentOrder.installments,
+                    totalValue: currentOrder.totalValue,
+                    missingValue: currentOrder.missingValue,
+                  );
 
-                CosmeticOrder order = CosmeticOrder(
-                  id: currentOrder.id,
-                  customerId: currentOrder.customerId,
-                  cicle: currentOrder.cicle,
-                  saleDate: currentOrder.saleDate,
-                  comments: currentOrder.comments,
-                  installments: currentOrder.installments,
-                  totalValue: currentOrder.totalValue,
-                  missingValue: currentOrder.missingValue,
-                );
-
-                return OrderCard(
-                  order: order,
-                  customers: customers,
-                  isReport: true,
-                );
-              },
-            ),
-          );
+                  return OrderCard(
+                    order: order,
+                    customers: customers,
+                    isReport: true,
+                  );
+                },
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text(
+                'Nenhum registro encontrado com o filtro atual.',
+              ),
+            );
+          }
         } else {
           return const CosmeticCircularIndicator();
         }

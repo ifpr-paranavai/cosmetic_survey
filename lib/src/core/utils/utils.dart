@@ -122,4 +122,16 @@ class Utils {
 
     return installmentValues;
   }
+
+  DateTime getBeginningOfTheDay(DateTime date) {
+    return DateTime(date.year, date.month, date.day, 0, 0, 0, 0, 0);
+  }
+
+  DateTime getEndOfTheDay(DateTime date) {
+    return DateTime(date.year, date.month, date.day, 23, 59, 59, 999, 999);
+  }
+
+  DateTime parseTextFromDate(String date) {
+    return DateFormat("dd/MM/yyyy").parse(date);
+  }
 }
