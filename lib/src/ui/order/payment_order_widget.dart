@@ -34,6 +34,7 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
   var utils = Utils();
   final _installmentValueController =
       MoneyMaskedTextController(leftSymbol: 'R\$ ');
+  final _firstPaymentController = TextEditingController();
 
   var installments = [
     Installments.CASH_PAYMENT,
@@ -57,6 +58,10 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (_firstPaymentController.text.isEmpty) {
+      _firstPaymentController.text = utils.getCurrentDateYearNumMonthDay();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -123,6 +128,12 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
                               widget.totalValue, installments!)
                           .first);
                 }
+
+                installments == 1
+                    ? _firstPaymentController.text =
+                        utils.getCurrentDateYearNumMonthDayPlus30Days()
+                    : _firstPaymentController.text =
+                        utils.getCurrentDateYearNumMonthDay();
               },
             );
           },
@@ -156,9 +167,10 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
         const SizedBox(height: cosmeticFormHeight - 20),
         CosmeticTextFormField(
           controller: _installmentValueController,
-          inputText: widget.order.installments == 0
-              ? 'Valor a receber'
-              : 'Valor de pagamento 1ª parcela',
+          inputText:
+              widget.order.installments == 0 || widget.order.installments == 1
+                  ? 'Valor a receber'
+                  : 'Valor de pagamento 1ª parcela',
           validator: (value) {
             var orderTotalValue = utils.formatValue(widget.totalValue);
             var formattedValue = utils.formatValue(value.substring(3));
@@ -188,8 +200,8 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
         ),
         const SizedBox(height: cosmeticFormHeight - 20),
         CosmeticTextFormField(
-          initialValue: utils.getCurrentDateYearNumMonthDay(),
-          inputText: 'Data de pagamento 1ª parcela',
+          controller: _firstPaymentController,
+          inputText: 'Data do 1º pagamento',
           icon: const Icon(
             Icons.calendar_month_outlined,
             color: cosmeticSecondaryColor,
@@ -205,8 +217,13 @@ class _PaymentOrderWidgetState extends State<PaymentOrderWidget> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 widget.order.totalValue = utils.formatValue(widget.totalValue);
-                widget.order.missingValue =
-                    widget.order.totalValue! - paymentInstallmentValue;
+
+                if (widget.order.installments == 1) {
+                  widget.order.missingValue = widget.order.totalValue!;
+                } else {
+                  widget.order.missingValue =
+                      widget.order.totalValue! - paymentInstallmentValue;
+                }
 
                 orderDetails.addOrderDetails(
                   order: widget.order,

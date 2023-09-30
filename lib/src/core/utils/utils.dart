@@ -70,6 +70,15 @@ class Utils {
         .toString();
   }
 
+  String getCurrentDateYearNumMonthDayPlus30Days() {
+    var now = DateTime.now().toLocal();
+    var newDate = DateTime(now.year, now.month + 1, now.day).toLocal();
+
+    return DateFormat(DateFormat.YEAR_NUM_MONTH_DAY, 'pt_Br')
+        .format(newDate)
+        .toString();
+  }
+
   String formatToBrazilianCurrency(double value) {
     final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
 

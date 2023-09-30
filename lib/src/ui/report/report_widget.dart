@@ -209,7 +209,7 @@ class _ReportWidgetState extends State<ReportWidget> {
                             text: 'Valor total: ',
                           ),
                           TextSpan(
-                            text: 'R\$ 00,00',
+                            text: 'R\$ 00,00', //TODO valor dinâmico
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -256,7 +256,7 @@ class _ReportWidgetState extends State<ReportWidget> {
             final report = snapshot.data! as List<CosmeticOrder>;
 
             return SizedBox(
-              height: MediaQuery.of(context).size.width * 1,
+              height: MediaQuery.of(context).size.width * 1.2,
               child: ListView.builder(
                 itemCount: report.length,
                 itemBuilder: (context, index) {

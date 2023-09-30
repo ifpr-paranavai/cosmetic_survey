@@ -35,11 +35,11 @@ class _PaymentCardState extends State<PaymentCard> {
           backgroundColor:
               Colors.primaries[_random.nextInt(Colors.primaries.length)]
                   [_random.nextInt(9) * 100],
-          child: Text('${widget.payment.installmentNumber}'),
+          child: Text('$installmentNumber'),
         ),
         title: Text(
           installmentNumber == 0
-              ? 'Pagamento à vista'
+              ? 'Pagamento à vista / 30 dias'
               : 'Pagamento referente à $installmentNumberª parcela',
         ),
         subtitle: widget.payment.paymentDate != null

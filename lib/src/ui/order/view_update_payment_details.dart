@@ -202,8 +202,7 @@ class _ViewUpdatePaymentDetailsState extends State<ViewUpdatePaymentDetails> {
           initialValue: paid
               ? Utils.formatDateDDMMYYYY(date: widget.payment.paymentDate!)
               : utils.getCurrentDateYearNumMonthDay(),
-          inputText:
-              'Data de pagamento ${widget.payment.installmentNumber}ª parcela',
+          inputText: 'Data de pagamento',
           icon: const Icon(
             Icons.calendar_month_outlined,
             color: cosmeticSecondaryColor,

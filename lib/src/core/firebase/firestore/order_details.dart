@@ -68,23 +68,20 @@ class OrderDetails {
     required CosmeticOrder order,
     required DocumentReference docOrder,
   }) async {
-    // Pagamento à vista
-    if (order.installments == 0) {
-      for (var i = 0; i <= order.installments!; i++) {
-        final docPayment =
-            docOrder.collection(FirebaseCollection.PAYMENT).doc();
+    // Pagamento à vista ou em 30 dias
+    if (order.installments == 0 || order.installments == 1) {
+      final docPayment = docOrder.collection(FirebaseCollection.PAYMENT).doc();
 
-        final doc = Payment(
-          id: docPayment.id,
-          orderId: docOrder.id,
-          installmentValue: order.totalValue,
-          paymentDate: DateTime.now(),
-          installmentNumber: 0,
-          paymentType: payment.paymentType,
-        ).toJson();
+      final doc = Payment(
+        id: docPayment.id,
+        orderId: docOrder.id,
+        installmentValue: order.totalValue,
+        paymentDate: order.installments == 0 ? DateTime.now() : null,
+        installmentNumber: 0,
+        paymentType: payment.paymentType,
+      ).toJson();
 
-        await docPayment.set(doc);
-      }
+      await docPayment.set(doc);
     } else {
       // Pagamento parcelado
       for (var i = 1; i <= order.installments!; i++) {
