@@ -3,14 +3,18 @@ import 'package:cosmetic_survey/src/core/constants/firebase_collection.dart';
 import 'package:cosmetic_survey/src/core/constants/order_status.dart';
 import 'package:cosmetic_survey/src/core/entity/order.dart';
 import 'package:cosmetic_survey/src/core/firebase/firestore/current_user_details.dart';
+import 'package:cosmetic_survey/src/core/firebase/firestore/order_details.dart';
 import 'package:cosmetic_survey/src/core/utils/utils.dart';
+import 'package:cosmetic_survey/src/ui/utils/pair.dart';
+import 'package:decimal/decimal.dart';
 
 class ReportDetails {
   var user = CurrentUserDetails();
   final root = FirebaseFirestore.instance.collection(FirebaseCollection.AUTH);
   var utils = Utils();
+  var orderDetails = OrderDetails();
 
-  Future<List<CosmeticOrder>> buildReport({
+  Future<Pair> buildReport({
     required DateTime startDate,
     required DateTime endDate,
     int? cicle,
@@ -19,6 +23,9 @@ class ReportDetails {
     final userRef = root.doc(user.getCurrentUserUid());
     Query query = userRef.collection(FirebaseCollection.ORDER);
     var orders = <CosmeticOrder>[];
+    var inProgressOrders = <CosmeticOrder>[];
+    var paidOrders = <CosmeticOrder>[];
+    var pair = Pair(value: Decimal.zero, orders: []);
 
     query = query.where('saleDate',
         isGreaterThanOrEqualTo: utils.getBeginningOfTheDay(startDate));
@@ -28,14 +35,6 @@ class ReportDetails {
 
     if (cicle != null) {
       query = query.where('cicle', isEqualTo: cicle);
-    }
-
-    if (orderStatus != null) {
-      if (orderStatus == OrderStatus.EM_ANDAMENTO) {
-        query = query.where('missingValue', isNotEqualTo: 0); //todo corrigir este filtro
-      } else if (orderStatus == OrderStatus.PAGO) {
-        query = query.where('missingValue', isEqualTo: 0);
-      }
     }
 
     query = query.orderBy('saleDate', descending: true);
@@ -48,6 +47,41 @@ class ReportDetails {
       orders.add(order);
     }
 
-    return orders;
+    if (orderStatus != null && orderStatus.isNotEmpty) {
+      for (var order in orders) {
+        if (orderStatus == OrderStatus.EM_ANDAMENTO &&
+            order.missingValue != 0) {
+          inProgressOrders.add(order);
+        } else if (orderStatus == OrderStatus.PAGO && order.missingValue == 0) {
+          paidOrders.add(order);
+        }
+      }
+
+      if (orderStatus == OrderStatus.EM_ANDAMENTO) {
+        pair.value = getOrderTotalValue(inProgressOrders);
+        pair.orders = inProgressOrders;
+      } else if (orderStatus == OrderStatus.PAGO) {
+        pair.value = getOrderTotalValue(paidOrders);
+        pair.orders = paidOrders;
+      } else {
+        pair.value = getOrderTotalValue(orders);
+        pair.orders = orders;
+      }
+    } else {
+      pair.value = getOrderTotalValue(orders);
+      pair.orders = orders;
+    }
+
+    return pair;
+  }
+
+  Decimal getOrderTotalValue(List<CosmeticOrder> orders) {
+    var totalValue = Decimal.zero;
+
+    for (var order in orders) {
+      totalValue += Decimal.parse(order.totalValue!.toString());
+    }
+
+    return totalValue;
   }
 }

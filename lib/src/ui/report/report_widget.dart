@@ -14,6 +14,7 @@ import 'package:cosmetic_survey/src/ui/components/cosmetic_dropdown.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_elevated_button.dart';
 import 'package:cosmetic_survey/src/ui/components/cosmetic_text_form_field.dart';
 import 'package:cosmetic_survey/src/ui/order/order_card.dart';
+import 'package:cosmetic_survey/src/ui/utils/pair.dart';
 import 'package:flutter/material.dart';
 
 class ReportWidget extends StatefulWidget {
@@ -34,16 +35,16 @@ class _ReportWidgetState extends State<ReportWidget> {
   var selectedOrderStatus = '';
   var orderDetails = OrderDetails();
   var utils = Utils();
-  late var callBuildReport;
+  late FutureBuilder callBuildReport;
 
   var orderStatus = [
     OrderStatus.EM_ANDAMENTO,
     OrderStatus.PAGO,
+    OrderStatus.TODOS,
   ];
 
   @override
   void initState() {
-    customers = customerDetails.searchAndConvertCustomers();
     callBuildReport = buildReportData(
       startDate: DateTime(2023),
       endDate: DateTime.now(),
@@ -54,6 +55,8 @@ class _ReportWidgetState extends State<ReportWidget> {
 
   @override
   Widget build(BuildContext context) {
+    customers = customerDetails.searchAndConvertCustomers();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: buildAppBar(),
@@ -199,26 +202,6 @@ class _ReportWidgetState extends State<ReportWidget> {
                   ),
                 ),
                 const Divider(height: 50),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Valor total: ',
-                          ),
-                          TextSpan(
-                            text: 'R\$ 00,00', //TODO valor dinâmico
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
                 Container(
                   padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                   child: callBuildReport,
@@ -252,34 +235,59 @@ class _ReportWidgetState extends State<ReportWidget> {
             ),
           );
         } else if (snapshot.hasData) {
-          if (snapshot.data.length != 0) {
-            final report = snapshot.data! as List<CosmeticOrder>;
+          if (snapshot.data.orders.length != 0) {
+            final pair = snapshot.data! as Pair;
 
-            return SizedBox(
-              height: MediaQuery.of(context).size.width * 1.2,
-              child: ListView.builder(
-                itemCount: report.length,
-                itemBuilder: (context, index) {
-                  var currentOrder = report[index];
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Valor total: ',
+                          ),
+                          TextSpan(
+                            text:
+                                'R\$ ${utils.formatToBrazilianCurrency(pair.value.toDouble())}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width * 1.2,
+                  child: ListView.builder(
+                    itemCount: pair.orders.length,
+                    itemBuilder: (context, index) {
+                      var currentOrder = pair.orders[index];
 
-                  CosmeticOrder order = CosmeticOrder(
-                    id: currentOrder.id,
-                    customerId: currentOrder.customerId,
-                    cicle: currentOrder.cicle,
-                    saleDate: currentOrder.saleDate,
-                    comments: currentOrder.comments,
-                    installments: currentOrder.installments,
-                    totalValue: currentOrder.totalValue,
-                    missingValue: currentOrder.missingValue,
-                  );
+                      CosmeticOrder order = CosmeticOrder(
+                        id: currentOrder.id,
+                        customerId: currentOrder.customerId,
+                        cicle: currentOrder.cicle,
+                        saleDate: currentOrder.saleDate,
+                        comments: currentOrder.comments,
+                        installments: currentOrder.installments,
+                        totalValue: currentOrder.totalValue,
+                        missingValue: currentOrder.missingValue,
+                      );
 
-                  return OrderCard(
-                    order: order,
-                    customers: customers,
-                    isReport: true,
-                  );
-                },
-              ),
+                      return OrderCard(
+                        order: order,
+                        customers: customers,
+                        isReport: true,
+                      );
+                    },
+                  ),
+                ),
+              ],
             );
           } else {
             return const Center(
@@ -301,7 +309,7 @@ class _ReportWidgetState extends State<ReportWidget> {
       elevation: 0,
       centerTitle: true,
       title: const Text(
-        'Relatórios',
+        'Relatório',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: cosmeticSecondaryColor,
